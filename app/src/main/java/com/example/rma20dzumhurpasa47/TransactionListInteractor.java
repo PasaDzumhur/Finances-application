@@ -5,6 +5,6 @@ import java.util.ArrayList;
 public class TransactionListInteractor implements ITransactionListInteractor {
     @Override
     public ArrayList<Transaction> get() {
-        return TransactionModel.getTrans();
+        return TransactionModel.trans;
     }
 }

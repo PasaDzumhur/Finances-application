@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class TransactionModel {
-    private static ArrayList<Transaction> trans = new ArrayList<Transaction>() {
+    public static ArrayList<Transaction> trans = new ArrayList<Transaction>() {
         {
             String date = "15/2/2020";
             SimpleDateFormat simpleDate = new SimpleDateFormat("dd/MM/yyyy");

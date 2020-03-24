@@ -5,7 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,7 +21,15 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 public class TransactionListAdapter extends ArrayAdapter<Transaction> {
+
     int resource;
+
+    private TextView title;
+    private TextView amount;
+    private ImageView icon;
+
+
+
     public TransactionListAdapter(@NonNull Context context, int _resource, ArrayList<Transaction> items) {
         super(context, _resource, items);
         resource=_resource;
@@ -36,24 +51,21 @@ public class TransactionListAdapter extends ArrayAdapter<Transaction> {
         }
 
         Transaction trans = getItem(position);
-        /*
-        titleView = newView.findViewById(R.id.title);
-        genreView = newView.findViewById(R.id.genre);
-        imageView = newView.findViewById(R.id.icon);
-        titleView.setText(movie.getTitle());
-        genreView.setText(movie.getGenre());
+        title=newView.findViewById(R.id.title);
+        amount=newView.findViewById(R.id.amount);
+        icon=newView.findViewById(R.id.icon);
+        icon.setImageResource(R.drawable.download);
+        title.setText(trans.getTitle());
+        String s="";
+        s+=trans.getAmount();
+        amount.setText(s);
 
-        String genreMatch = movie.getGenre();
-        try {
-            Class res = R.drawable.class;
-            Field field = res.getField(genreMatch);
-            int drawableId = field.getInt(null);
-            imageView.setImageResource(drawableId);
-        }
-        catch (Exception e) {
-            imageView.setImageResource(R.drawable.picture1);
-        }*/
+
 
         return newView;
+    }
+
+    public void setTransactions(ArrayList<Transaction> trans) {
+        this.addAll(trans);
     }
 }
