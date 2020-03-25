@@ -1,5 +1,6 @@
 package com.example.rma20dzumhurpasa47;
 
+
 import java.util.Date;
 
 public class Transaction {
@@ -8,13 +9,24 @@ public class Transaction {
     private String title;
     public enum Type{
         INDIVIDUALPAYMENT, REGULARPAYMENT, PURCHASE, INDIVIDUALINCOME, REGULARINCOME;
+
+        @Override
+        public String toString() {
+            if(this.equals(INDIVIDUALINCOME)) return "INDIVIDUALPAYMENT";
+            else if(this.equals(REGULARPAYMENT)) return "REGULARPAYMENT";
+            else if(this.equals(PURCHASE)) return "PURCHASE";
+            else if(this.equals(INDIVIDUALINCOME)) return "INDIVIDUALINCOME";
+            else if(this.equals(REGULARINCOME)) return "REGULARINCOME";
+            else return "Kretenu ne mozes ovako";
+        }
     };
     private Type type;
     private String itemDescription;
     private int transactionInterval;
     private Date endDate;
-    private boolean provjeraDuzine(String title){
-        if(title.length()>14 || title.length()<3) return false;
+
+    private boolean provjeraDuzine(String title) {
+        if (title.length() > 14 || title.length() < 3) return false;
         return true;
     }
 
