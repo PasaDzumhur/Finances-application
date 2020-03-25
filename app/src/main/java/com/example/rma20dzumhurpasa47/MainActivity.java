@@ -3,6 +3,7 @@ package com.example.rma20dzumhurpasa47;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -16,6 +17,7 @@ public class MainActivity extends AppCompatActivity implements ITransactionListV
     private ITransactionListPresenter transListPresenter;
     private TransactionListAdapter adapter1;
     private MySpinnerAdapter adapter2;
+    private ArrayAdapter<String> adapter3;
 
     private EditText text1;
     private EditText text2;
@@ -33,6 +35,15 @@ public class MainActivity extends AppCompatActivity implements ITransactionListV
         add("INDIVIDUALPAYMENT");
     }};
 
+    private ArrayList<String> sorts=new ArrayList<String>(){{
+        add("Price - Ascending");
+        add("Price - Descending");
+        add("Title - Ascending");
+        add("Title - Descending");
+        add("Date - Ascending");
+        add("Date - Descending");
+    }};
+
 
     public ITransactionListPresenter getPresenter(){
         if(transListPresenter==null){
@@ -47,11 +58,14 @@ public class MainActivity extends AppCompatActivity implements ITransactionListV
         setContentView(R.layout.activity_main);
         adapter1=new TransactionListAdapter(getApplicationContext(),R.layout.list_element,new ArrayList<Transaction>());
         adapter2=new MySpinnerAdapter(getApplicationContext(),R.layout.spinner_element,types);
+        adapter3=new ArrayAdapter<String>(getApplicationContext(),R.layout.support_simple_spinner_dropdown_item,sorts);
         list=(ListView) findViewById(R.id.list);
         list.setAdapter(adapter1);
         getPresenter().refreshTransactions();
         spinner1=(Spinner) findViewById(R.id.spinner1);
         spinner1.setAdapter(adapter2);
+        spinner2=(Spinner) findViewById(R.id.spinner2);
+        spinner2.setAdapter(adapter3);
 
     }
 
