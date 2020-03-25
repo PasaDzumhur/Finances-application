@@ -1,12 +1,18 @@
 package com.example.rma20dzumhurpasa47;
 
 
+import androidx.annotation.NonNull;
+
+import java.time.LocalDate;
 import java.util.Date;
 
-public class Transaction {
+public class Transaction implements Comparable<Transaction> {
     private Date date;
     private double amount;
     private String title;
+
+
+
     public enum Type{
         INDIVIDUALPAYMENT, REGULARPAYMENT, PURCHASE, INDIVIDUALINCOME, REGULARINCOME;
 
@@ -19,6 +25,7 @@ public class Transaction {
             else if(this.equals(REGULARINCOME)) return "REGULARINCOME";
             else return "Kretenu ne mozes ovako";
         }
+
     };
     private Type type;
     private String itemDescription;
@@ -102,4 +109,11 @@ public class Transaction {
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
+
+    @Override
+    public int compareTo(Transaction o) {
+        return Integer.compare(this.type.ordinal(),o.getType().ordinal());
+    }
+
+
 }

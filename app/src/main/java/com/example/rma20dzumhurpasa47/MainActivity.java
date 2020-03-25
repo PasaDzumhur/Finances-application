@@ -3,6 +3,8 @@ package com.example.rma20dzumhurpasa47;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,11 +30,12 @@ public class MainActivity extends AppCompatActivity implements ITransactionListV
     private Spinner spinner2;
     private Button btnAddTrans;
     private ArrayList<String> types=new ArrayList<String>(){{
-        add("REGULARINCOME");
+        add("GIMMEALL");
         add("PURCHASE");
         add("INDIVIDUALINCOME");
         add("REGULARPAYMENT");
         add("INDIVIDUALPAYMENT");
+        add("REGULARINCOME");
     }};
 
     private ArrayList<String> sorts=new ArrayList<String>(){{
@@ -44,6 +47,15 @@ public class MainActivity extends AppCompatActivity implements ITransactionListV
         add("Date - Descending");
     }};
 
+    private static String filter="";
+
+    public static String getFilter() {
+        return filter;
+    }
+
+    public static void setFilter(String filter) {
+        MainActivity.filter = filter;
+    }
 
     public ITransactionListPresenter getPresenter(){
         if(transListPresenter==null){
@@ -67,6 +79,45 @@ public class MainActivity extends AppCompatActivity implements ITransactionListV
         spinner2=(Spinner) findViewById(R.id.spinner2);
         spinner2.setAdapter(adapter3);
 
+
+        spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                setFilter((String) spinner1.getItemAtPosition(position));
+                if(spinner2.getSelectedItem().equals("Price - Ascending")) getPresenter().refreshSortPriceAsc();
+                else if(spinner2.getSelectedItem().equals("Price - Descending")) getPresenter().refreshSortPriceDesc();
+                else if(spinner2.getSelectedItem().equals("Title - Ascending")) getPresenter().refreshSortTitleAsc();
+                else if(spinner2.getSelectedItem().equals("Title - Descending")) getPresenter().refreshSortTitleDesc();
+                else if(spinner2.getSelectedItem().equals("Date - Ascending")) getPresenter().refreshSortPriceAsc();
+                else getPresenter().refreshTransactions();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                setFilter("");
+            }
+        });
+
+
+        spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(spinner2.getSelectedItem().equals("Price - Ascending")) getPresenter().refreshSortPriceAsc();
+                else if(spinner2.getSelectedItem().equals("Price - Descending")) getPresenter().refreshSortPriceDesc();
+                else if(spinner2.getSelectedItem().equals("Title - Ascending")) getPresenter().refreshSortTitleAsc();
+                else if(spinner2.getSelectedItem().equals("Title - Descending")) getPresenter().refreshSortTitleDesc();
+                else if(spinner2.getSelectedItem().equals("Date - Ascending")) getPresenter().refreshSortPriceAsc();
+                else getPresenter().refreshTransactions();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                getPresenter().refreshTransactions();
+
+            }
+        });
+        spinner2.setSelection(0);
     }
 
     @Override

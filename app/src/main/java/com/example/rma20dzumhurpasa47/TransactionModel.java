@@ -37,8 +37,7 @@ public class TransactionModel {
 
 
     };
+    public static ArrayList<Transaction> ostatak=new ArrayList<>();
 
-    public static ArrayList<Transaction> getTrans() {
-        return trans;
-    }
+    //public static ArrayList<Transaction> getTrans() {return trans;}
 }
