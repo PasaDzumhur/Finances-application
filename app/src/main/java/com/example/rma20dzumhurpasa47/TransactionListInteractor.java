@@ -28,7 +28,7 @@ public class TransactionListInteractor implements ITransactionListInteractor {
     }
 
     public ArrayList<Transaction> getClassic() {
-        return TransactionModel.trans;
+        return TransactionModel.getTrans();
     }
 
     @Override
