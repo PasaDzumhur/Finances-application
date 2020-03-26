@@ -24,8 +24,10 @@ public class MainActivity extends AppCompatActivity implements ITransactionListV
     private MySpinnerAdapter adapter2;
     private ArrayAdapter<String> adapter3;
 
-    private EditText text1;
-    private EditText text2;
+    private Account account=new Account(100000,100000,100000);
+
+    private TextView text1;
+    private TextView text2;
     private Spinner spinner1;
     private ImageButton left;
     private TextView textMonth;
@@ -85,6 +87,12 @@ public class MainActivity extends AppCompatActivity implements ITransactionListV
         left=findViewById(R.id.left);
         right=findViewById(R.id.right);
         textMonth=findViewById(R.id.textMonth);
+        account.workTheTransactions(TransactionModel.getTrans());
+        text1=findViewById(R.id.text1);
+        text2=findViewById(R.id.text2);
+        text1.setText("Global amount: "+account.getBudget());
+        text2.setText("Limit: "+account.getTotalLimit());
+
 
 
 
@@ -96,7 +104,8 @@ public class MainActivity extends AppCompatActivity implements ITransactionListV
                 else if(spinner2.getSelectedItem().equals("Price - Descending")) getPresenter().refreshSortPriceDesc();
                 else if(spinner2.getSelectedItem().equals("Title - Ascending")) getPresenter().refreshSortTitleAsc();
                 else if(spinner2.getSelectedItem().equals("Title - Descending")) getPresenter().refreshSortTitleDesc();
-                else if(spinner2.getSelectedItem().equals("Date - Ascending")) getPresenter().refreshSortPriceAsc();
+                else if(spinner2.getSelectedItem().equals("Date - Ascending")) getPresenter().refreshSortDateAsc();
+                else if(spinner2.getSelectedItem().equals("Date - Descending")) getPresenter().refreshSortDateDesc();
                 else getPresenter().refreshTransactions();
 
             }
