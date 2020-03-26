@@ -29,23 +29,35 @@ public class TransactionListPresenter implements ITransactionListPresenter {
         for(int i=0; i<list.size()-1; i++){
             for(int j=i+1; j<list.size(); j++){
                 if(list.get(i).getTitle().compareTo(list.get(j).getTitle())>0) {
-                    String pom="";
-                    pom+=list.get(i).getTitle();
-                    list.get(i).setTitle(list.get(j).getTitle());
-                    list.get(j).setTitle(pom);
+                    Transaction pom=list.get(i);
+                    list.set(i,list.get(j));
+                    list.set(j,pom);
                 }
             }
         }
     }
 
 
+
     private void sortByPrice(ArrayList<Transaction> list){
         for(int i=0; i<list.size()-1; i++) {
             for (int j = i + 1; j < list.size(); j++) {
                 if(list.get(i).getAmount()<list.get(j).getAmount()){
-                    double pom=list.get(i).getAmount();
-                    list.get(i).setAmount(list.get(j).getAmount());
-                    list.get(j).setAmount(pom);
+                    Transaction pom=list.get(i);
+                    list.set(i,list.get(j));
+                    list.set(j,pom);
+                }
+            }
+        }
+    }
+
+    private void sortByDate(ArrayList<Transaction> list){
+        for(int i=0; i<list.size()-1; i++) {
+            for (int j = i + 1; j < list.size(); j++) {
+                if(list.get(i).getDate().before(list.get(j).getDate())){
+                    Transaction pom=list.get(i);
+                    list.set(i,list.get(j));
+                    list.set(j,pom);
                 }
             }
         }
@@ -100,16 +112,25 @@ public class TransactionListPresenter implements ITransactionListPresenter {
     }
 
     @Override
-    public void refreshSortDateAsc() {
-        view.setTransactions(new ArrayList<Transaction>());
+    public void refreshSortDateDesc() {
+        ArrayList<Transaction> list=new ArrayList<>();
+        list.addAll(interactor.get());
+        sortByDate(list);
+        ArrayList<Transaction> reverseList=new ArrayList<>();
+        for(Transaction t : list){
+            reverseList.add(0,t);
+        }
+        view.setTransactions(reverseList);
         view.notifyTransactionListDataSetChanged();
 
     }
 
     @Override
-    public void refreshSortDateDesc() {
-        view.setTransactions(new ArrayList<Transaction>());
+    public void refreshSortDateAsc() {
+        ArrayList<Transaction> list=new ArrayList<>();
+        list.addAll(interactor.get());
+        sortByDate(list);
+        view.setTransactions(list);
         view.notifyTransactionListDataSetChanged();
-
     }
 }

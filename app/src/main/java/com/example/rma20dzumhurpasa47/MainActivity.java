@@ -11,8 +11,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity implements ITransactionListView {
     private ListView list;
@@ -25,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements ITransactionListV
     private EditText text2;
     private Spinner spinner1;
     private ImageButton left;
-    private EditText textMonth;
+    private TextView textMonth;
     private ImageButton right;
     private Spinner spinner2;
     private Button btnAddTrans;
@@ -46,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements ITransactionListV
         add("Date - Ascending");
         add("Date - Descending");
     }};
+    private Date dummyMonth= new Date(System.currentTimeMillis());
 
     private static String filter="";
 
@@ -71,13 +75,17 @@ public class MainActivity extends AppCompatActivity implements ITransactionListV
         adapter1=new TransactionListAdapter(getApplicationContext(),R.layout.list_element,new ArrayList<Transaction>());
         adapter2=new MySpinnerAdapter(getApplicationContext(),R.layout.spinner_element,types);
         adapter3=new ArrayAdapter<String>(getApplicationContext(),R.layout.support_simple_spinner_dropdown_item,sorts);
-        list=(ListView) findViewById(R.id.list);
+        list=findViewById(R.id.list);
         list.setAdapter(adapter1);
         getPresenter().refreshTransactions();
-        spinner1=(Spinner) findViewById(R.id.spinner1);
+        spinner1= findViewById(R.id.spinner1);
         spinner1.setAdapter(adapter2);
-        spinner2=(Spinner) findViewById(R.id.spinner2);
+        spinner2=findViewById(R.id.spinner2);
         spinner2.setAdapter(adapter3);
+        left=findViewById(R.id.left);
+        right=findViewById(R.id.right);
+        textMonth=findViewById(R.id.textMonth);
+
 
 
         spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
