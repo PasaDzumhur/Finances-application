@@ -1,6 +1,9 @@
 package com.example.rma20dzumhurpasa47;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -43,14 +46,141 @@ public class TransactionDetailActivity extends AppCompatActivity {
         btnDelete=findViewById(R.id.btnDelete);
         btnSave=findViewById(R.id.btnSave);
         Transaction transaction=getPresenter().getTransaction();
-        edit1.setText(transaction.getDate().toString());
+        edit5.setText(transaction.getDate().toString());
         edit2.setText(""+transaction.getAmount());
-        edit3.setText(transaction.getTitle());
-        edit4.setText(transaction.getType().toString());
-        edit5.setText(transaction.getItemDescription());
+        edit1.setText(transaction.getTitle());
+        edit3.setText(transaction.getType().toString());
+        edit4.setText(transaction.getItemDescription());
         edit6.setText(""+transaction.getTransactionInterval());
         if(transaction.getEndDate()==null) edit7.setText("");
         else edit7.setText(transaction.getEndDate().toString());
+
+
+        edit1.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                edit1.setBackgroundColor(Color.GREEN);
+
+            }
+        });
+
+        edit2.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                edit2.setBackgroundColor(Color.GREEN);
+
+            }
+        });
+
+        edit3.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                edit3.setBackgroundColor(Color.GREEN);
+
+            }
+        });
+
+        edit4.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                edit4.setBackgroundColor(Color.GREEN);
+
+            }
+        });
+
+        edit5.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                edit5.setBackgroundColor(Color.GREEN);
+
+            }
+        });
+
+        edit6.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                edit6.setBackgroundColor(Color.GREEN);
+
+            }
+        });
+
+        edit7.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                edit7.setBackgroundColor(Color.GREEN);
+
+            }
+        });
     }
 
 
