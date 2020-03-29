@@ -93,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements ITransactionListV
         text2=findViewById(R.id.text2);
         text1.setText("Global amount: "+account.getBudget());
         text2.setText("Limit: "+account.getTotalLimit());
+        list.setOnItemClickListener(listItemClickListener);
 
 
 
@@ -154,6 +155,15 @@ public class MainActivity extends AppCompatActivity implements ITransactionListV
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Intent transactionDetailIntent = new Intent(MainActivity.this, TransactionDetailActivity.class);
+            Transaction transaction=adapter1.getItem(position);
+            transactionDetailIntent.putExtra("date",transaction.getDate());
+            transactionDetailIntent.putExtra("amount",transaction.getAmount());
+            transactionDetailIntent.putExtra("title",transaction.getTitle());
+            transactionDetailIntent.putExtra("type",transaction.getType());
+            transactionDetailIntent.putExtra("itemDescription",transaction.getItemDescription());
+            transactionDetailIntent.putExtra("transactionInterval",transaction.getTransactionInterval());
+            transactionDetailIntent.putExtra("endDate",transaction.getEndDate());
+            MainActivity.this.startActivity(transactionDetailIntent);
         }
     };
 
