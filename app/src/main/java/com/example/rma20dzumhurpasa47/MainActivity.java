@@ -104,6 +104,17 @@ public class MainActivity extends AppCompatActivity implements ITransactionListV
         text1.setText("Global amount: "+account.getBudget());
         text2.setText("Limit: "+account.getTotalLimit());
         list.setOnItemClickListener(listItemClickListener);
+        btnAddTrans=findViewById(R.id.btnAddTrans);
+
+        btnAddTrans.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent addTransactionIntent = new Intent(MainActivity.this, AddTransactionActivity.class);
+                MainActivity.this.startActivityForResult(addTransactionIntent,1);
+
+
+            }
+        });
 
 
 
@@ -174,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements ITransactionListV
             transactionDetailIntent.putExtra("transactionInterval",transaction.getTransactionInterval());
             transactionDetailIntent.putExtra("endDate",transaction.getEndDate());
             MainActivity.this.startActivityForResult(transactionDetailIntent,1);
-            refreshAll();
+
         }
     };
 

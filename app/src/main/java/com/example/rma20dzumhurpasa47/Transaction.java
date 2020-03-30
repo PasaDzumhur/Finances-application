@@ -42,7 +42,7 @@ public class Transaction implements Comparable<Transaction> {
     private int transactionInterval;
     private Date endDate;
 
-    private boolean provjeraDuzine(String title) {
+    public static boolean provjeraDuzine(String title) {
         if (title.length() > 14 || title.length() < 3) return false;
         return true;
     }

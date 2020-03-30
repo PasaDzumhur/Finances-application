@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class TransactionListInteractor implements ITransactionListInteractor {
     @Override
     public ArrayList<Transaction> get() {
-        System.out.println(MainActivity.getFilter());
+        //System.out.println(MainActivity.getFilter());
         String string=MainActivity.getFilter();
         if(string.equals("PURCHASE")) {
             return getPurchase();
