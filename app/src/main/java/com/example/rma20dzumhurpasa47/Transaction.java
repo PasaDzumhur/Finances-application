@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.Objects;
 
 public class Transaction implements Comparable<Transaction> {
     private Date date;
@@ -24,6 +25,15 @@ public class Transaction implements Comparable<Transaction> {
             else if(this.equals(INDIVIDUALINCOME)) return "INDIVIDUALINCOME";
             else if(this.equals(REGULARINCOME)) return "REGULARINCOME";
             else return "Kretenu ne mozes ovako";
+        }
+        public static Type gimmeType(String tip){
+            if(tip.equalsIgnoreCase("INDIVIDUALPAYMENT")) return INDIVIDUALPAYMENT;
+            else if(tip.equalsIgnoreCase("REGULARPAYMENT")) return REGULARPAYMENT;
+            else if(tip.equalsIgnoreCase("PURCHASE")) return PURCHASE;
+            else if(tip.equalsIgnoreCase("INDIVIDUALINCOME")) return INDIVIDUALINCOME;
+            else if(tip.equalsIgnoreCase("REGULARINCOME")) return REGULARINCOME;
+
+            throw new IllegalArgumentException();
         }
 
     };
@@ -52,6 +62,8 @@ public class Transaction implements Comparable<Transaction> {
         this.transactionInterval = transactionInterval;
         this.endDate = endDate;
     }
+
+
 
     public Date getDate() {
         return date;
@@ -115,5 +127,24 @@ public class Transaction implements Comparable<Transaction> {
         return Integer.compare(this.type.ordinal(),o.getType().ordinal());
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Transaction that = (Transaction) o;
+        return Double.compare(that.amount, amount) == 0 &&
+                transactionInterval == that.transactionInterval &&
+                Objects.equals(date, that.date) &&
+                Objects.equals(title, that.title) &&
+                type == that.type &&
+                Objects.equals(itemDescription, that.itemDescription) &&
+                Objects.equals(endDate, that.endDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(date, amount, title, type, itemDescription, transactionInterval, endDate);
+    }
 
 }

@@ -1,14 +1,19 @@
 package com.example.rma20dzumhurpasa47;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class TransactionDetailActivity extends AppCompatActivity {
@@ -45,15 +50,22 @@ public class TransactionDetailActivity extends AppCompatActivity {
         edit7=findViewById(R.id.edit7);
         btnDelete=findViewById(R.id.btnDelete);
         btnSave=findViewById(R.id.btnSave);
-        Transaction transaction=getPresenter().getTransaction();
-        edit5.setText(transaction.getDate().toString());
+        final Transaction transaction=getPresenter().getTransaction();
+
+
+        final SimpleDateFormat formatter=new SimpleDateFormat("dd/MM/yyyy");
+
+
+
+
+        edit5.setText(formatter.format(transaction.getDate()));
         edit2.setText(""+transaction.getAmount());
         edit1.setText(transaction.getTitle());
         edit3.setText(transaction.getType().toString());
         edit4.setText(transaction.getItemDescription());
         edit6.setText(""+transaction.getTransactionInterval());
         if(transaction.getEndDate()==null) edit7.setText("");
-        else edit7.setText(transaction.getEndDate().toString());
+        else edit7.setText(formatter.format(transaction.getEndDate()));
 
 
         edit1.addTextChangedListener(new TextWatcher() {
@@ -180,6 +192,38 @@ public class TransactionDetailActivity extends AppCompatActivity {
                 edit7.setBackgroundColor(Color.GREEN);
 
             }
+        });
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Transaction newTransaction = new Transaction(formatter.parse(edit5.getText().toString()),Double.parseDouble(edit2.getText().toString()),edit1.getText().toString(),
+                            Transaction.Type.gimmeType(edit3.getText().toString()),edit4.getText().toString(),Integer.parseInt(edit6.getText().toString()),formatter.parse(edit7.getText().toString()));
+                    if(newTransaction.equals(transaction)) finish();
+                    else{
+                        TransactionModel.trans.remove(transaction);
+                        TransactionModel.trans.add(newTransaction);
+                        finish();
+
+                    }
+                } catch (ParseException e) {
+                    finish();
+                }
+
+            }
+        });
+
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Transaction pom=new Transaction(transaction.getDate(),transaction.getAmount(),transaction.getTitle(),transaction.getType(),transaction.getItemDescription(),transaction.getTransactionInterval(),transaction.getEndDate());
+                TransactionModel.trans.remove(transaction);
+                finish();
+
+
+            }
+
+
         });
     }
 

@@ -1,5 +1,6 @@
 package com.example.rma20dzumhurpasa47;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -43,7 +44,16 @@ public class MainActivity extends AppCompatActivity implements ITransactionListV
         add("INDIVIDUALPAYMENT");
         add("REGULARINCOME");
     }};
+    private void refreshAll(){
+        if(spinner2.getSelectedItem().equals("Price - Ascending")) getPresenter().refreshSortPriceAsc();
+        else if(spinner2.getSelectedItem().equals("Price - Descending")) getPresenter().refreshSortPriceDesc();
+        else if(spinner2.getSelectedItem().equals("Title - Ascending")) getPresenter().refreshSortTitleAsc();
+        else if(spinner2.getSelectedItem().equals("Title - Descending")) getPresenter().refreshSortTitleDesc();
+        else if(spinner2.getSelectedItem().equals("Date - Ascending")) getPresenter().refreshSortDateAsc();
+        else if(spinner2.getSelectedItem().equals("Date - Descending")) getPresenter().refreshSortDateDesc();
+        else getPresenter().refreshTransactions();
 
+    }
     private ArrayList<String> sorts=new ArrayList<String>(){{
         add("Price - Ascending");
         add("Price - Descending");
@@ -163,9 +173,15 @@ public class MainActivity extends AppCompatActivity implements ITransactionListV
             transactionDetailIntent.putExtra("itemDescription",transaction.getItemDescription());
             transactionDetailIntent.putExtra("transactionInterval",transaction.getTransactionInterval());
             transactionDetailIntent.putExtra("endDate",transaction.getEndDate());
-            MainActivity.this.startActivity(transactionDetailIntent);
+            MainActivity.this.startActivityForResult(transactionDetailIntent,1);
+            refreshAll();
         }
     };
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode==1) refreshAll();
 
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }
