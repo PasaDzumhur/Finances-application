@@ -84,7 +84,7 @@ public class MySpinnerAdapter extends ArrayAdapter {
         String currentItem = (String) getItem(position);
 
         if (currentItem != null) {
-            image.setImageResource(R.drawable.download);
+            image.setImageResource(TransactionModel.slikice.get(currentItem));
             textView.setText(currentItem);
         }
 

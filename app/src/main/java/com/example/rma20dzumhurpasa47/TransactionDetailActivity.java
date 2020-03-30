@@ -197,8 +197,10 @@ public class TransactionDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
+                    Transaction.Type pom= Transaction.Type.gimmeType(edit3.getText().toString());
+
                     Transaction newTransaction = new Transaction(formatter.parse(edit5.getText().toString()),Double.parseDouble(edit2.getText().toString()),edit1.getText().toString(),
-                            Transaction.Type.gimmeType(edit3.getText().toString()),edit4.getText().toString(),Integer.parseInt(edit6.getText().toString()),formatter.parse(edit7.getText().toString()));
+                            pom,edit4.getText().toString(),Integer.parseInt(edit6.getText().toString()),formatter.parse(edit7.getText().toString()));
                     if(newTransaction.equals(transaction)) finish();
                     else{
                         TransactionModel.trans.remove(transaction);
@@ -207,7 +209,9 @@ public class TransactionDetailActivity extends AppCompatActivity {
 
                     }
                 } catch (ParseException e) {
-                    finish();
+
+                } catch (IllegalArgumentException r){
+
                 }
 
             }

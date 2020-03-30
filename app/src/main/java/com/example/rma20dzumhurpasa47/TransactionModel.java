@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import java.util.Date;
+import java.util.HashMap;
 
 public class TransactionModel {
     public static ArrayList<Transaction> trans = new ArrayList<Transaction>() {
@@ -77,7 +78,20 @@ public class TransactionModel {
         }
 
 
+
     };
+    public static HashMap<String,Integer> slikice=new HashMap<String,Integer>(){
+        {
+            put("PURCHASE",R.drawable.pur);
+            put("INDIVIDUALINCOME",R.drawable.indinc);
+            put("INDIVIDUALPAYMENT",R.drawable.indpa);
+            put("REGULARINCOME",R.drawable.regin);
+            put("REGULARPAYMENT",R.drawable.download);
+            put("GIMMEALL",R.drawable.unnamed);
+        }
+    };
+
+
     public static ArrayList<Transaction> ostatak=new ArrayList<>();
 
     public static ArrayList<Transaction> getTrans() {return trans;}

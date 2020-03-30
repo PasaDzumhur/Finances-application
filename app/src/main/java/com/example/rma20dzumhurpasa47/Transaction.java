@@ -19,7 +19,7 @@ public class Transaction implements Comparable<Transaction> {
 
         @Override
         public String toString() {
-            if(this.equals(INDIVIDUALINCOME)) return "INDIVIDUALPAYMENT";
+            if(this.equals(INDIVIDUALPAYMENT)) return "INDIVIDUALPAYMENT";
             else if(this.equals(REGULARPAYMENT)) return "REGULARPAYMENT";
             else if(this.equals(PURCHASE)) return "PURCHASE";
             else if(this.equals(INDIVIDUALINCOME)) return "INDIVIDUALINCOME";

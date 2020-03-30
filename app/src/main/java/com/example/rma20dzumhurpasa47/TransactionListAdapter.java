@@ -54,7 +54,10 @@ public class TransactionListAdapter extends ArrayAdapter<Transaction> {
         title=newView.findViewById(R.id.title);
         amount=newView.findViewById(R.id.amount);
         icon=newView.findViewById(R.id.icon);
-        icon.setImageResource(R.drawable.download);
+        String pom=trans.getType().toString();
+        Integer slika=TransactionModel.slikice.get(pom);
+        if(slika==null) slika=R.drawable.unnamed;
+        icon.setImageResource(slika);
         title.setText(trans.getTitle());
         String s="";
         s+=trans.getAmount();
