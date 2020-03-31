@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -236,8 +237,31 @@ public class AddTransactionActivity extends AppCompatActivity {
                         endDateHelp=null;
                     }
                     final Transaction newTransaction=new Transaction(dateHelp,amountHelp,titleHelp,typeHelp,descriptionHelp,intervalHelp,endDateHelp);
-                    if(MainActivity.account.testMonthlyLimit(TransactionModel.trans,MainActivity.calendar.get(Calendar.MONTH),MainActivity.account.getMonthLimit())){
 
+                    ArrayList<Transaction> helpModel=new ArrayList<>();
+                    helpModel.addAll(TransactionModel.trans);
+                    helpModel.add(newTransaction);
+                    Calendar helpCalendar=Calendar.getInstance();
+                    helpCalendar.setTime(newTransaction.getDate());
+                    if(MainActivity.account.testMonthlyLimit(helpModel,helpCalendar.get(Calendar.MONTH),MainActivity.account.getMonthLimit())){
+                        AlertDialog alert = new AlertDialog.Builder(AddTransactionActivity.this).setTitle("Warning!!!!!!!").setMessage("Are you sure you want to go over the monthly limit?")
+                                .setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                        TransactionModel.trans.add(newTransaction);
+                                        finish();
+                                    }
+                                }).setNegativeButton("no", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                    }
+                                }).show();
+
+                    }else{
+                        TransactionModel.trans.add(newTransaction);
+                        finish();
                     }
 
 

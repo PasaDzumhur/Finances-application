@@ -16,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class TransactionDetailActivity extends AppCompatActivity {
@@ -199,25 +201,61 @@ public class TransactionDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    Transaction.Type pom= Transaction.Type.gimmeType(edit3.getText().toString());
-
-                    Transaction newTransaction = new Transaction(formatter.parse(edit5.getText().toString()),Double.parseDouble(edit2.getText().toString()),edit1.getText().toString(),
-                            pom,edit4.getText().toString(),Integer.parseInt(edit6.getText().toString()),formatter.parse(edit7.getText().toString()));
+                    Date dateHelp=formatter.parse(edit5.getText().toString());
+                    double amountHelp=Double.parseDouble(edit2.getText().toString());
+                    String titleHelp=edit1.getText().toString();
+                    Transaction.Type typeHelp= Transaction.Type.gimmeType(edit3.getText().toString());
+                    String descriptionHelp=edit4.getText().toString();
+                    int intervalHelp;
+                    Date endDateHelp;
+                    if(typeHelp.equals(Transaction.Type.REGULARPAYMENT) || typeHelp.equals(Transaction.Type.REGULARINCOME)){
+                        intervalHelp=Integer.parseInt(edit6.getText().toString());
+                        endDateHelp=formatter.parse(edit7.getText().toString());
+                    }else{
+                        intervalHelp=0;
+                        endDateHelp=null;
+                    }
+                    final Transaction newTransaction=new Transaction(dateHelp,amountHelp,titleHelp,typeHelp,descriptionHelp,intervalHelp,endDateHelp);
                     if(newTransaction.equals(transaction)) finish();
                     else{
 
+                        ArrayList<Transaction> helpModel=new ArrayList<>();
+                        helpModel.addAll(TransactionModel.trans);
+                        helpModel.add(newTransaction);
+                        Calendar helpCalendar=Calendar.getInstance();
+                        helpCalendar.setTime(newTransaction.getDate());
+                        if(MainActivity.account.testMonthlyLimit(helpModel,helpCalendar.get(Calendar.MONTH),MainActivity.account.getMonthLimit())){
+                            AlertDialog alert = new AlertDialog.Builder(TransactionDetailActivity.this).setTitle("Warning!!!!!!!").setMessage("This will make you go over the monthly limit\nAre you sure you want to do that?")
+                                    .setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+
+                                            TransactionModel.trans.remove(transaction);
+                                            TransactionModel.trans.add(newTransaction);
+                                            finish();
+                                        }
+                                    }).setNegativeButton("no", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+
+                                        }
+                                    }).show();
+
+                        }else{
+                            TransactionModel.trans.remove(transaction);
+                            TransactionModel.trans.add(newTransaction);
+                            finish();
+                        }
 
 
 
-                        TransactionModel.trans.remove(transaction);
-                        TransactionModel.trans.add(newTransaction);
-                        finish();
 
                     }
                 } catch (ParseException e) {
+                    System.out.println("PARSE------------------------------------");
 
                 } catch (IllegalArgumentException r){
-
+                    System.out.println("NEka druga ----------------------");
                 }
 
             }
@@ -232,7 +270,6 @@ public class TransactionDetailActivity extends AppCompatActivity {
                     .setPositiveButton("yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Transaction pom = new Transaction(transaction.getDate(), transaction.getAmount(), transaction.getTitle(), transaction.getType(), transaction.getItemDescription(), transaction.getTransactionInterval(), transaction.getEndDate());
 
                             TransactionModel.trans.remove(transaction);
                             finish();
