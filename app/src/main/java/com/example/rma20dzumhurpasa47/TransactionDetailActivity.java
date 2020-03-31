@@ -1,5 +1,6 @@
 package com.example.rma20dzumhurpasa47;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.ParseException;
@@ -224,10 +226,29 @@ public class TransactionDetailActivity extends AppCompatActivity {
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Transaction pom=new Transaction(transaction.getDate(),transaction.getAmount(),transaction.getTitle(),transaction.getType(),transaction.getItemDescription(),transaction.getTransactionInterval(),transaction.getEndDate());
-                TransactionModel.trans.remove(transaction);
-                finish();
+                try {
 
+                    AlertDialog alert = new AlertDialog.Builder(TransactionDetailActivity.this).setTitle("Warning!!!!!!!").setMessage("Are you sure you want to delete it???")
+                    .setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Transaction pom = new Transaction(transaction.getDate(), transaction.getAmount(), transaction.getTitle(), transaction.getType(), transaction.getItemDescription(), transaction.getTransactionInterval(), transaction.getEndDate());
+
+                            TransactionModel.trans.remove(transaction);
+                            finish();
+                        }
+                    }).setNegativeButton("no", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    }).show();
+
+
+                }
+                catch (Exception e){
+
+                }
 
             }
 
