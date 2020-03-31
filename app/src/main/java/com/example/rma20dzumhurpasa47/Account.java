@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import static com.example.rma20dzumhurpasa47.MainActivity.calendar;
 import static java.time.temporal.ChronoUnit.DAYS;
 
 public class Account {
@@ -47,30 +48,48 @@ public class Account {
         return (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
     }
 
-    public void workTheTransactions(ArrayList<Transaction> list){
+    public boolean testLimit(ArrayList<Transaction> list,double limit){
         Date today=new Date(System.currentTimeMillis());
+        double sum=0;
+
         for(Transaction t : list){
             if(t.getDate().after(today)) continue;
 
             if(t.getType().equals(Transaction.Type.PURCHASE)){
-                budget=budget-t.getAmount();
+                sum=sum-t.getAmount();
             }else if(t.getType().equals(Transaction.Type.INDIVIDUALINCOME)){
-                budget=budget+t.getAmount();
+                sum=sum+t.getAmount();
             }else if(t.getType().equals(Transaction.Type.INDIVIDUALPAYMENT)){
-                budget=budget-t.getAmount();
+                sum=sum-t.getAmount();
             }else if(t.getType().equals(Transaction.Type.REGULARINCOME)){
                 Date pom=today;
                 if(t.getEndDate().before(pom)) pom=t.getEndDate();
                 int daysDuration = getDifferenceDays(t.getDate(),pom);
                 int numberOfCalcs=daysDuration/t.getTransactionInterval();
-                budget=budget+numberOfCalcs*t.getAmount();
+                sum=sum+numberOfCalcs*t.getAmount();
             }else if(t.getType().equals(Transaction.Type.REGULARPAYMENT)){
                 Date pom=today;
                 if(t.getEndDate().before(pom)) pom=t.getEndDate();
                 int daysDuration = getDifferenceDays(t.getDate(),pom);
                 int numberOfCalcs=daysDuration/t.getTransactionInterval();
-                budget=budget-numberOfCalcs*t.getAmount();
+                sum=sum-numberOfCalcs*t.getAmount();
             }
         }
+        if(sum>limit) return true;
+        return false;
+
+    }
+
+    public boolean testMonthlyLimit(ArrayList<Transaction> list, int month,double limit){
+        ArrayList<Transaction> transfilter=new ArrayList<>();
+
+        for(Transaction t : TransactionModel.trans){
+
+            if(month==calendar.get(Calendar.MONTH)) {
+                transfilter.add(t);
+            }
+        }
+        return testLimit(transfilter,limit);
+
     }
 }

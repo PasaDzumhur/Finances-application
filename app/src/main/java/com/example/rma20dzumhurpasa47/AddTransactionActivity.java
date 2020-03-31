@@ -1,5 +1,6 @@
 package com.example.rma20dzumhurpasa47;
 
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -8,10 +9,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class AddTransactionActivity extends AppCompatActivity {
@@ -232,9 +235,13 @@ public class AddTransactionActivity extends AppCompatActivity {
                         intervalHelp=0;
                         endDateHelp=null;
                     }
-                    Transaction newTransaction=new Transaction(dateHelp,amountHelp,titleHelp,typeHelp,descriptionHelp,intervalHelp,endDateHelp);
-                    TransactionModel.trans.add(newTransaction);
-                    finish();
+                    final Transaction newTransaction=new Transaction(dateHelp,amountHelp,titleHelp,typeHelp,descriptionHelp,intervalHelp,endDateHelp);
+                    if(MainActivity.account.testMonthlyLimit(TransactionModel.trans,MainActivity.calendar.get(Calendar.MONTH),MainActivity.account.getMonthLimit())){
+
+                    }
+
+
+
 
                 } catch (Exception e) {
 

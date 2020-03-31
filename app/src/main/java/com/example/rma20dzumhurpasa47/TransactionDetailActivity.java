@@ -203,6 +203,10 @@ public class TransactionDetailActivity extends AppCompatActivity {
                             pom,edit4.getText().toString(),Integer.parseInt(edit6.getText().toString()),formatter.parse(edit7.getText().toString()));
                     if(newTransaction.equals(transaction)) finish();
                     else{
+
+
+
+
                         TransactionModel.trans.remove(transaction);
                         TransactionModel.trans.add(newTransaction);
                         finish();

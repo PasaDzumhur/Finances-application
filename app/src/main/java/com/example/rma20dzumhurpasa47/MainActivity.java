@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements ITransactionListV
     private MySpinnerAdapter adapter2;
     private ArrayAdapter<String> adapter3;
 
-    private Account account=new Account(100000,100000,100000);
+    public static Account account=new Account(100000,100000,100000);
 
     private TextView text1;
     private TextView text2;
@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements ITransactionListV
         left=findViewById(R.id.left);
         right=findViewById(R.id.right);
         textMonth=findViewById(R.id.textMonth);
-        account.workTheTransactions(TransactionModel.getTrans());
+        //account.workTheTransactions(TransactionModel.getTrans());
         text1=findViewById(R.id.text1);
         text2=findViewById(R.id.text2);
         text1.setText("Global amount: "+account.getBudget());
@@ -110,6 +110,29 @@ public class MainActivity extends AppCompatActivity implements ITransactionListV
         calendar.setTime(new Date(System.currentTimeMillis()));
         textMonth=findViewById(R.id.textMonth);
         textMonth.setText(new SimpleDateFormat("MMMM").format(calendar.getTime()));
+        right=findViewById(R.id.right);
+        left=findViewById(R.id.left);
+
+        right.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                calendar.add(Calendar.MONTH,1);
+                textMonth.setText(new SimpleDateFormat("MMMM").format(calendar.getTime()));
+                refreshAll();
+            }
+        });
+
+
+        left.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                calendar.add(Calendar.MONTH,-1);
+                textMonth.setText(new SimpleDateFormat("MMMM").format(calendar.getTime()));
+                refreshAll();
+            }
+        });
 
         btnAddTrans.setOnClickListener(new View.OnClickListener() {
             @Override
