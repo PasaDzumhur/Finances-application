@@ -15,8 +15,10 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity implements ITransactionListView {
@@ -62,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements ITransactionListV
         add("Date - Ascending");
         add("Date - Descending");
     }};
-    private Date dummyMonth= new Date(System.currentTimeMillis());
+    public static Calendar calendar=Calendar.getInstance();
 
     private static String filter="";
 
@@ -105,6 +107,9 @@ public class MainActivity extends AppCompatActivity implements ITransactionListV
         text2.setText("Limit: "+account.getTotalLimit());
         list.setOnItemClickListener(listItemClickListener);
         btnAddTrans=findViewById(R.id.btnAddTrans);
+        calendar.setTime(new Date(System.currentTimeMillis()));
+        textMonth=findViewById(R.id.textMonth);
+        textMonth.setText(new SimpleDateFormat("MMMM").format(calendar.getTime()));
 
         btnAddTrans.setOnClickListener(new View.OnClickListener() {
             @Override

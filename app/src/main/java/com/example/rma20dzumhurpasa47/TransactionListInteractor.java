@@ -1,8 +1,12 @@
 package com.example.rma20dzumhurpasa47;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+
+import static com.example.rma20dzumhurpasa47.MainActivity.calendar;
 
 public class TransactionListInteractor implements ITransactionListInteractor {
+    private Calendar pom=Calendar.getInstance();
     @Override
     public ArrayList<Transaction> get() {
         //System.out.println(MainActivity.getFilter());
@@ -28,14 +32,26 @@ public class TransactionListInteractor implements ITransactionListInteractor {
     }
 
     public ArrayList<Transaction> getClassic() {
-        return TransactionModel.getTrans();
+        ArrayList<Transaction> transfilter=new ArrayList<>();
+        for(Transaction t : TransactionModel.trans){
+            pom.setTime(t.getDate());
+            if(pom.get(Calendar.MONTH)==calendar.get(Calendar.MONTH)) {
+                transfilter.add(t);
+            }
+        }
+        return transfilter;
+
     }
 
     @Override
     public ArrayList<Transaction> getPurchase() {
+
         ArrayList<Transaction> transfilter=new ArrayList<>();
         for(Transaction t : TransactionModel.trans){
-            if(t.getType().equals(Transaction.Type.PURCHASE)) transfilter.add(t);
+            pom.setTime(t.getDate());
+            if(pom.get(Calendar.MONTH)==calendar.get(Calendar.MONTH)) {
+                if (t.getType().equals(Transaction.Type.PURCHASE)) transfilter.add(t);
+            }
         }
         return transfilter;
     }
@@ -43,8 +59,11 @@ public class TransactionListInteractor implements ITransactionListInteractor {
     @Override
     public ArrayList<Transaction> getIndividualPayment() {
         ArrayList<Transaction> transfilter=new ArrayList<>();
-        for(Transaction t : TransactionModel.trans){
-            if(t.getType().equals(Transaction.Type.INDIVIDUALPAYMENT)) transfilter.add(t);
+        for(Transaction t : TransactionModel.trans) {
+            pom.setTime(t.getDate());
+            if(pom.get(Calendar.MONTH)==calendar.get(Calendar.MONTH)) {
+                if (t.getType().equals(Transaction.Type.INDIVIDUALPAYMENT)) transfilter.add(t);
+            }
         }
         return transfilter;
     }
@@ -52,8 +71,11 @@ public class TransactionListInteractor implements ITransactionListInteractor {
     @Override
     public ArrayList<Transaction> getRegularPayment() {
         ArrayList<Transaction> transfilter=new ArrayList<>();
-        for(Transaction t : TransactionModel.trans){
-            if(t.getType().equals(Transaction.Type.REGULARPAYMENT)) transfilter.add(t);
+        for(Transaction t : TransactionModel.trans) {
+            pom.setTime(t.getDate());
+            if(pom.get(Calendar.MONTH)==calendar.get(Calendar.MONTH)) {
+                if (t.getType().equals(Transaction.Type.REGULARPAYMENT)) transfilter.add(t);
+            }
         }
         return transfilter;
     }
@@ -61,8 +83,11 @@ public class TransactionListInteractor implements ITransactionListInteractor {
     @Override
     public ArrayList<Transaction> getIndividualIncome() {
         ArrayList<Transaction> transfilter=new ArrayList<>();
-        for(Transaction t : TransactionModel.trans){
-            if(t.getType().equals(Transaction.Type.INDIVIDUALINCOME)) transfilter.add(t);
+        for(Transaction t : TransactionModel.trans) {
+            pom.setTime(t.getDate());
+            if(pom.get(Calendar.MONTH)==calendar.get(Calendar.MONTH)) {
+                if (t.getType().equals(Transaction.Type.INDIVIDUALINCOME)) transfilter.add(t);
+            }
         }
         return transfilter;
     }
@@ -70,8 +95,11 @@ public class TransactionListInteractor implements ITransactionListInteractor {
     @Override
     public ArrayList<Transaction> getRegularIncome() {
         ArrayList<Transaction> transfilter=new ArrayList<>();
-        for(Transaction t : TransactionModel.trans){
-            if(t.getType().equals(Transaction.Type.REGULARINCOME)) transfilter.add(t);
+        for(Transaction t : TransactionModel.trans) {
+            pom.setTime(t.getDate());
+            if(pom.get(Calendar.MONTH)==calendar.get(Calendar.MONTH)) {
+                if (t.getType().equals(Transaction.Type.REGULARINCOME)) transfilter.add(t);
+            }
         }
         return transfilter;
     }

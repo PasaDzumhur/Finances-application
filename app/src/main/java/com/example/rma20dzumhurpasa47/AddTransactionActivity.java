@@ -234,6 +234,7 @@ public class AddTransactionActivity extends AppCompatActivity {
                     }
                     Transaction newTransaction=new Transaction(dateHelp,amountHelp,titleHelp,typeHelp,descriptionHelp,intervalHelp,endDateHelp);
                     TransactionModel.trans.add(newTransaction);
+                    finish();
 
                 } catch (Exception e) {
 
