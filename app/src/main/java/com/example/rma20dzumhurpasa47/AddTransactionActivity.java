@@ -22,28 +22,12 @@ public class AddTransactionActivity extends AppCompatActivity {
 
     private EditText edit1,edit2,edit3,edit4,edit5,edit6,edit7;
     private Button btnSave,btnDelete;
-    /*
-    private ITransactionDetailPresenter presenter;
 
-    public ITransactionDetailPresenter getPresenter(){
-        if(presenter==null){
-            presenter=new TransactionDetailPresenter(this);
-        }
-        return presenter;
-    }*/
 
     protected void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
         setContentView(R.layout.activity_detail);
-        /*getPresenter().create(getIntent().getSerializableExtra("date"),getIntent().getStringExtra("amount"),
-                getIntent().getStringExtra("title"),getIntent().getStringExtra("type"),
-                getIntent().getStringExtra("itemDescription"),getIntent().getStringExtra("transactionInterval"),
-                getIntent().getStringExtra("endDate"));*/
 
-        //Bundle extras = getIntent().getExtras();
-        /*getPresenter().create((Date)extras.get("date"),(double)extras.get("amount"),(String)extras.get("title"),
-                (Transaction.Type)extras.get("type"),(String)extras.get("itemDescription"),(int)extras.get("transactionInterval"),
-                (Date)extras.get("endDate"));*/
         edit1=findViewById(R.id.edit1);
         edit2=findViewById(R.id.edit2);
         edit3=findViewById(R.id.edit3);
@@ -62,22 +46,13 @@ public class AddTransactionActivity extends AppCompatActivity {
         btnDelete=findViewById(R.id.btnDelete);
         btnDelete.setEnabled(false);
         btnSave=findViewById(R.id.btnSave);
-        //final Transaction transaction=getPresenter().getTransaction();
 
 
         final SimpleDateFormat formatter=new SimpleDateFormat("dd/MM/yyyy");
 
 
 
-        /*
-        edit5.setText(formatter.format(transaction.getDate()));
-        edit2.setText(""+transaction.getAmount());
-        edit1.setText(transaction.getTitle());
-        edit3.setText(transaction.getType().toString());
-        edit4.setText(transaction.getItemDescription());
-        edit6.setText(""+transaction.getTransactionInterval());
-        if(transaction.getEndDate()==null) edit7.setText("");
-        else edit7.setText(formatter.format(transaction.getEndDate()));*/
+
         edit5.setText("");
         edit2.setText("");
         edit1.setText("");
@@ -278,40 +253,10 @@ public class AddTransactionActivity extends AppCompatActivity {
 
                 }
 
-                /*
-                try {
-                    Transaction.Type pom= Transaction.Type.gimmeType(edit3.getText().toString());
-
-                    Transaction newTransaction = new Transaction(formatter.parse(edit5.getText().toString()),Double.parseDouble(edit2.getText().toString()),edit1.getText().toString(),
-                            pom,edit4.getText().toString(),Integer.parseInt(edit6.getText().toString()),formatter.parse(edit7.getText().toString()));
-                    //if(newTransaction.equals(transaction)) finish();
-                    //else{
-                        //TransactionModel.trans.remove(transaction);
-                        TransactionModel.trans.add(newTransaction);
-                        finish();
-
-                    //}
-                } catch (ParseException e) {
-
-                } catch (IllegalArgumentException r){
-
-                }*/
 
             }
         });
-        /*
-        btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Transaction pom=new Transaction(transaction.getDate(),transaction.getAmount(),transaction.getTitle(),transaction.getType(),transaction.getItemDescription(),transaction.getTransactionInterval(),transaction.getEndDate());
-                TransactionModel.trans.remove(transaction);
-                finish();
 
-
-            }
-
-
-        });*/
     }
 
 

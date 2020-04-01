@@ -172,7 +172,6 @@ public class Transaction implements Comparable<Transaction> {
             int daysDuration = Account.getDifferenceDays(transaction.getDate(),pom);
             int numberOfCalcs=daysDuration/transaction.getTransactionInterval();
             sum=sum+numberOfCalcs*transaction.getAmount();
-            //if(transaction.getType().equals(Type.REGULARPAYMENT)) sum*=-1;
 
 
         }else{

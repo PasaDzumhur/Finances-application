@@ -21,7 +21,6 @@ public class TransactionModel {
 
                 Date d = simpleDate.parse(date);
 
-                //d=simpleDate.parse("02/03/2020");
 
             add(new Transaction(simpleDate.parse("02/03/2020"),200,"1aa", Transaction.Type.INDIVIDUALINCOME,"bezze",
                     20,new Date(System.currentTimeMillis())));

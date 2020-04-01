@@ -36,10 +36,6 @@ public class TransactionDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
         setContentView(R.layout.activity_detail);
-        /*getPresenter().create(getIntent().getSerializableExtra("date"),getIntent().getStringExtra("amount"),
-                getIntent().getStringExtra("title"),getIntent().getStringExtra("type"),
-                getIntent().getStringExtra("itemDescription"),getIntent().getStringExtra("transactionInterval"),
-                getIntent().getStringExtra("endDate"));*/
 
         Bundle extras = getIntent().getExtras();
         getPresenter().create((Date)extras.get("date"),(double)extras.get("amount"),(String)extras.get("title"),

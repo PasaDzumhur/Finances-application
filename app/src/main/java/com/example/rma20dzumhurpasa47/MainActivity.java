@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements ITransactionListV
         else if(spinner2.getSelectedItem().equals("Date - Descending")) getPresenter().refreshSortDateDesc();
         else getPresenter().refreshTransactions();
         double stanje=account.getBudget()-account.workTheTransactions(TransactionModel.trans);
-        //System.out.println("----------------------------------------"+account.workTheTransactions(TransactionModel.trans)+"----------------------------------------");
+
         text1.setText("Global amount: "+stanje);
 
     }
@@ -260,8 +260,7 @@ public class MainActivity extends AppCompatActivity implements ITransactionListV
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode==1) {
             try {
-                //System.out.println("-------------------------------------------");
-                System.out.println("                                                                       "+TransactionModel.trans.size());
+
                 refreshAll();
             } catch (ParseException e) {
                 e.printStackTrace();

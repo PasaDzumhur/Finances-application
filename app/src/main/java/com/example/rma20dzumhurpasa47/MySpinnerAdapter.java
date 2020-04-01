@@ -16,14 +16,6 @@ import java.util.ArrayList;
 
 public class MySpinnerAdapter extends ArrayAdapter {
     private int resource;
-    /*
-    private ArrayList<Transaction.Type> types=new ArrayList<Transaction.Type>(){{
-        types.add(Transaction.Type.REGULARINCOME);
-        types.add(Transaction.Type.INDIVIDUALINCOME);
-        types.add(Transaction.Type.PURCHASE);
-        types.add(Transaction.Type.INDIVIDUALPAYMENT);
-        types.add(Transaction.Type.REGULARPAYMENT);
-    }};*/
 
 
     private ImageView imageView;
@@ -37,31 +29,7 @@ public class MySpinnerAdapter extends ArrayAdapter {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        /*
-        LinearLayout newView;
-        if (convertView == null) {
-            newView = new LinearLayout(getContext());
-            String inflater = Context.LAYOUT_INFLATER_SERVICE;
-            LayoutInflater li;
-            li = (LayoutInflater)getContext().
-                    getSystemService(inflater);
-            li.inflate(resource, newView, true);
-        } else {
-            newView = (LinearLayout)convertView;
-        }
 
-        String tip =(String)getItem(position);
-        imageView=newView.findViewById(R.id.imageView);
-        typeText=newView.findViewById(R.id.typeText);
-
-        typeText.setText(tip);
-        imageView.setImageResource(R.drawable.download);
-
-
-
-
-
-        return newView;*/
         return initView(position,convertView,parent);
     }
 

@@ -9,7 +9,7 @@ public class TransactionListInteractor implements ITransactionListInteractor {
     private Calendar pom=Calendar.getInstance();
     @Override
     public ArrayList<Transaction> get() {
-        //System.out.println(MainActivity.getFilter());
+
         String string=MainActivity.getFilter();
         if(string.equalsIgnoreCase("PURCHASE")) {
             return getPurchase();
@@ -32,14 +32,7 @@ public class TransactionListInteractor implements ITransactionListInteractor {
     }
 
     public ArrayList<Transaction> getClassic() {
-        /*ArrayList<Transaction> transfilter=new ArrayList<>();
-        for(Transaction t : TransactionModel.trans){
-            pom.setTime(t.getDate());
-            if(pom.get(Calendar.MONTH)==calendar.get(Calendar.MONTH)) {
-                transfilter.add(t);
-            }
-        }
-        return transfilter;*/
+
 
         ArrayList<Transaction> transfilter=new ArrayList<>();
         for(Transaction t : TransactionModel.trans){
@@ -124,15 +117,6 @@ public class TransactionListInteractor implements ITransactionListInteractor {
 
         return transfilter;
     }
-    /*
-    @Override
-    public ArrayList<Transaction> get(String string) {
-        if(string.equals("PURCHASE")) return getPurchase();
-        else if(string.equals("INDIVIDUALPAYMENT")) return getIndividualPayment();
-        else if(string.equals("REGULARPAYMENT")) return getRegularPayment();
-        else if(string.equals("INDIVIDUALINCOME")) return getIndividualIncome();
-        else if(string.equals("REGULARINCOME")) return getRegularIncome();
-        else return get();
-    }*/
+
 
 }
