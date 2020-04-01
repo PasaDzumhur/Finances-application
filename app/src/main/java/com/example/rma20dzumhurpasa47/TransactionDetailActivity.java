@@ -226,7 +226,7 @@ public class TransactionDetailActivity extends AppCompatActivity {
                         helpCalendar.setTime(newTransaction.getDate());
                         if(MainActivity.account.testMonthlyLimit(helpModel,helpCalendar.get(Calendar.MONTH),MainActivity.account.getMonthLimit())){
                             AlertDialog alert = new AlertDialog.Builder(TransactionDetailActivity.this).setTitle("Warning!!!!!!!").setMessage("This will make you go over the monthly limit\nAre you sure you want to do that?")
-                                    .setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
 
@@ -234,7 +234,7 @@ public class TransactionDetailActivity extends AppCompatActivity {
                                             TransactionModel.trans.add(newTransaction);
                                             finish();
                                         }
-                                    }).setNegativeButton("no", new DialogInterface.OnClickListener() {
+                                    }).setNegativeButton("No", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
 
@@ -251,11 +251,15 @@ public class TransactionDetailActivity extends AppCompatActivity {
 
 
                     }
-                } catch (ParseException e) {
-                    System.out.println("PARSE------------------------------------");
+                } catch (Exception e) {
+                    final AlertDialog alert=new AlertDialog.Builder(TransactionDetailActivity.this).setTitle("Warning").setMessage("Invalid input!").
+                            setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
 
-                } catch (IllegalArgumentException r){
-                    System.out.println("NEka druga ----------------------");
+                                }
+                            }).show();
+
                 }
 
             }

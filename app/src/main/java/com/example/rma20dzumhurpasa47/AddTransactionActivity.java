@@ -268,6 +268,13 @@ public class AddTransactionActivity extends AppCompatActivity {
 
 
                 } catch (Exception e) {
+                    final AlertDialog alert=new AlertDialog.Builder(AddTransactionActivity.this).setTitle("Warning").setMessage("Invalid input!").
+                            setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            }).show();
 
                 }
 
