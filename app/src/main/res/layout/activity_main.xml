@@ -52,7 +52,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="40dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
@@ -60,25 +60,30 @@
 
             <ImageButton
                 android:id="@+id/left"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="20dp"
+                android:layout_height="40dp"
                 android:layout_weight="1"
-
-                tools:src="@drawable/lijevo" />
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"
+                android:src="@drawable/lijevo" />
 
             <TextView
                 android:id="@+id/textMonth"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"
                 android:text="March" />
 
             <ImageButton
                 android:id="@+id/right"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="20dp"
+                android:layout_height="40dp"
                 android:layout_weight="1"
-                tools:src="@drawable/desno" />
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"
+                android:src="@drawable/desno" />
         </LinearLayout>
 
         <Spinner
