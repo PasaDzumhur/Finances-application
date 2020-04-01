@@ -48,6 +48,9 @@ public class MainActivity extends AppCompatActivity implements ITransactionListV
         add("REGULARINCOME");
     }};
     private void refreshAll() throws ParseException {
+
+
+
         if(spinner2.getSelectedItem().equals("Price - Ascending")) getPresenter().refreshSortPriceAsc();
         else if(spinner2.getSelectedItem().equals("Price - Descending")) getPresenter().refreshSortPriceDesc();
         else if(spinner2.getSelectedItem().equals("Title - Ascending")) getPresenter().refreshSortTitleAsc();
@@ -55,6 +58,9 @@ public class MainActivity extends AppCompatActivity implements ITransactionListV
         else if(spinner2.getSelectedItem().equals("Date - Ascending")) getPresenter().refreshSortDateAsc();
         else if(spinner2.getSelectedItem().equals("Date - Descending")) getPresenter().refreshSortDateDesc();
         else getPresenter().refreshTransactions();
+        double stanje=account.getBudget()-account.workTheTransactions(TransactionModel.trans);
+        //System.out.println("----------------------------------------"+account.workTheTransactions(TransactionModel.trans)+"----------------------------------------");
+        text1.setText("Global amount: "+stanje);
 
     }
     private ArrayList<String> sorts=new ArrayList<String>(){{
@@ -105,7 +111,8 @@ public class MainActivity extends AppCompatActivity implements ITransactionListV
         //account.workTheTransactions(TransactionModel.getTrans());
         text1=findViewById(R.id.text1);
         text2=findViewById(R.id.text2);
-        text1.setText("Global amount: "+account.getBudget());
+        double stanje=account.getBudget()-account.workTheTransactions(TransactionModel.trans);
+        text1.setText("Global amount: "+stanje);
         text2.setText("Limit: "+account.getTotalLimit());
         list.setOnItemClickListener(listItemClickListener);
         btnAddTrans=findViewById(R.id.btnAddTrans);
@@ -215,6 +222,9 @@ public class MainActivity extends AppCompatActivity implements ITransactionListV
             }
         });
         spinner2.setSelection(0);
+
+
+
     }
 
     @Override
@@ -250,6 +260,8 @@ public class MainActivity extends AppCompatActivity implements ITransactionListV
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode==1) {
             try {
+                //System.out.println("-------------------------------------------");
+                System.out.println("                                                                       "+TransactionModel.trans.size());
                 refreshAll();
             } catch (ParseException e) {
                 e.printStackTrace();

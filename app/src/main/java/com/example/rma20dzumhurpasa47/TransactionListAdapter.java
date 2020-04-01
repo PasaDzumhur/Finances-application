@@ -34,6 +34,9 @@ public class TransactionListAdapter extends ArrayAdapter<Transaction> {
         super(context, _resource, items);
         resource=_resource;
     }
+    public ArrayList<Transaction> getItems(){
+        return this.getItems();
+    }
 
     @NonNull
     @Override

@@ -92,4 +92,35 @@ public class Account {
         return testLimit(transfilter,limit);
 
     }
+
+
+    public double workTheTransactions(ArrayList<Transaction> list){
+        Date today=new Date(System.currentTimeMillis());
+        double sum=0;
+        for(Transaction t : list){
+            if(t.getDate().after(today)) continue;
+
+            if(t.getType().equals(Transaction.Type.PURCHASE)){
+                sum=sum-t.getAmount();
+            }else if(t.getType().equals(Transaction.Type.INDIVIDUALINCOME)){
+                sum=sum+t.getAmount();
+            }else if(t.getType().equals(Transaction.Type.INDIVIDUALPAYMENT)){
+                sum=sum-t.getAmount();
+            }else if(t.getType().equals(Transaction.Type.REGULARINCOME)){
+                Date pom=today;
+                if(t.getEndDate().before(pom)) pom=t.getEndDate();
+                int daysDuration = getDifferenceDays(t.getDate(),pom);
+                int numberOfCalcs=daysDuration/t.getTransactionInterval();
+                sum=sum+numberOfCalcs*t.getAmount();
+            }else if(t.getType().equals(Transaction.Type.REGULARPAYMENT)){
+                Date pom=today;
+                if(t.getEndDate().before(pom)) pom=t.getEndDate();
+                int daysDuration = getDifferenceDays(t.getDate(),pom);
+                int numberOfCalcs=daysDuration/t.getTransactionInterval();
+                sum=sum-numberOfCalcs*t.getAmount();
+            }
+        }
+        return sum;
+    }
+
 }
