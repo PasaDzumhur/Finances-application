@@ -3,9 +3,14 @@ package com.example.rma20dzumhurpasa47;
 
 import androidx.annotation.NonNull;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
+
 
 public class Transaction implements Comparable<Transaction> {
     private Date date;
@@ -53,6 +58,9 @@ public class Transaction implements Comparable<Transaction> {
         if(!(type.equals(Type.REGULARINCOME) || type.equals(Type.REGULARPAYMENT))){
             transactionInterval=0;
             endDate=null;
+        }
+        if(endDate!=null){
+            if(endDate.before(date)) throw new IllegalArgumentException("The end date can't be before de start date!");
         }
         this.date = date;
         this.amount = amount;
@@ -145,6 +153,33 @@ public class Transaction implements Comparable<Transaction> {
     @Override
     public int hashCode() {
         return Objects.hash(date, amount, title, type, itemDescription, transactionInterval, endDate);
+    }
+
+
+    public static double obradiRegular(Transaction transaction, Calendar trenutniMjesec) throws ParseException {
+        double sum=0;
+        if(transaction.getType().equals(Type.REGULARINCOME) || transaction.getType().equals(Type.REGULARPAYMENT)){
+
+
+            Calendar calendar=Calendar.getInstance();
+
+            trenutniMjesec.set(Calendar.DAY_OF_MONTH,1);
+            trenutniMjesec.add(Calendar.MONTH,1);
+            trenutniMjesec.add(Calendar.DAY_OF_MONTH,-1);
+            Date pom=trenutniMjesec.getTime();
+
+            if(transaction.getEndDate().before(pom)) pom=transaction.getEndDate();
+            int daysDuration = Account.getDifferenceDays(transaction.getDate(),pom);
+            int numberOfCalcs=daysDuration/transaction.getTransactionInterval();
+            sum=sum+numberOfCalcs*transaction.getAmount();
+            //if(transaction.getType().equals(Type.REGULARPAYMENT)) sum*=-1;
+
+
+        }else{
+            sum=transaction.getAmount();
+
+        }
+        return sum;
     }
 
 }

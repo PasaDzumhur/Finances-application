@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements ITransactionListV
         add("INDIVIDUALPAYMENT");
         add("REGULARINCOME");
     }};
-    private void refreshAll(){
+    private void refreshAll() throws ParseException {
         if(spinner2.getSelectedItem().equals("Price - Ascending")) getPresenter().refreshSortPriceAsc();
         else if(spinner2.getSelectedItem().equals("Price - Descending")) getPresenter().refreshSortPriceDesc();
         else if(spinner2.getSelectedItem().equals("Title - Ascending")) getPresenter().refreshSortTitleAsc();
@@ -99,6 +100,7 @@ public class MainActivity extends AppCompatActivity implements ITransactionListV
         spinner2.setAdapter(adapter3);
         left=findViewById(R.id.left);
         right=findViewById(R.id.right);
+
         textMonth=findViewById(R.id.textMonth);
         //account.workTheTransactions(TransactionModel.getTrans());
         text1=findViewById(R.id.text1);
@@ -119,7 +121,11 @@ public class MainActivity extends AppCompatActivity implements ITransactionListV
             public void onClick(View v) {
                 calendar.add(Calendar.MONTH,1);
                 textMonth.setText(new SimpleDateFormat("MMMM").format(calendar.getTime()));
-                refreshAll();
+                try {
+                    refreshAll();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -130,7 +136,11 @@ public class MainActivity extends AppCompatActivity implements ITransactionListV
             public void onClick(View v) {
                 calendar.add(Calendar.MONTH,-1);
                 textMonth.setText(new SimpleDateFormat("MMMM").format(calendar.getTime()));
-                refreshAll();
+                try {
+                    refreshAll();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -151,13 +161,23 @@ public class MainActivity extends AppCompatActivity implements ITransactionListV
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 setFilter((String) spinner1.getItemAtPosition(position));
-                if(spinner2.getSelectedItem().equals("Price - Ascending")) getPresenter().refreshSortPriceAsc();
-                else if(spinner2.getSelectedItem().equals("Price - Descending")) getPresenter().refreshSortPriceDesc();
-                else if(spinner2.getSelectedItem().equals("Title - Ascending")) getPresenter().refreshSortTitleAsc();
-                else if(spinner2.getSelectedItem().equals("Title - Descending")) getPresenter().refreshSortTitleDesc();
-                else if(spinner2.getSelectedItem().equals("Date - Ascending")) getPresenter().refreshSortDateAsc();
-                else if(spinner2.getSelectedItem().equals("Date - Descending")) getPresenter().refreshSortDateDesc();
-                else getPresenter().refreshTransactions();
+                try {
+                    if (spinner2.getSelectedItem().equals("Price - Ascending"))
+                        getPresenter().refreshSortPriceAsc();
+                    else if (spinner2.getSelectedItem().equals("Price - Descending"))
+                        getPresenter().refreshSortPriceDesc();
+                    else if (spinner2.getSelectedItem().equals("Title - Ascending"))
+                        getPresenter().refreshSortTitleAsc();
+                    else if (spinner2.getSelectedItem().equals("Title - Descending"))
+                        getPresenter().refreshSortTitleDesc();
+                    else if (spinner2.getSelectedItem().equals("Date - Ascending"))
+                        getPresenter().refreshSortDateAsc();
+                    else if (spinner2.getSelectedItem().equals("Date - Descending"))
+                        getPresenter().refreshSortDateDesc();
+                    else getPresenter().refreshTransactions();
+                }catch (ParseException e){
+                    e.printStackTrace();
+                }
 
             }
 
@@ -171,12 +191,21 @@ public class MainActivity extends AppCompatActivity implements ITransactionListV
         spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(spinner2.getSelectedItem().equals("Price - Ascending")) getPresenter().refreshSortPriceAsc();
-                else if(spinner2.getSelectedItem().equals("Price - Descending")) getPresenter().refreshSortPriceDesc();
-                else if(spinner2.getSelectedItem().equals("Title - Ascending")) getPresenter().refreshSortTitleAsc();
-                else if(spinner2.getSelectedItem().equals("Title - Descending")) getPresenter().refreshSortTitleDesc();
-                else if(spinner2.getSelectedItem().equals("Date - Ascending")) getPresenter().refreshSortPriceAsc();
-                else getPresenter().refreshTransactions();
+                try {
+                    if (spinner2.getSelectedItem().equals("Price - Ascending"))
+                        getPresenter().refreshSortPriceAsc();
+                    else if (spinner2.getSelectedItem().equals("Price - Descending"))
+                        getPresenter().refreshSortPriceDesc();
+                    else if (spinner2.getSelectedItem().equals("Title - Ascending"))
+                        getPresenter().refreshSortTitleAsc();
+                    else if (spinner2.getSelectedItem().equals("Title - Descending"))
+                        getPresenter().refreshSortTitleDesc();
+                    else if (spinner2.getSelectedItem().equals("Date - Ascending"))
+                        getPresenter().refreshSortPriceAsc();
+                    else getPresenter().refreshTransactions();
+                }catch (ParseException e){
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -219,7 +248,13 @@ public class MainActivity extends AppCompatActivity implements ITransactionListV
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(requestCode==1) refreshAll();
+        if(requestCode==1) {
+            try {
+                refreshAll();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
 
         super.onActivityResult(requestCode, resultCode, data);
     }

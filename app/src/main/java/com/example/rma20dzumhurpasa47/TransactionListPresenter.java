@@ -2,6 +2,7 @@ package com.example.rma20dzumhurpasa47;
 
 import android.content.Context;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -39,10 +40,10 @@ public class TransactionListPresenter implements ITransactionListPresenter {
 
 
 
-    private void sortByPrice(ArrayList<Transaction> list){
+    private void sortByPrice(ArrayList<Transaction> list) throws ParseException {
         for(int i=0; i<list.size()-1; i++) {
             for (int j = i + 1; j < list.size(); j++) {
-                if(list.get(i).getAmount()<list.get(j).getAmount()){
+                if(Transaction.obradiRegular(list.get(i),MainActivity.calendar)<Transaction.obradiRegular(list.get(j),MainActivity.calendar)){
                     Transaction pom=list.get(i);
                     list.set(i,list.get(j));
                     list.set(j,pom);
@@ -89,7 +90,7 @@ public class TransactionListPresenter implements ITransactionListPresenter {
     }
 
     @Override
-    public void refreshSortPriceDesc() {
+    public void refreshSortPriceDesc() throws ParseException {
         ArrayList<Transaction> list=new ArrayList<>();
         list.addAll(interactor.get());
         sortByPrice(list);
@@ -98,7 +99,7 @@ public class TransactionListPresenter implements ITransactionListPresenter {
     }
 
     @Override
-    public void refreshSortPriceAsc() {
+    public void refreshSortPriceAsc() throws ParseException {
         ArrayList<Transaction> list=new ArrayList<>();
         list.addAll(interactor.get());
         sortByPrice(list);
