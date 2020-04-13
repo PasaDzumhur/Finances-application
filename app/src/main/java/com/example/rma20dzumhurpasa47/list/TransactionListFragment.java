@@ -70,11 +70,11 @@ public class TransactionListFragment extends Fragment implements ITransactionLis
         return transListPresenter;
     }
     private OnItemClick onItemClick;
-    //private OnItemClick addTransClick;
+    private OnItemClick addTransClick;
 
     public interface OnItemClick {
         public void onItemClicked(Transaction transaction);
-        //public void addTransClicked();
+        public void addTransClicked();
     }
 
 
@@ -122,7 +122,7 @@ public class TransactionListFragment extends Fragment implements ITransactionLis
         left=fragmentView.findViewById(R.id.left);
         getPresenter().refreshTransactions();
         onItemClick=(OnItemClick)getActivity();
-
+        addTransClick=(OnItemClick)getActivity();
         Intent intent = getActivity().getIntent();
         String action=intent.getAction();
         String type = intent.getType();
@@ -180,7 +180,12 @@ public class TransactionListFragment extends Fragment implements ITransactionLis
             }
         });
 
-
+        btnAddTrans.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addTransClick.addTransClicked();
+            }
+        });
         left.setOnClickListener(new View.OnClickListener() {
 
             @Override

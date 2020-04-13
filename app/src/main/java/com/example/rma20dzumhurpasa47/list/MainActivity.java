@@ -60,6 +60,20 @@ public class MainActivity extends AppCompatActivity implements TransactionListFr
     }
 
     @Override
+    public void addTransClicked() {
+        Bundle arguments=new Bundle();
+        TransactionDetailFragment detailFragment=new TransactionDetailFragment();
+        detailFragment.setArguments(arguments);
+        if(twoPaneMode){
+            getSupportFragmentManager().beginTransaction().replace(R.id.transactions_detail,detailFragment).commit();
+        }else{
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.transactions_list,detailFragment)
+                    .addToBackStack(null).commit();
+        }
+    }
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
