@@ -20,12 +20,15 @@ import com.example.rma20dzumhurpasa47.data.Account;
 import com.example.rma20dzumhurpasa47.data.Transaction;
 import com.example.rma20dzumhurpasa47.data.TransactionModel;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 
 import static com.example.rma20dzumhurpasa47.list.MainActivity.calendar;
+import static com.example.rma20dzumhurpasa47.list.MainActivity.setFilter;
 
 public class TransactionListFragment extends Fragment implements ITransactionListView {
 
@@ -67,10 +70,14 @@ public class TransactionListFragment extends Fragment implements ITransactionLis
         return transListPresenter;
     }
     private OnItemClick onItemClick;
+    //private OnItemClick addTransClick;
 
     public interface OnItemClick {
         public void onItemClicked(Transaction transaction);
+        //public void addTransClicked();
     }
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -115,6 +122,7 @@ public class TransactionListFragment extends Fragment implements ITransactionLis
         left=fragmentView.findViewById(R.id.left);
         getPresenter().refreshTransactions();
         onItemClick=(OnItemClick)getActivity();
+
         Intent intent = getActivity().getIntent();
         String action=intent.getAction();
         String type = intent.getType();
@@ -127,23 +135,132 @@ public class TransactionListFragment extends Fragment implements ITransactionLis
                 }
             }
         }*/
+
+        spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                setFilter((String) spinner1.getItemAtPosition(position));
+                try {
+                    if (spinner2.getSelectedItem().equals("Price - Ascending"))
+                        getPresenter().refreshSortPriceAsc();
+                    else if (spinner2.getSelectedItem().equals("Price - Descending"))
+                        getPresenter().refreshSortPriceDesc();
+                    else if (spinner2.getSelectedItem().equals("Title - Ascending"))
+                        getPresenter().refreshSortTitleAsc();
+                    else if (spinner2.getSelectedItem().equals("Title - Descending"))
+                        getPresenter().refreshSortTitleDesc();
+                    else if (spinner2.getSelectedItem().equals("Date - Ascending"))
+                        getPresenter().refreshSortDateAsc();
+                    else if (spinner2.getSelectedItem().equals("Date - Descending"))
+                        getPresenter().refreshSortDateDesc();
+                    else getPresenter().refreshTransactions();
+                }catch (ParseException e){
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                setFilter("");
+            }
+        });
+
+        right.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                calendar.add(Calendar.MONTH,1);
+                textMonth.setText(new SimpleDateFormat("MMMM").format(calendar.getTime()));
+                try {
+                    refreshAll();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
+        left.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                calendar.add(Calendar.MONTH,-1);
+                textMonth.setText(new SimpleDateFormat("MMMM").format(calendar.getTime()));
+                try {
+                    refreshAll();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
+        spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                try {
+                    if (spinner2.getSelectedItem().equals("Price - Ascending"))
+                        getPresenter().refreshSortPriceAsc();
+                    else if (spinner2.getSelectedItem().equals("Price - Descending"))
+                        getPresenter().refreshSortPriceDesc();
+                    else if (spinner2.getSelectedItem().equals("Title - Ascending"))
+                        getPresenter().refreshSortTitleAsc();
+                    else if (spinner2.getSelectedItem().equals("Title - Descending"))
+                        getPresenter().refreshSortTitleDesc();
+                    else if (spinner2.getSelectedItem().equals("Date - Ascending"))
+                        getPresenter().refreshSortPriceAsc();
+                    else getPresenter().refreshTransactions();
+                }catch (ParseException e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                getPresenter().refreshTransactions();
+
+            }
+        });
+        spinner2.setSelection(0);
+
+
+
+
+
+
+
         return fragmentView;
 
 
+    }
+    private void refreshAll() throws ParseException {
 
 
+
+        if(spinner2.getSelectedItem().equals("Price - Ascending")) getPresenter().refreshSortPriceAsc();
+        else if(spinner2.getSelectedItem().equals("Price - Descending")) getPresenter().refreshSortPriceDesc();
+        else if(spinner2.getSelectedItem().equals("Title - Ascending")) getPresenter().refreshSortTitleAsc();
+        else if(spinner2.getSelectedItem().equals("Title - Descending")) getPresenter().refreshSortTitleDesc();
+        else if(spinner2.getSelectedItem().equals("Date - Ascending")) getPresenter().refreshSortDateAsc();
+        else if(spinner2.getSelectedItem().equals("Date - Descending")) getPresenter().refreshSortDateDesc();
+        else getPresenter().refreshTransactions();
+        double stanje=account.getBudget()-account.workTheTransactions(TransactionModel.trans);
+
+        text1.setText("Global amount: "+stanje);
 
     }
+
 
 
     @Override
     public void setTransactions(ArrayList<Transaction> trans) {
-
+        adapter1.setTransactions(trans);
     }
 
     @Override
     public void notifyTransactionListDataSetChanged() {
-
+        adapter1.notifyDataSetChanged();
     }
 
     private AdapterView.OnItemClickListener listItemClickListener = new AdapterView.OnItemClickListener() {

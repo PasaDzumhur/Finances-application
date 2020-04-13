@@ -39,6 +39,9 @@ public class MainActivity extends AppCompatActivity implements TransactionListFr
     public static String getFilter() {
         return filter;
     }
+    public static void setFilter(String filter) {
+        MainActivity.filter = filter;
+    }
 
     @Override
     public void onItemClicked(Transaction transaction) {
