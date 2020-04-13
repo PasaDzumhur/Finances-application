@@ -1,23 +1,21 @@
-package com.example.rma20dzumhurpasa47;
+package com.example.rma20dzumhurpasa47.list;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import java.lang.reflect.Field;
+import com.example.rma20dzumhurpasa47.R;
+import com.example.rma20dzumhurpasa47.data.Transaction;
+import com.example.rma20dzumhurpasa47.data.TransactionModel;
+
 import java.util.ArrayList;
 
 public class TransactionListAdapter extends ArrayAdapter<Transaction> {
@@ -58,7 +56,7 @@ public class TransactionListAdapter extends ArrayAdapter<Transaction> {
         amount=newView.findViewById(R.id.amount);
         icon=newView.findViewById(R.id.icon);
         String pom=trans.getType().toString();
-        Integer slika=TransactionModel.slikice.get(pom);
+        Integer slika= TransactionModel.slikice.get(pom);
         if(slika==null) slika=R.drawable.unnamed;
         icon.setImageResource(slika);
         title.setText(trans.getTitle());

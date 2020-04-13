@@ -1,4 +1,4 @@
-package com.example.rma20dzumhurpasa47;
+package com.example.rma20dzumhurpasa47.list;
 
 import java.text.ParseException;
 

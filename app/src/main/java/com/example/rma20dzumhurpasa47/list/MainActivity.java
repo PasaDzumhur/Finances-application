@@ -1,7 +1,9 @@
-package com.example.rma20dzumhurpasa47;
+package com.example.rma20dzumhurpasa47.list;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,20 +11,75 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.rma20dzumhurpasa47.R;
+import com.example.rma20dzumhurpasa47.data.Account;
+import com.example.rma20dzumhurpasa47.data.Transaction;
+import com.example.rma20dzumhurpasa47.data.TransactionModel;
+import com.example.rma20dzumhurpasa47.detail.AddTransactionActivity;
+import com.example.rma20dzumhurpasa47.detail.TransactionDetailActivity;
+import com.example.rma20dzumhurpasa47.detail.TransactionDetailFragment;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class MainActivity extends AppCompatActivity implements ITransactionListView {
+public class MainActivity extends AppCompatActivity implements TransactionListFragment.OnItemClick {
+    private boolean twoPaneMode;
+    public static Calendar calendar=Calendar.getInstance();
+    private static String filter="";
+
+    public static String getFilter() {
+        return filter;
+    }
+
+    @Override
+    public void onItemClicked(Transaction transaction) {
+        Bundle arguments=new Bundle();
+        arguments.putParcelable("transaction",transaction);
+        TransactionDetailFragment detailFragment=new TransactionDetailFragment();
+        detailFragment.setArguments(arguments);
+        if(twoPaneMode){
+            getSupportFragmentManager().beginTransaction().replace(R.id.transactions_detail,detailFragment).commit();
+        }else{
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.transactions_list,detailFragment)
+                    .addToBackStack(null).commit();
+        }
+
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        calendar.setTime(new Date(System.currentTimeMillis()));
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FrameLayout details=findViewById(R.id.transactions_detail);
+        if(details!=null){
+            twoPaneMode=true;
+            TransactionDetailFragment detailFragment=(TransactionDetailFragment)fragmentManager.findFragmentById(R.id.transactions_detail);
+            if(detailFragment==null){
+                detailFragment=new TransactionDetailFragment();
+                fragmentManager.beginTransaction().replace(R.id.transactions_detail,detailFragment).commit();
+            }
+        }else {
+            twoPaneMode=false;
+        }
+        Fragment listFragment=fragmentManager.findFragmentById(R.id.transactions_list);
+        if(listFragment==null){
+            listFragment=new TransactionListFragment();
+            fragmentManager.beginTransaction().replace(R.id.transactions_list,listFragment).commit();
+        }
+    }
+    /*
     private ListView list;
     private ITransactionListPresenter transListPresenter;
     private TransactionListAdapter adapter1;
@@ -268,5 +325,5 @@ public class MainActivity extends AppCompatActivity implements ITransactionListV
         }
 
         super.onActivityResult(requestCode, resultCode, data);
-    }
+    }*/
 }

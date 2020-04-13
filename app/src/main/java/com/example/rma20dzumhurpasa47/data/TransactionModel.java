@@ -1,9 +1,9 @@
-package com.example.rma20dzumhurpasa47;
-
-import android.icu.text.DateFormat;
+package com.example.rma20dzumhurpasa47.data;
 
 
-import java.io.Console;
+import com.example.rma20dzumhurpasa47.R;
+import com.example.rma20dzumhurpasa47.data.Transaction;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -81,7 +81,7 @@ public class TransactionModel {
     };
     public static HashMap<String,Integer> slikice=new HashMap<String,Integer>(){
         {
-            put("PURCHASE",R.drawable.pur);
+            put("PURCHASE", R.drawable.pur);
             put("INDIVIDUALINCOME",R.drawable.indinc);
             put("INDIVIDUALPAYMENT",R.drawable.indpa);
             put("REGULARINCOME",R.drawable.regin);

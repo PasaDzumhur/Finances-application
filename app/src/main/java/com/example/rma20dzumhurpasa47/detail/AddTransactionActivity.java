@@ -1,4 +1,4 @@
-package com.example.rma20dzumhurpasa47;
+package com.example.rma20dzumhurpasa47.detail;
 
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -12,7 +12,12 @@ import android.widget.EditText;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.text.ParseException;
+import com.example.rma20dzumhurpasa47.list.MainActivity;
+import com.example.rma20dzumhurpasa47.R;
+import com.example.rma20dzumhurpasa47.data.Transaction;
+import com.example.rma20dzumhurpasa47.data.TransactionModel;
+import com.example.rma20dzumhurpasa47.list.TransactionListFragment;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -218,7 +223,7 @@ public class AddTransactionActivity extends AppCompatActivity {
                     helpModel.add(newTransaction);
                     Calendar helpCalendar=Calendar.getInstance();
                     helpCalendar.setTime(newTransaction.getDate());
-                    if(MainActivity.account.testMonthlyLimit(helpModel,helpCalendar.get(Calendar.MONTH),MainActivity.account.getMonthLimit())){
+                    if(TransactionListFragment.account.testMonthlyLimit(helpModel,helpCalendar.get(Calendar.MONTH),TransactionListFragment.account.getMonthLimit())){
                         AlertDialog alert = new AlertDialog.Builder(AddTransactionActivity.this).setTitle("Warning!!!!!!!").setMessage("Are you sure you want to go over the monthly limit?")
                                 .setPositiveButton("yes", new DialogInterface.OnClickListener() {
                                     @Override

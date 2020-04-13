@@ -1,6 +1,10 @@
-package com.example.rma20dzumhurpasa47;
+package com.example.rma20dzumhurpasa47.detail;
 
 import android.content.Context;
+import android.os.Parcelable;
+
+import com.example.rma20dzumhurpasa47.data.Transaction;
+import com.example.rma20dzumhurpasa47.detail.ITransactionDetailPresenter;
 
 import java.util.Date;
 
@@ -20,5 +24,10 @@ public class TransactionDetailPresenter implements ITransactionDetailPresenter {
     @Override
     public Transaction getTransaction() {
         return transaction;
+    }
+
+    @Override
+    public void setTransaction(Parcelable transaction) {
+        this.transaction=(Transaction) transaction;
     }
 }

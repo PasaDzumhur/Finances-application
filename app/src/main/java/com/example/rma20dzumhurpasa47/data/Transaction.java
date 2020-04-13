@@ -1,18 +1,16 @@
-package com.example.rma20dzumhurpasa47;
+package com.example.rma20dzumhurpasa47.data;
 
 
-import androidx.annotation.NonNull;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 
-public class Transaction implements Comparable<Transaction> {
+public class Transaction implements Parcelable {
     private Date date;
     private double amount;
     private String title;
@@ -46,6 +44,48 @@ public class Transaction implements Comparable<Transaction> {
     private String itemDescription;
     private int transactionInterval;
     private Date endDate;
+
+    protected Transaction(Parcel in) {
+        date = new Date();
+        long pom=in.readLong();
+        date.setTime(pom);
+        amount = in.readDouble();
+        title = in.readString();
+        itemDescription = in.readString();
+        transactionInterval = in.readInt();
+        endDate=new Date();
+        pom=in.readLong();
+        endDate.setTime(pom);
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(date.getTime());
+        dest.writeDouble(amount);
+        dest.writeString(title);
+        dest.writeSerializable(type);
+        dest.writeString(itemDescription);
+        dest.writeInt(transactionInterval);
+        dest.writeLong(endDate.getTime());
+
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Transaction> CREATOR = new Creator<Transaction>() {
+        @Override
+        public Transaction createFromParcel(Parcel in) {
+            return new Transaction(in);
+        }
+
+        @Override
+        public Transaction[] newArray(int size) {
+            return new Transaction[size];
+        }
+    };
 
     public static boolean provjeraDuzine(String title) {
         if (title.length() > 14 || title.length() < 3) return false;
@@ -129,11 +169,11 @@ public class Transaction implements Comparable<Transaction> {
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
-
+    /*
     @Override
     public int compareTo(Transaction o) {
         return Integer.compare(this.type.ordinal(),o.getType().ordinal());
-    }
+    }*/
 
 
     @Override

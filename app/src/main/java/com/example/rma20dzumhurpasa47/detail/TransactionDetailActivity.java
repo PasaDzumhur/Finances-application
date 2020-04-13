@@ -1,7 +1,6 @@
-package com.example.rma20dzumhurpasa47;
+package com.example.rma20dzumhurpasa47.detail;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -9,12 +8,16 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.text.ParseException;
+import com.example.rma20dzumhurpasa47.list.MainActivity;
+import com.example.rma20dzumhurpasa47.R;
+import com.example.rma20dzumhurpasa47.data.Transaction;
+import com.example.rma20dzumhurpasa47.data.TransactionModel;
+import com.example.rma20dzumhurpasa47.list.TransactionListFragment;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -220,7 +223,7 @@ public class TransactionDetailActivity extends AppCompatActivity {
                         helpModel.add(newTransaction);
                         Calendar helpCalendar=Calendar.getInstance();
                         helpCalendar.setTime(newTransaction.getDate());
-                        if(MainActivity.account.testMonthlyLimit(helpModel,helpCalendar.get(Calendar.MONTH),MainActivity.account.getMonthLimit())){
+                        if(TransactionListFragment.account.testMonthlyLimit(helpModel,helpCalendar.get(Calendar.MONTH),TransactionListFragment.account.getMonthLimit())){
                             AlertDialog alert = new AlertDialog.Builder(TransactionDetailActivity.this).setTitle("Warning!!!!!!!").setMessage("This will make you go over the monthly limit\nAre you sure you want to do that?")
                                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                         @Override

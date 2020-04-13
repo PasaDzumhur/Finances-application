@@ -1,12 +1,11 @@
-package com.example.rma20dzumhurpasa47;
+package com.example.rma20dzumhurpasa47.data;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-import static com.example.rma20dzumhurpasa47.MainActivity.calendar;
-import static java.time.temporal.ChronoUnit.DAYS;
+import static com.example.rma20dzumhurpasa47.list.MainActivity.calendar;
 
 public class Account {
     private double budget;
@@ -48,7 +47,7 @@ public class Account {
         return (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
     }
 
-    public boolean testLimit(ArrayList<Transaction> list,double limit){
+    public boolean testLimit(ArrayList<Transaction> list, double limit){
         Date today=new Date(System.currentTimeMillis());
         double sum=0;
 

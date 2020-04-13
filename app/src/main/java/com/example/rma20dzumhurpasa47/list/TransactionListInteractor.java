@@ -1,16 +1,21 @@
-package com.example.rma20dzumhurpasa47;
+package com.example.rma20dzumhurpasa47.list;
+
+import com.example.rma20dzumhurpasa47.data.Transaction;
+import com.example.rma20dzumhurpasa47.data.TransactionModel;
+import com.example.rma20dzumhurpasa47.list.ITransactionListInteractor;
+import com.example.rma20dzumhurpasa47.list.MainActivity;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import static com.example.rma20dzumhurpasa47.MainActivity.calendar;
+import static com.example.rma20dzumhurpasa47.list.MainActivity.calendar;
 
 public class TransactionListInteractor implements ITransactionListInteractor {
     private Calendar pom=Calendar.getInstance();
     @Override
     public ArrayList<Transaction> get() {
 
-        String string=MainActivity.getFilter();
+        String string= MainActivity.getFilter();
         if(string.equalsIgnoreCase("PURCHASE")) {
             return getPurchase();
         }
