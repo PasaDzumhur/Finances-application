@@ -30,6 +30,7 @@ import java.util.Date;
 public class TransactionDetailFragment extends Fragment {
     private EditText edit1, edit2, edit3, edit4, edit5, edit6, edit7;
     private Button btnSave, btnDelete;
+    private Transaction selectedTransaction=null;
 
     private ITransactionDetailPresenter presenter;
 
@@ -57,6 +58,7 @@ public class TransactionDetailFragment extends Fragment {
             btnDelete = view.findViewById(R.id.btnDelete);
             btnSave = view.findViewById(R.id.btnSave);
             final Transaction transaction = getPresenter().getTransaction();
+            selectedTransaction=transaction;
 
 
             final SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
@@ -243,8 +245,11 @@ public class TransactionDetailFragment extends Fragment {
                                         }).show();
 
                             } else {
-                                TransactionModel.trans.remove(transaction);
+                                if(selectedTransaction!=null) {
+                                    TransactionModel.trans.remove(transaction);
+                                }
                                 TransactionModel.trans.add(newTransaction);
+                                selectedTransaction=newTransaction;
                                 //finish();
                             }
 
@@ -267,26 +272,45 @@ public class TransactionDetailFragment extends Fragment {
             btnDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    try {
-
-                        AlertDialog alert = new AlertDialog.Builder(getActivity()).setTitle("Warning!!!!!!!").setMessage("Are you sure you want to delete it???")
-                                .setPositiveButton("yes", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-
-                                        TransactionModel.trans.remove(transaction);
-                                        //finish();
-                                    }
-                                }).setNegativeButton("no", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-
-                                    }
-                                }).show();
+                    if(selectedTransaction!=null) {
+                        try {
 
 
-                    } catch (Exception e) {
+                            AlertDialog alert = new AlertDialog.Builder(getActivity()).setTitle("Warning!!!!!!!").setMessage("Are you sure you want to delete it???")
+                                    .setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
 
+                                            TransactionModel.trans.remove(transaction);
+                                            selectedTransaction=null;
+                                            edit1.setText("");
+                                            edit1.setBackgroundColor(0);
+                                            edit2.setText("");
+                                            edit2.setBackgroundColor(0);
+                                            edit3.setText("");
+                                            edit3.setBackgroundColor(0);
+                                            edit4.setText("");
+                                            edit4.setBackgroundColor(0);
+                                            edit5.setText("");
+                                            edit5.setBackgroundColor(0);
+                                            edit6.setText("");
+                                            edit6.setBackgroundColor(0);
+                                            edit7.setText("");
+                                            edit7.setBackgroundColor(0);
+
+                                            //finish();
+                                        }
+                                    }).setNegativeButton("no", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+
+                                        }
+                                    }).show();
+
+
+                        } catch (Exception e) {
+
+                        }
                     }
 
                 }
