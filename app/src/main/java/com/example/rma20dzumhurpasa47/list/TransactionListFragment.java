@@ -19,6 +19,7 @@ import com.example.rma20dzumhurpasa47.R;
 import com.example.rma20dzumhurpasa47.data.Account;
 import com.example.rma20dzumhurpasa47.data.Transaction;
 import com.example.rma20dzumhurpasa47.data.TransactionModel;
+import com.example.rma20dzumhurpasa47.detail.TransactionDetailFragment;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -71,6 +72,8 @@ public class TransactionListFragment extends Fragment implements ITransactionLis
     }
     private OnItemClick onItemClick;
     private OnItemClick addTransClick;
+
+
 
     public interface OnItemClick {
         public void onItemClicked(Transaction transaction);

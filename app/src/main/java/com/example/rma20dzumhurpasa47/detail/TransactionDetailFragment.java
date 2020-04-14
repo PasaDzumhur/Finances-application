@@ -22,6 +22,7 @@ import com.example.rma20dzumhurpasa47.data.TransactionModel;
 import com.example.rma20dzumhurpasa47.list.MainActivity;
 import com.example.rma20dzumhurpasa47.list.TransactionListFragment;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -31,6 +32,12 @@ public class TransactionDetailFragment extends Fragment {
     private EditText edit1, edit2, edit3, edit4, edit5, edit6, edit7;
     private Button btnSave, btnDelete;
     private Transaction selectedTransaction=null;
+
+
+    /*public interface NeedToRefresh{
+        void refreshList() throws ParseException;
+    }*/
+    //private NeedToRefresh needToRefresh;
 
     private ITransactionDetailPresenter presenter;
 
@@ -59,6 +66,8 @@ public class TransactionDetailFragment extends Fragment {
             btnSave = view.findViewById(R.id.btnSave);
             final Transaction transaction = getPresenter().getTransaction();
             selectedTransaction=transaction;
+            //needToRefresh=(NeedToRefresh)getActivity();
+
 
 
             final SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
@@ -247,11 +256,13 @@ public class TransactionDetailFragment extends Fragment {
                             } else {
                                 if(selectedTransaction!=null) {
                                     TransactionModel.trans.remove(transaction);
+
                                 }
                                 TransactionModel.trans.add(newTransaction);
                                 selectedTransaction=newTransaction;
                                 //finish();
                             }
+                            //needToRefresh.refreshList();
 
 
                         }
@@ -297,7 +308,7 @@ public class TransactionDetailFragment extends Fragment {
                                             edit6.setBackgroundColor(0);
                                             edit7.setText("");
                                             edit7.setBackgroundColor(0);
-
+                                            //needToRefresh.refreshList();
                                             //finish();
                                         }
                                     }).setNegativeButton("no", new DialogInterface.OnClickListener() {
