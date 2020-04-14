@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements TransactionListFr
             listFragment=new TransactionListFragment();
             fragmentManager.beginTransaction().replace(R.id.transactions_list,listFragment).commit();
         }
+
     }
     /*
     private ListView list;
