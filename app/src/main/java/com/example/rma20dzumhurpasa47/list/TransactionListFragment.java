@@ -1,6 +1,7 @@
 package com.example.rma20dzumhurpasa47.list;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -189,6 +190,8 @@ public class TransactionListFragment extends Fragment implements ITransactionLis
                 addTransClick.addTransClicked();
             }
         });
+
+
         left.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -274,6 +277,7 @@ public class TransactionListFragment extends Fragment implements ITransactionLis
     private AdapterView.OnItemClickListener listItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            list.getChildAt(position).setBackgroundColor(Color.GREEN);
             Transaction transaction = adapter1.getItem(position);
             onItemClick.onItemClicked(transaction);
         }
