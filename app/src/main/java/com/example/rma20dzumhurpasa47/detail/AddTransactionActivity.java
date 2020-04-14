@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import static com.example.rma20dzumhurpasa47.list.MainActivity.account;
+
 public class AddTransactionActivity extends AppCompatActivity {
 
     private EditText edit1,edit2,edit3,edit4,edit5,edit6,edit7;
@@ -223,7 +225,7 @@ public class AddTransactionActivity extends AppCompatActivity {
                     helpModel.add(newTransaction);
                     Calendar helpCalendar=Calendar.getInstance();
                     helpCalendar.setTime(newTransaction.getDate());
-                    if(TransactionListFragment.account.testMonthlyLimit(helpModel,helpCalendar.get(Calendar.MONTH),TransactionListFragment.account.getMonthLimit())){
+                    if(account.testMonthlyLimit(helpModel,helpCalendar.get(Calendar.MONTH),account.getMonthLimit())){
                         AlertDialog alert = new AlertDialog.Builder(AddTransactionActivity.this).setTitle("Warning!!!!!!!").setMessage("Are you sure you want to go over the monthly limit?")
                                 .setPositiveButton("yes", new DialogInterface.OnClickListener() {
                                     @Override

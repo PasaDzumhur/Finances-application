@@ -47,7 +47,7 @@ public class TransactionListFragment extends Fragment implements ITransactionLis
     private ImageButton right;
     private Spinner spinner2;
     private Button btnAddTrans;
-    public static Account account=new Account(100000,100000,100000);
+    //public static Account account=new Account(100000,100000,100000);
 
     private ArrayList<String> types=new ArrayList<String>(){{
         add("GIMMEALL");
@@ -114,9 +114,9 @@ public class TransactionListFragment extends Fragment implements ITransactionLis
         //account.workTheTransactions(TransactionModel.getTrans());
         text1=fragmentView.findViewById(R.id.text1);
         text2=fragmentView.findViewById(R.id.text2);
-        double stanje=account.getBudget()-account.workTheTransactions(TransactionModel.trans);
+        double stanje=MainActivity.account.getBudget()-MainActivity.account.workTheTransactions(TransactionModel.trans);
         text1.setText("Global amount: "+stanje);
-        text2.setText("Limit: "+account.getTotalLimit());
+        text2.setText("Limit: "+MainActivity.account.getTotalLimit());
         list.setOnItemClickListener(listItemClickListener);
         btnAddTrans=fragmentView.findViewById(R.id.btnAddTrans);
         calendar.setTime(new Date(System.currentTimeMillis()));
@@ -256,7 +256,7 @@ public class TransactionListFragment extends Fragment implements ITransactionLis
         else if(spinner2.getSelectedItem().equals("Date - Ascending")) getPresenter().refreshSortDateAsc();
         else if(spinner2.getSelectedItem().equals("Date - Descending")) getPresenter().refreshSortDateDesc();
         else getPresenter().refreshTransactions();
-        double stanje=account.getBudget()-account.workTheTransactions(TransactionModel.trans);
+        double stanje=MainActivity.account.getBudget()-MainActivity.account.workTheTransactions(TransactionModel.trans);
 
         text1.setText("Global amount: "+stanje);
 
