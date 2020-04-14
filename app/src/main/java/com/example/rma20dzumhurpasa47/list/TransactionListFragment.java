@@ -47,6 +47,7 @@ public class TransactionListFragment extends Fragment implements ITransactionLis
     private ImageButton right;
     private Spinner spinner2;
     private Button btnAddTrans;
+    private Button button;
     //public static Account account=new Account(100000,100000,100000);
 
     private ArrayList<String> types=new ArrayList<String>(){{
@@ -73,12 +74,14 @@ public class TransactionListFragment extends Fragment implements ITransactionLis
     }
     private OnItemClick onItemClick;
     private OnItemClick addTransClick;
+    private OnItemClick buttonClick;
 
 
 
     public interface OnItemClick {
         public void onItemClicked(Transaction transaction);
         public void addTransClicked();
+        public void buttonClicked();
     }
 
 
@@ -119,6 +122,7 @@ public class TransactionListFragment extends Fragment implements ITransactionLis
         text2.setText("Limit: "+MainActivity.account.getTotalLimit());
         list.setOnItemClickListener(listItemClickListener);
         btnAddTrans=fragmentView.findViewById(R.id.btnAddTrans);
+        button=fragmentView.findViewById(R.id.button);
         calendar.setTime(new Date(System.currentTimeMillis()));
         textMonth=fragmentView.findViewById(R.id.textMonth);
         textMonth.setText(new SimpleDateFormat("MMMM").format(calendar.getTime()));
@@ -127,6 +131,7 @@ public class TransactionListFragment extends Fragment implements ITransactionLis
         getPresenter().refreshTransactions();
         onItemClick=(OnItemClick)getActivity();
         addTransClick=(OnItemClick)getActivity();
+        buttonClick=(OnItemClick)getActivity();
         Intent intent = getActivity().getIntent();
         String action=intent.getAction();
         String type = intent.getType();
@@ -139,6 +144,12 @@ public class TransactionListFragment extends Fragment implements ITransactionLis
                 }
             }
         }*/
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                buttonClick.buttonClicked();
+            }
+        });
 
         spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

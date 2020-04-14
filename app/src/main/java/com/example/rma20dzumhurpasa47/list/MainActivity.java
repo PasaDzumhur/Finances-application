@@ -18,12 +18,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.rma20dzumhurpasa47.R;
+import com.example.rma20dzumhurpasa47.budgetStuff.BudgetFragment;
 import com.example.rma20dzumhurpasa47.data.Account;
 import com.example.rma20dzumhurpasa47.data.Transaction;
 import com.example.rma20dzumhurpasa47.data.TransactionModel;
 import com.example.rma20dzumhurpasa47.detail.AddTransactionActivity;
 import com.example.rma20dzumhurpasa47.detail.TransactionDetailActivity;
 import com.example.rma20dzumhurpasa47.detail.TransactionDetailFragment;
+import com.example.rma20dzumhurpasa47.util.OnSwipeTouchListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -76,11 +78,22 @@ public class MainActivity extends AppCompatActivity implements TransactionListFr
     }
 
     @Override
+    public void buttonClicked() {
+        if(!twoPaneMode){
+            Bundle arguments=new Bundle();
+            BudgetFragment budgetFragment=new BudgetFragment();
+            budgetFragment.setArguments(arguments);
+            getSupportFragmentManager().beginTransaction().replace(R.id.transactions_list,budgetFragment)
+                    .addToBackStack(null).commit();
+        }
+    }
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         calendar.setTime(new Date(System.currentTimeMillis()));
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        final FragmentManager fragmentManager = getSupportFragmentManager();
         FrameLayout details=findViewById(R.id.transactions_detail);
         if(details!=null){
             twoPaneMode=true;
@@ -98,7 +111,17 @@ public class MainActivity extends AppCompatActivity implements TransactionListFr
             fragmentManager.beginTransaction().replace(R.id.transactions_list,listFragment).commit();
         }
 
+
+
     }
+
+
+
+
+    }
+
+
+
     /*
     private ListView list;
     private ITransactionListPresenter transListPresenter;
@@ -346,4 +369,4 @@ public class MainActivity extends AppCompatActivity implements TransactionListFr
 
         super.onActivityResult(requestCode, resultCode, data);
     }*/
-}
+//}
