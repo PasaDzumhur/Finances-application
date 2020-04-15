@@ -201,7 +201,7 @@ public class Transaction implements Parcelable {
         if(transaction.getType().equals(Type.REGULARINCOME) || transaction.getType().equals(Type.REGULARPAYMENT)){
 
 
-            Calendar calendar=Calendar.getInstance();
+
 
             trenutniMjesec.set(Calendar.DAY_OF_MONTH,1);
             trenutniMjesec.add(Calendar.MONTH,1);
@@ -215,7 +215,40 @@ public class Transaction implements Parcelable {
 
 
         }else{
-            sum=transaction.getAmount();
+            Calendar calendar=Calendar.getInstance();
+            calendar.setTime(transaction.getDate());
+            if(trenutniMjesec.get(Calendar.MONTH)==calendar.get(Calendar.MONTH)) sum=transaction.getAmount();
+
+        }
+        return sum;
+    }
+
+
+    public double monthlyAmount(int month){
+        double sum=0;
+        if(getType().equals(Type.REGULARINCOME) || getType().equals(Type.REGULARPAYMENT)){
+            Calendar calendar=Calendar.getInstance();
+            calendar.set(Calendar.MONTH,month);
+
+            Calendar pom1=Calendar.getInstance();
+            Calendar pom2=Calendar.getInstance();
+            pom1.setTime(date);
+            pom2.setTime(endDate);
+            if(!(pom1.get(Calendar.MONTH)<=month && pom2.get(Calendar.MONTH)>=month)) return 0;
+            while (pom1.get(Calendar.MONTH)!=month) pom1.add(Calendar.DAY_OF_MONTH,transactionInterval);
+            //while (pom2.get(Calendar.MONTH)!=month) pom1.add(Calendar.DAY_OF_MONTH,-transactionInterval);
+            if(pom2.get(Calendar.MONTH)!=month){
+                int razlika=pom2.get(Calendar.MONTH)-month;
+                pom1.add(Calendar.MONTH,razlika);
+            }
+            int daysDuration = Account.getDifferenceDays(pom1.getTime(),pom2.getTime());
+            int numberOfCalcs=daysDuration/transactionInterval;
+            sum=sum+numberOfCalcs*amount;
+
+        }else{
+            Calendar calendar=Calendar.getInstance();
+            calendar.setTime(date);
+            if(calendar.get(Calendar.MONTH)==month) sum=getAmount();
 
         }
         return sum;

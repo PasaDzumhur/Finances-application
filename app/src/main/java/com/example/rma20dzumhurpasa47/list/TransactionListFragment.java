@@ -288,7 +288,7 @@ public class TransactionListFragment extends Fragment implements ITransactionLis
     private AdapterView.OnItemClickListener listItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            list.getChildAt(position).setBackgroundColor(Color.GREEN);
+            //list.getChildAt(position).setBackgroundColor(Color.GREEN);
             Transaction transaction = adapter1.getItem(position);
             onItemClick.onItemClicked(transaction);
         }

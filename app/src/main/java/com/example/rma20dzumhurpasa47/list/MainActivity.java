@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.example.rma20dzumhurpasa47.R;
 import com.example.rma20dzumhurpasa47.budgetStuff.BudgetFragment;
+import com.example.rma20dzumhurpasa47.budgetStuff.GraphsFragment;
 import com.example.rma20dzumhurpasa47.data.Account;
 import com.example.rma20dzumhurpasa47.data.Transaction;
 import com.example.rma20dzumhurpasa47.data.TransactionModel;
@@ -81,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements TransactionListFr
     public void buttonClicked() {
         if(!twoPaneMode){
             Bundle arguments=new Bundle();
-            BudgetFragment budgetFragment=new BudgetFragment();
+            GraphsFragment budgetFragment=new GraphsFragment();
             budgetFragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction().replace(R.id.transactions_list,budgetFragment)
                     .addToBackStack(null).commit();
