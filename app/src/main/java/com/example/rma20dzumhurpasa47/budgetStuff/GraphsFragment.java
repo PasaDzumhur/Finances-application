@@ -169,7 +169,7 @@ public class GraphsFragment extends Fragment {
                             valuesExpenses = getPresenter().getWeeklyExpenses();
                             valuesIncomes = getPresenter().getWeeklyIncome();
                             valuesTotal = new ArrayList<>();
-                            for (int i = 0; i < 5; i++) {
+                            for (int i = 0; i < 6; i++) {
                                 valuesTotal.add(valuesIncomes.get(i) - valuesExpenses.get(i));
                             }
                             labelsName = new ArrayList<>();
@@ -178,6 +178,7 @@ public class GraphsFragment extends Fragment {
                             labelsName.add("3");
                             labelsName.add("4");
                             labelsName.add("5");
+                            labelsName.add("6");
                             description.setText("Weeks");
 
                         } else if (position==2) {

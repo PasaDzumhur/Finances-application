@@ -76,7 +76,7 @@ public class GraphPresenter implements IGraphPresenter {
     @Override
     public ArrayList<Integer> getWeeklyIncome() {
         ArrayList<Integer> ret=new ArrayList<>();
-        for(int i=0; i<5; i++) ret.add(0);
+        for(int i=0; i<6; i++) ret.add(0);
         pom.setTime(MainActivity.calendar.getTime());
         for(Transaction t : transactions){
             if(t.getType().equals(Transaction.Type.INDIVIDUALINCOME) || t.getType().equals(Transaction.Type.REGULARINCOME)){
@@ -91,7 +91,7 @@ public class GraphPresenter implements IGraphPresenter {
     @Override
     public ArrayList<Integer> getWeeklyExpenses() {
         ArrayList<Integer> ret=new ArrayList<>();
-        for(int i=0; i<5; i++) ret.add(0);
+        for(int i=0; i<6; i++) ret.add(0);
         pom.setTime(MainActivity.calendar.getTime());
         for(Transaction t : transactions){
             if(t.getType().equals(Transaction.Type.PURCHASE) || t.getType().equals(Transaction.Type.INDIVIDUALPAYMENT) || t.getType().equals(Transaction.Type.REGULARPAYMENT)){
