@@ -26,7 +26,7 @@ import com.example.rma20dzumhurpasa47.data.TransactionModel;
 import com.example.rma20dzumhurpasa47.detail.AddTransactionActivity;
 import com.example.rma20dzumhurpasa47.detail.TransactionDetailActivity;
 import com.example.rma20dzumhurpasa47.detail.TransactionDetailFragment;
-import com.example.rma20dzumhurpasa47.util.OnSwipeTouchListener;
+
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

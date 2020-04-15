@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,6 +35,8 @@ public class GraphsFragment extends Fragment {
     private ArrayList<Integer> valuesExpenses;
     private ArrayList<Integer> valuesIncomes;
     private ArrayList<Integer> valuesTotal;
+    private Spinner spinner;
+    private ArrayAdapter<String > adapter;
     //private ArrayList<Transaction> transactions=TransactionModel.trans;
     private IGraphPresenter presenter;
 
@@ -145,7 +149,13 @@ public class GraphsFragment extends Fragment {
             xAxis3.setLabelRotationAngle(270);
             totalChart.animateY(2000);
             totalChart.invalidate();
-
+            ArrayList<String> graphFilter=new ArrayList<>();
+            graphFilter.add("Monthly");
+            graphFilter.add("Weekly");
+            graphFilter.add("Daily");
+            adapter=new ArrayAdapter<String>(getActivity(),R.layout.support_simple_spinner_dropdown_item,graphFilter);
+            spinner=view.findViewById(R.id.spinner);
+            spinner.setAdapter(adapter);
 
 
 
