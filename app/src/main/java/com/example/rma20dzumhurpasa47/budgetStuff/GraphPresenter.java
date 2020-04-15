@@ -82,7 +82,7 @@ public class GraphPresenter implements IGraphPresenter {
             if(t.getType().equals(Transaction.Type.INDIVIDUALINCOME) || t.getType().equals(Transaction.Type.REGULARINCOME)){
                 pom.setTime(t.getDate());
                 int week=pom.get(Calendar.WEEK_OF_MONTH);
-                ret.set(week, (int) (ret.get(week)+t.getAmount()));
+                ret.set(week-1, (int) (ret.get(week-1)+t.getAmount()));
             }
         }
         return ret;

@@ -167,7 +167,7 @@ public class GraphsFragment extends Fragment {
                         Description description1=new Description();
                         if (position==1) {
                             valuesExpenses = getPresenter().getWeeklyExpenses();
-                            valuesIncomes = getPresenter().getWeeklyExpenses();
+                            valuesIncomes = getPresenter().getWeeklyIncome();
                             valuesTotal = new ArrayList<>();
                             for (int i = 0; i < 5; i++) {
                                 valuesTotal.add(valuesIncomes.get(i) - valuesExpenses.get(i));
