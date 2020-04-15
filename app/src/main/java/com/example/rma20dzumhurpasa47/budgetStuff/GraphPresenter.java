@@ -34,7 +34,7 @@ public class GraphPresenter implements IGraphPresenter {
             if(t.getType().equals(Transaction.Type.PURCHASE) || t.getType().equals(Transaction.Type.INDIVIDUALPAYMENT) || t.getType().equals(Transaction.Type.REGULARPAYMENT)){
                 System.out.print(t.getTitle()+" : ");
                 for(int i=0; i<12; i++){
-                    int vrijednost= (int) t.monthlyAmount(i+1);
+                    int vrijednost= (int) t.monthlyAmount(i);
                     //pom.set(Calendar.MONTH,i);
                     ret.set(i,ret.get(i)+vrijednost);
                     //System.out.print(vrijednost+" ");
@@ -44,6 +44,9 @@ public class GraphPresenter implements IGraphPresenter {
         }
         //for(Integer pom : ret ) System.out.println(pom);
         return ret;
+        //ArrayList<Integer> pom=new ArrayList<>();
+        //for(int i=1; i<=12; i++) pom.add(i);
+        //return pom;
     }
 
     @Override
@@ -66,6 +69,7 @@ public class GraphPresenter implements IGraphPresenter {
         }
         //for(Integer pom : ret ) System.out.println(pom);
         return ret;
+
     }
 
     @Override
