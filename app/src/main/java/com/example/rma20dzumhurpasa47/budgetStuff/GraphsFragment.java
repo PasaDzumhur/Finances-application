@@ -165,7 +165,7 @@ public class GraphsFragment extends Fragment {
                         String pomocni = (String) spinner.getSelectedItem();
                         System.out.print(pomocni);
                         Description description1=new Description();
-                        if (pomocni.equals("Weekly")) {
+                        if (position==1) {
                             valuesExpenses = getPresenter().getWeeklyExpenses();
                             valuesIncomes = getPresenter().getWeeklyExpenses();
                             valuesTotal = new ArrayList<>();
@@ -180,7 +180,7 @@ public class GraphsFragment extends Fragment {
                             labelsName.add("5");
                             description.setText("Weeks");
 
-                        } else if (pomocni.equals("Daily")) {
+                        } else if (position==2) {
                             valuesExpenses = getPresenter().getDailyExpenses();
                             valuesIncomes = getPresenter().getDailyIncome();
                             for (int i = 0; i < valuesIncomes.size(); i++) {
@@ -192,7 +192,7 @@ public class GraphsFragment extends Fragment {
                             }
                             description.setText("Days");
 
-                        } else if(pomocni.equals("Monthly")) {
+                        } else if(position==0) {
                             valuesExpenses = presenter.getMonthExpenses();
                             valuesIncomes = presenter.getMonthIncome();
                             valuesTotal=new ArrayList<>();
@@ -274,6 +274,7 @@ public class GraphsFragment extends Fragment {
 
 
                     }catch (Exception e){
+                        e.printStackTrace();
 
                     }
                 }

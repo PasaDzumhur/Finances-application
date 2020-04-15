@@ -97,7 +97,7 @@ public class GraphPresenter implements IGraphPresenter {
             if(t.getType().equals(Transaction.Type.PURCHASE) || t.getType().equals(Transaction.Type.INDIVIDUALPAYMENT) || t.getType().equals(Transaction.Type.REGULARPAYMENT)){
                 pom.setTime(t.getDate());
                 int week=pom.get(Calendar.WEEK_OF_MONTH);
-                ret.set(week, (int) (ret.get(week)+t.getAmount()));
+                ret.set(week-1, (int) (ret.get(week-1)+t.getAmount()));
             }
         }
         return ret;
@@ -106,12 +106,32 @@ public class GraphPresenter implements IGraphPresenter {
 
     @Override
     public ArrayList<Integer> getDailyIncome() {
-        return null;
+        ArrayList<Integer> ret=new ArrayList<>();
+        for(int i=0; i<31; i++) ret.add(0);
+        pom.setTime(MainActivity.calendar.getTime());
+        for(Transaction t : transactions){
+            if(t.getType().equals(Transaction.Type.INDIVIDUALINCOME) || t.getType().equals(Transaction.Type.REGULARINCOME)){
+                pom.setTime(t.getDate());
+                int week=pom.get(Calendar.DAY_OF_MONTH);
+                ret.set(week, (int) (ret.get(week)+t.getAmount()));
+            }
+        }
+        return ret;
     }
 
     @Override
     public ArrayList<Integer> getDailyExpenses() {
-        return null;
+        ArrayList<Integer> ret=new ArrayList<>();
+        for(int i=0; i<31; i++) ret.add(0);
+        pom.setTime(MainActivity.calendar.getTime());
+        for(Transaction t : transactions){
+            if(t.getType().equals(Transaction.Type.PURCHASE) || t.getType().equals(Transaction.Type.INDIVIDUALPAYMENT) || t.getType().equals(Transaction.Type.REGULARPAYMENT)){
+                pom.setTime(t.getDate());
+                int week=pom.get(Calendar.DAY_OF_MONTH);
+                ret.set(week, (int) (ret.get(week)+t.getAmount()));
+            }
+        }
+        return ret;
     }
 
 
