@@ -26,10 +26,12 @@ import java.util.ArrayList;
 public class GraphsFragment extends Fragment {
     private BarChart expensesChart,incomeChart,totalChart;
     private ArrayList<BarEntry> barEntryArrayList;
+    private ArrayList<BarEntry> barEntryArrayList2;
+    private ArrayList<BarEntry> barEntryArrayList3;
     private ArrayList<String >labelsName;
     private ArrayList<Integer> valuesExpenses;
-    private ArrayList<Double> valuesIncomes;
-    private ArrayList<Double> valuesTotal;
+    private ArrayList<Integer> valuesIncomes;
+    private ArrayList<Integer> valuesTotal;
     //private ArrayList<Transaction> transactions=TransactionModel.trans;
     private IGraphPresenter presenter;
 
@@ -41,11 +43,13 @@ public class GraphsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.probni,container,false);
+        View view=inflater.inflate(R.layout.fragment_graphs,container,false);
         try {
             expensesChart=view.findViewById(R.id.expensesGraph);
+            incomeChart=view.findViewById(R.id.incomeGraph);
             getPresenter().setTransactions(TransactionModel.trans);
             valuesExpenses=presenter.getMonthExpenses();
+            valuesIncomes=presenter.getMonthIncome();
             //valuesIncomes=presenter.getMonthIncome();
             valuesTotal=new ArrayList<>();
             barEntryArrayList=new ArrayList<>();
@@ -74,6 +78,32 @@ public class GraphsFragment extends Fragment {
             xAxis.setLabelRotationAngle(270);
             expensesChart.animateY(2000);
             expensesChart.invalidate();
+
+            //barEntryArrayList.clear();
+            barEntryArrayList2=new ArrayList<>();
+            for(int i=1; i<=12; i++){
+                barEntryArrayList2.add(new BarEntry(i,valuesIncomes.get(i-1)));
+                //String pom=""+i;
+                //labelsName.add(pom);
+            }
+            BarDataSet barDataSet2=new BarDataSet(barEntryArrayList,"MonthlyIncomes");
+            barDataSet2.setColors(ColorTemplate.COLORFUL_COLORS);
+            //description=new Description();
+            //description.setText("Months");
+            incomeChart.setDescription(description);
+            BarData barData2 = new BarData(barDataSet2);
+            incomeChart.setData(barData2);
+            XAxis xAxis2 = incomeChart.getXAxis();
+            xAxis2.setValueFormatter(new IndexAxisValueFormatter(labelsName));
+            xAxis2.setPosition(XAxis.XAxisPosition.TOP);
+            xAxis2.setDrawGridLines(false);
+            xAxis2.setDrawAxisLine(false);
+            xAxis2.setLabelCount(labelsName.size());
+            xAxis2.setLabelRotationAngle(270);
+            expensesChart.animateY(2000);
+            expensesChart.invalidate();
+
+
 
         }catch (Exception e){
             e.printStackTrace();

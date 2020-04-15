@@ -10,6 +10,13 @@
         android:layout_height="200dp"
         android:layout_marginTop="20dp"
         android:id="@+id/expensesGraph"></com.github.mikephil.charting.charts.BarChart>
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:id="@+id/incomeGraph"
+        android:layout_marginTop="20dp"
+        ></com.github.mikephil.charting.charts.BarChart>
     
 </LinearLayout>
     

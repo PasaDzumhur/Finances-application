@@ -49,7 +49,23 @@ public class GraphPresenter implements IGraphPresenter {
     @Override
     public ArrayList<Integer> getMonthIncome() throws ParseException {
 
-        return null;
+        ArrayList<Integer> ret=new ArrayList<>();
+        for(int i=0; i<12; i++) ret.add(0);
+        pom.setTime(MainActivity.calendar.getTime());
+        for(Transaction t : transactions){
+            if(t.getType().equals(Transaction.Type.INDIVIDUALINCOME) || t.getType().equals(Transaction.Type.REGULARINCOME)){
+                System.out.print(t.getTitle()+" : ");
+                for(int i=0; i<12; i++){
+                    int vrijednost= (int) t.monthlyAmount(i+1);
+                    //pom.set(Calendar.MONTH,i);
+                    ret.set(i,ret.get(i)+vrijednost);
+                    //System.out.print(vrijednost+" ");
+                }
+                //System.out.print("");
+            }
+        }
+        //for(Integer pom : ret ) System.out.println(pom);
+        return ret;
     }
 
     @Override

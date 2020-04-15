@@ -19,13 +19,13 @@
 
             <com.github.mikephil.charting.charts.BarChart
                 android:id="@+id/expensesGraph"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_width="match_parent"
+                android:layout_height="150dp" />
 
             <com.github.mikephil.charting.charts.BarChart
                 android:id="@+id/incomeGraph"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_width="match_parent"
+                android:layout_height="150dp" />
             <com.github.mikephil.charting.charts.BarChart
                 android:id="@+id/totalGraph"
                 android:layout_width="wrap_content"

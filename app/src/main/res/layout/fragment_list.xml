@@ -109,24 +109,32 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btnAddTrans"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="110dp"
         android:layout_marginBottom="16dp"
         android:text="Add transaction"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="horizontal"
+        >
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button"
-        tools:layout_editor_absoluteX="26dp"
-        tools:layout_editor_absoluteY="708dp"
-        app:layout_constraintStart_toEndOf="@id/btnAddTrans"
-        app:layout_constraintTop_toBottomOf="@id/btnAddTrans"/>
+        <Button
+            android:id="@+id/btnAddTrans"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Add transaction" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Swipe" />
+    </LinearLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

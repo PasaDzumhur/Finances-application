@@ -21,7 +21,12 @@ import static com.example.rma20dzumhurpasa47.list.MainActivity.account;
 public class BudgetFragment extends Fragment {
     //private TextView budgetView,totalView,monthlyView;
     private EditText budgetText,totalText,monthlyText;
-    private Button btnSaveAcc;
+    private Button btnSaveAcc,button2;
+    public Swipe swipe;
+
+    public interface Swipe{
+        public void swiped();
+    }
 
     @Nullable
     @Override
@@ -34,9 +39,11 @@ public class BudgetFragment extends Fragment {
         monthlyText=view.findViewById(R.id.monthlyText);
         //monthlyView=view.findViewById(R.id.monthlyView);
         btnSaveAcc=view.findViewById(R.id.btnSaveAcc);
+        button2=view.findViewById(R.id.button2);
         budgetText.setText(""+ account.getBudget());
         monthlyText.setText(""+ account.getMonthLimit());
         totalText.setText(""+ account.getTotalLimit());
+        swipe=(Swipe)getActivity();
 
 
         btnSaveAcc.setOnClickListener(new View.OnClickListener() {
@@ -53,6 +60,16 @@ public class BudgetFragment extends Fragment {
                 }
             }
         });
+
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                swipe.swiped();
+            }
+        });
+
+
+
         return view;
 
 
