@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.ListFragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -39,6 +40,9 @@ public class MainActivity extends AppCompatActivity implements TransactionListFr
     public static Calendar calendar=Calendar.getInstance();
     private static String filter="";
     public static Account account=new Account(100000,100000,100000);
+
+
+
 
 
     public static String getFilter() {
@@ -113,7 +117,6 @@ public class MainActivity extends AppCompatActivity implements TransactionListFr
         }
 
 
-
     }
 
 
@@ -127,6 +130,9 @@ public class MainActivity extends AppCompatActivity implements TransactionListFr
                     .addToBackStack(null).commit();
         }
     }
+
+
+
 }
 
 

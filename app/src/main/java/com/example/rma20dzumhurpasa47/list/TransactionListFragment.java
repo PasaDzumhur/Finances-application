@@ -78,6 +78,7 @@ public class TransactionListFragment extends Fragment implements ITransactionLis
 
 
 
+
     public interface OnItemClick {
         public void onItemClicked(Transaction transaction);
         public void addTransClicked();
@@ -123,7 +124,7 @@ public class TransactionListFragment extends Fragment implements ITransactionLis
         list.setOnItemClickListener(listItemClickListener);
         btnAddTrans=fragmentView.findViewById(R.id.btnAddTrans);
         button=fragmentView.findViewById(R.id.button);
-        calendar.setTime(new Date(System.currentTimeMillis()));
+        //calendar.setTime(new Date(System.currentTimeMillis()));
         textMonth=fragmentView.findViewById(R.id.textMonth);
         textMonth.setText(new SimpleDateFormat("MMMM").format(calendar.getTime()));
         right=fragmentView.findViewById(R.id.right);
