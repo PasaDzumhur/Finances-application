@@ -9,13 +9,13 @@ import java.util.HashMap;
 public interface IGraphPresenter {
     ArrayList<Integer> getMonthExpenses() throws ParseException;
     ArrayList<Integer> getMonthIncome() throws ParseException;
-    ArrayList<Double> getMonthTotal();
-    ArrayList<Double> getWeeklyIncome();
-    ArrayList<Double> getWeeklyExpenses();
-    ArrayList<Double> getWeeklyTotal();
-    ArrayList<Double> getDailyIncome();
-    ArrayList<Double> getDailyExpenses();
-    ArrayList<Double> getDailyTotal();
+    //ArrayList<Integer> getMonthTotal();
+    ArrayList<Integer> getWeeklyIncome();
+    ArrayList<Integer> getWeeklyExpenses();
+    //ArrayList<Integer> getWeeklyTotal();
+    ArrayList<Integer> getDailyIncome();
+    ArrayList<Integer> getDailyExpenses();
+    //ArrayList<Integer> getDailyTotal();
     void setTransactions(ArrayList<Transaction> transactions);
 
 }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
@@ -68,7 +69,7 @@ public class GraphsFragment extends Fragment {
     }
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable final Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_graphs,container,false);
         try {
             expensesChart=view.findViewById(R.id.expensesGraph);
@@ -92,7 +93,7 @@ public class GraphsFragment extends Fragment {
             }
             BarDataSet barDataSet=new BarDataSet(barEntryArrayList,"MonthlyExpenses");
             barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-            Description description=new Description();
+            final Description description=new Description();
             description.setText("Months");
             expensesChart.setDescription(description);
             BarData barData=new BarData(barDataSet);
@@ -156,6 +157,132 @@ public class GraphsFragment extends Fragment {
             adapter=new ArrayAdapter<String>(getActivity(),R.layout.support_simple_spinner_dropdown_item,graphFilter);
             spinner=view.findViewById(R.id.spinner);
             spinner.setAdapter(adapter);
+
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    try {
+                        String pomocni = (String) spinner.getSelectedItem();
+                        System.out.print(pomocni);
+                        Description description1=new Description();
+                        if (pomocni.equals("Weekly")) {
+                            valuesExpenses = getPresenter().getWeeklyExpenses();
+                            valuesIncomes = getPresenter().getWeeklyExpenses();
+                            valuesTotal = new ArrayList<>();
+                            for (int i = 0; i < 5; i++) {
+                                valuesTotal.add(valuesIncomes.get(i) - valuesExpenses.get(i));
+                            }
+                            labelsName = new ArrayList<>();
+                            labelsName.add("1");
+                            labelsName.add("2");
+                            labelsName.add("3");
+                            labelsName.add("4");
+                            labelsName.add("5");
+                            description.setText("Weeks");
+
+                        } else if (pomocni.equals("Daily")) {
+                            valuesExpenses = getPresenter().getDailyExpenses();
+                            valuesIncomes = getPresenter().getDailyIncome();
+                            for (int i = 0; i < valuesIncomes.size(); i++) {
+                                valuesTotal.add(valuesIncomes.get(i) - valuesExpenses.get(i));
+                            }
+                            labelsName = new ArrayList<>();
+                            for (int i = 1; i <= 31; i++) {
+                                labelsName.add("" + i);
+                            }
+                            description.setText("Days");
+
+                        } else if(pomocni.equals("Monthly")) {
+                            valuesExpenses = presenter.getMonthExpenses();
+                            valuesIncomes = presenter.getMonthIncome();
+                            valuesTotal=new ArrayList<>();
+                            for(int i=0; i<12; i++){
+                                valuesTotal.add(valuesIncomes.get(i) - valuesExpenses.get(i));
+                            }
+                            labelsName=dajMjesece();
+                            description.setText("Months");
+                        }
+
+
+                        //-----------------------------------------------------------------
+
+
+                        barEntryArrayList=new ArrayList<>();
+                        barEntryArrayList2=new ArrayList<>();
+                        barEntryArrayList3=new ArrayList<>();
+                        for(int i=0; i<valuesExpenses.size(); i++){
+                            barEntryArrayList.add(new BarEntry(i,valuesExpenses.get(i)));
+                        }
+                        for(int i=0; i<valuesIncomes.size(); i++){
+                            barEntryArrayList2.add(new BarEntry(i,valuesIncomes.get(i)));
+                        }
+                        for(int i=0; i<valuesTotal.size(); i++){
+                            barEntryArrayList3.add(new BarEntry(i,valuesTotal.get(i)));
+                        }
+
+                        BarDataSet expenses=new BarDataSet(barEntryArrayList,"Expenses");
+                        BarDataSet incomes=new BarDataSet(barEntryArrayList2,"Income");
+                        BarDataSet total=new BarDataSet(barEntryArrayList3,"Total");
+                        expenses.setColors(Color.RED);
+                        incomes.setColors(Color.GREEN);
+                        total.setColors(Color.BLUE);
+                        expensesChart.setDescription(description);
+                        incomeChart.setDescription(description);
+                        totalChart.setDescription(description);
+                        BarData incomeData=new BarData(incomes);
+                        BarData expensesData=new BarData(expenses);
+                        BarData totalData=new BarData(total);
+                        expensesChart.setData(expensesData);
+                        incomeChart.setData(incomeData);
+                        totalChart.setData(totalData);
+
+                        XAxis xAxis = expensesChart.getXAxis();
+                        xAxis.setValueFormatter(new IndexAxisValueFormatter(labelsName));
+                        xAxis.setPosition(XAxis.XAxisPosition.TOP);
+                        xAxis.setDrawGridLines(false);
+                        xAxis.setDrawAxisLine(false);
+                        xAxis.setLabelCount(labelsName.size());
+                        xAxis.setLabelRotationAngle(270);
+                        expensesChart.animateY(2000);
+                        expensesChart.invalidate();
+
+                        XAxis xAxis2 = incomeChart.getXAxis();
+                        xAxis2.setValueFormatter(new IndexAxisValueFormatter(labelsName));
+                        xAxis2.setPosition(XAxis.XAxisPosition.TOP);
+                        xAxis2.setDrawGridLines(false);
+                        xAxis2.setDrawAxisLine(false);
+                        xAxis2.setLabelCount(labelsName.size());
+                        xAxis2.setLabelRotationAngle(270);
+                        incomeChart.animateY(2000);
+                        incomeChart.invalidate();
+
+
+                        XAxis xAxis3 = incomeChart.getXAxis();
+                        xAxis3.setValueFormatter(new IndexAxisValueFormatter(labelsName));
+                        xAxis3.setPosition(XAxis.XAxisPosition.TOP);
+                        xAxis3.setDrawGridLines(false);
+                        xAxis3.setDrawAxisLine(false);
+                        xAxis3.setLabelCount(labelsName.size());
+                        xAxis3.setLabelRotationAngle(270);
+                        totalChart.animateY(2000);
+                        totalChart.invalidate();
+
+
+                        //-----------------------------------------------------------------
+
+
+
+
+                    }catch (Exception e){
+
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
 
 
 

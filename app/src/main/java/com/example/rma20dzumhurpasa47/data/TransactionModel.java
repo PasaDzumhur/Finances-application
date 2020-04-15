@@ -55,7 +55,7 @@ public class TransactionModel {
                         20,new Date(System.currentTimeMillis())));
                 add(new Transaction(simpleDate.parse("25/2/2020"),930,"14a", Transaction.Type.REGULARINCOME,"14",
                         20,simpleDate.parse("15/3/2020")));
-                add(new Transaction(simpleDate.parse("19/4/2020"),1000,"15a", Transaction.Type.REGULARPAYMENT,"15",
+                add(new Transaction(simpleDate.parse("19/4/2020"),1000,"15a", Transaction.Type.PURCHASE,"15",
                         20,simpleDate.parse("31/12/2020")));
 
                 add(new Transaction(simpleDate.parse("20/2/2020"),64000,"16a", Transaction.Type.INDIVIDUALINCOME,"bezze",
