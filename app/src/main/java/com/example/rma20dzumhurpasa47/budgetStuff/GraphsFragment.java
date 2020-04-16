@@ -258,7 +258,7 @@ public class GraphsFragment extends Fragment {
                         incomeChart.invalidate();
 
 
-                        XAxis xAxis3 = incomeChart.getXAxis();
+                        XAxis xAxis3 = totalChart.getXAxis();
                         xAxis3.setValueFormatter(new IndexAxisValueFormatter(labelsName));
                         xAxis3.setPosition(XAxis.XAxisPosition.TOP);
                         xAxis3.setDrawGridLines(false);
