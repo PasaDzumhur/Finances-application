@@ -184,6 +184,7 @@ public class GraphsFragment extends Fragment {
                         } else if (position==2) {
                             valuesExpenses = getPresenter().getDailyExpenses();
                             valuesIncomes = getPresenter().getDailyIncome();
+                            valuesTotal=new ArrayList<>();
                             for (int i = 0; i < valuesIncomes.size(); i++) {
                                 valuesTotal.add(valuesIncomes.get(i) - valuesExpenses.get(i));
                             }
