@@ -199,7 +199,7 @@ public class GraphsFragment extends Fragment {
                             valuesIncomes = presenter.getMonthIncome();
                             valuesTotal=new ArrayList<>();
                             for(int i=1; i<=12; i++){
-                                valuesTotal.add(valuesIncomes.get(i) - valuesExpenses.get(i));
+                                valuesTotal.add(valuesIncomes.get(i-1) - valuesExpenses.get(i-1));
                             }
                             labelsName=dajMjesece();
                             description.setText("Months");
