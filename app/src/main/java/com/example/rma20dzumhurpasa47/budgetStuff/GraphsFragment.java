@@ -133,8 +133,8 @@ public class GraphsFragment extends Fragment {
             incomeChart.invalidate();
 
             barEntryArrayList3=new ArrayList<>();
-            for(int i=0; i<12; i++){
-                barEntryArrayList3.add(new BarEntry(i,valuesIncomes.get(i)-valuesExpenses.get(i)));
+            for(int i=1; i<=12; i++){
+                barEntryArrayList3.add(new BarEntry(i,valuesIncomes.get(i-1)-valuesExpenses.get(i-1)));
             }
             BarDataSet barDataSet3=new BarDataSet(barEntryArrayList3,"MonthlyTotalStatus");
             barDataSet3.setColors(Color.RED);
@@ -197,7 +197,7 @@ public class GraphsFragment extends Fragment {
                             valuesExpenses = presenter.getMonthExpenses();
                             valuesIncomes = presenter.getMonthIncome();
                             valuesTotal=new ArrayList<>();
-                            for(int i=0; i<12; i++){
+                            for(int i=1; i<=12; i++){
                                 valuesTotal.add(valuesIncomes.get(i) - valuesExpenses.get(i));
                             }
                             labelsName=dajMjesece();

@@ -27,6 +27,7 @@ public class BudgetFragment extends Fragment {
 
     public interface SwipeToGraph{
         public void swipeToGraph();
+
     }
 
     @Nullable
@@ -71,7 +72,7 @@ public class BudgetFragment extends Fragment {
 
         view.setOnTouchListener(new OnSwipeTouchListener(getActivity()){
             public void onSwipeRight() {
-                //swipe.swipeToGraph();
+
             }
             public void onSwipeLeft() {
                 swipe.swipeToGraph();

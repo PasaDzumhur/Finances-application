@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -11,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -103,7 +105,7 @@ public class TransactionListFragment extends Fragment implements ITransactionLis
             Bundle savedInstanceState){
 
 
-        View fragmentView = inflater.inflate(R.layout.fragment_list,container,false);
+        final View fragmentView = inflater.inflate(R.layout.fragment_list,container,false);
         adapter1=new TransactionListAdapter(getActivity(),R.layout.list_element,new ArrayList<Transaction>());
         adapter2=new MySpinnerAdapter(getActivity(),R.layout.spinner_element,types);
         adapter3=new ArrayAdapter<String>(getActivity(),R.layout.support_simple_spinner_dropdown_item,sorts);
@@ -262,6 +264,21 @@ public class TransactionListFragment extends Fragment implements ITransactionLis
             }
         });
 
+
+        list.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                ScrollView mScrollView = fragmentView.findViewById(R.id.scrollViewList);
+                mScrollView.requestDisallowInterceptTouchEvent(true);
+                int action = motionEvent.getActionMasked();
+                switch (action){
+                    case MotionEvent.ACTION_UP:
+                        mScrollView.requestDisallowInterceptTouchEvent(false);
+                        break;
+                }
+                return false;
+            }
+        });
 
 
         return fragmentView;
