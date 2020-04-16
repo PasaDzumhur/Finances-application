@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements TransactionListFr
                     .addToBackStack(null).commit();
         }
     }
-
+    /*
     @Override
     public void buttonClicked() {
         if(!twoPaneMode){
@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements TransactionListFr
             getSupportFragmentManager().beginTransaction().replace(R.id.transactions_list,budgetFragment)
                     .addToBackStack(null).commit();
         }
-    }
+    }*/
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

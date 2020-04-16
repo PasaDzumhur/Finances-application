@@ -77,7 +77,7 @@ public class TransactionListFragment extends Fragment implements ITransactionLis
     }
     private OnItemClick onItemClick;
     private OnItemClick addTransClick;
-    private OnItemClick buttonClick;
+    //private OnItemClick buttonClick;
     private OnItemClick swipe;
 
 
@@ -86,7 +86,7 @@ public class TransactionListFragment extends Fragment implements ITransactionLis
     public interface OnItemClick {
         public void onItemClicked(Transaction transaction);
         public void addTransClicked();
-        public void buttonClicked();
+        //public void buttonClicked();
         public void swiped();
     }
 
@@ -137,7 +137,7 @@ public class TransactionListFragment extends Fragment implements ITransactionLis
         getPresenter().refreshTransactions();
         onItemClick=(OnItemClick)getActivity();
         addTransClick=(OnItemClick)getActivity();
-        buttonClick=(OnItemClick)getActivity();
+        //buttonClick=(OnItemClick)getActivity();
         swipe=(OnItemClick)getActivity();
         Intent intent = getActivity().getIntent();
         String action=intent.getAction();
@@ -257,10 +257,11 @@ public class TransactionListFragment extends Fragment implements ITransactionLis
 
         fragmentView.setOnTouchListener(new OnSwipeTouchListener(getActivity()){
             public void onSwipeRight() {
-                swipe.swiped();
+
             }
             public void onSwipeLeft() {
-                buttonClick.buttonClicked();
+                //buttonClick.buttonClicked();
+                swipe.swiped();
             }
         });
 
