@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class MainActivity extends AppCompatActivity implements TransactionListFragment.OnItemClick, BudgetFragment.Swipe {
+public class MainActivity extends AppCompatActivity implements TransactionListFragment.OnItemClick ,BudgetFragment.SwipeToGraph{
     private boolean twoPaneMode;
     public static Calendar calendar=Calendar.getInstance();
     private static String filter="";
@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements TransactionListFr
     public void swiped() {
         if(!twoPaneMode){
             Bundle arguments=new Bundle();
-            GraphsFragment budgetFragment=new GraphsFragment();
+            BudgetFragment budgetFragment=new BudgetFragment();
             budgetFragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction().replace(R.id.transactions_list,budgetFragment)
                     .addToBackStack(null).commit();
@@ -132,7 +132,16 @@ public class MainActivity extends AppCompatActivity implements TransactionListFr
     }
 
 
-
+    @Override
+    public void swipeToGraph() {
+        if(!twoPaneMode){
+            Bundle arguments=new Bundle();
+            GraphsFragment graphsFragment=new GraphsFragment();
+            graphsFragment.setArguments(arguments);
+            getSupportFragmentManager().beginTransaction().replace(R.id.transactions_list,graphsFragment)
+                    .addToBackStack(null).commit();
+        }
+    }
 }
 
 

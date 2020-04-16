@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import com.example.rma20dzumhurpasa47.R;
 import com.example.rma20dzumhurpasa47.data.Account;
 import com.example.rma20dzumhurpasa47.list.MainActivity;
+import com.example.rma20dzumhurpasa47.util.OnSwipeTouchListener;
 
 import static com.example.rma20dzumhurpasa47.list.MainActivity.account;
 
@@ -22,10 +23,10 @@ public class BudgetFragment extends Fragment {
     //private TextView budgetView,totalView,monthlyView;
     private EditText budgetText,totalText,monthlyText;
     private Button btnSaveAcc,button2;
-    public Swipe swipe;
+    private SwipeToGraph swipe;
 
-    public interface Swipe{
-        public void swiped();
+    public interface SwipeToGraph{
+        public void swipeToGraph();
     }
 
     @Nullable
@@ -39,11 +40,11 @@ public class BudgetFragment extends Fragment {
         monthlyText=view.findViewById(R.id.monthlyText);
         //monthlyView=view.findViewById(R.id.monthlyView);
         btnSaveAcc=view.findViewById(R.id.btnSaveAcc);
-        button2=view.findViewById(R.id.button2);
+        //button2=view.findViewById(R.id.button2);
         budgetText.setText(""+ account.getBudget());
         monthlyText.setText(""+ account.getMonthLimit());
         totalText.setText(""+ account.getTotalLimit());
-        swipe=(Swipe)getActivity();
+        swipe=(SwipeToGraph) getActivity();
 
 
         btnSaveAcc.setOnClickListener(new View.OnClickListener() {
@@ -61,10 +62,19 @@ public class BudgetFragment extends Fragment {
             }
         });
 
-        button2.setOnClickListener(new View.OnClickListener() {
+        /*button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                swipe.swiped();
+                //swipe.swiped();
+            }
+        });*/
+
+        view.setOnTouchListener(new OnSwipeTouchListener(getActivity()){
+            public void onSwipeRight() {
+                //swipe.swipeToGraph();
+            }
+            public void onSwipeLeft() {
+                swipe.swipeToGraph();
             }
         });
 

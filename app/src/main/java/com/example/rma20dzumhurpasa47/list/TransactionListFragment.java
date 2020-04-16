@@ -21,6 +21,7 @@ import com.example.rma20dzumhurpasa47.data.Account;
 import com.example.rma20dzumhurpasa47.data.Transaction;
 import com.example.rma20dzumhurpasa47.data.TransactionModel;
 import com.example.rma20dzumhurpasa47.detail.TransactionDetailFragment;
+import com.example.rma20dzumhurpasa47.util.OnSwipeTouchListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,7 +33,7 @@ import java.util.Date;
 import static com.example.rma20dzumhurpasa47.list.MainActivity.calendar;
 import static com.example.rma20dzumhurpasa47.list.MainActivity.setFilter;
 
-public class TransactionListFragment extends Fragment implements ITransactionListView {
+public class TransactionListFragment extends Fragment implements ITransactionListView{
 
     private ListView list;
     private ITransactionListPresenter transListPresenter;
@@ -47,7 +48,7 @@ public class TransactionListFragment extends Fragment implements ITransactionLis
     private ImageButton right;
     private Spinner spinner2;
     private Button btnAddTrans;
-    private Button button;
+    //private Button button;
     //public static Account account=new Account(100000,100000,100000);
 
     private ArrayList<String> types=new ArrayList<String>(){{
@@ -75,6 +76,7 @@ public class TransactionListFragment extends Fragment implements ITransactionLis
     private OnItemClick onItemClick;
     private OnItemClick addTransClick;
     private OnItemClick buttonClick;
+    private OnItemClick swipe;
 
 
 
@@ -83,6 +85,7 @@ public class TransactionListFragment extends Fragment implements ITransactionLis
         public void onItemClicked(Transaction transaction);
         public void addTransClicked();
         public void buttonClicked();
+        public void swiped();
     }
 
 
@@ -123,7 +126,7 @@ public class TransactionListFragment extends Fragment implements ITransactionLis
         text2.setText("Limit: "+MainActivity.account.getTotalLimit());
         list.setOnItemClickListener(listItemClickListener);
         btnAddTrans=fragmentView.findViewById(R.id.btnAddTrans);
-        button=fragmentView.findViewById(R.id.button);
+        //button=fragmentView.findViewById(R.id.button);
         //calendar.setTime(new Date(System.currentTimeMillis()));
         textMonth=fragmentView.findViewById(R.id.textMonth);
         textMonth.setText(new SimpleDateFormat("MMMM").format(calendar.getTime()));
@@ -133,6 +136,7 @@ public class TransactionListFragment extends Fragment implements ITransactionLis
         onItemClick=(OnItemClick)getActivity();
         addTransClick=(OnItemClick)getActivity();
         buttonClick=(OnItemClick)getActivity();
+        swipe=(OnItemClick)getActivity();
         Intent intent = getActivity().getIntent();
         String action=intent.getAction();
         String type = intent.getType();
@@ -145,12 +149,12 @@ public class TransactionListFragment extends Fragment implements ITransactionLis
                 }
             }
         }*/
-        button.setOnClickListener(new View.OnClickListener() {
+        /*button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 buttonClick.buttonClicked();
             }
-        });
+        });*/
 
         spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -249,7 +253,14 @@ public class TransactionListFragment extends Fragment implements ITransactionLis
 
 
 
-
+        fragmentView.setOnTouchListener(new OnSwipeTouchListener(getActivity()){
+            public void onSwipeRight() {
+                swipe.swiped();
+            }
+            public void onSwipeLeft() {
+                buttonClick.buttonClicked();
+            }
+        });
 
 
 
