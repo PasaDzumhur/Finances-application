@@ -38,7 +38,7 @@ import static com.example.rma20dzumhurpasa47.list.MainActivity.setFilter;
 public class TransactionListFragment extends Fragment implements ITransactionListView{
 
     private ListView list;
-    private ITransactionListPresenter transListPresenter;
+    private ITransactionListPresenter transListPresenter=null;
     private TransactionListAdapter adapter1;
     private MySpinnerAdapter adapter2;
     private ArrayAdapter<String> adapter3;
@@ -104,7 +104,7 @@ public class TransactionListFragment extends Fragment implements ITransactionLis
             ViewGroup container,
             Bundle savedInstanceState){
 
-
+        getPresenter();
         final View fragmentView = inflater.inflate(R.layout.fragment_list,container,false);
         adapter1=new TransactionListAdapter(getActivity(),R.layout.list_element,new ArrayList<Transaction>());
         adapter2=new MySpinnerAdapter(getActivity(),R.layout.spinner_element,types);

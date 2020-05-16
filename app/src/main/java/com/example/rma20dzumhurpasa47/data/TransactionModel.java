@@ -13,7 +13,7 @@ import java.util.HashMap;
 
 public class TransactionModel {
     public static ArrayList<Transaction> trans = new ArrayList<Transaction>() {
-        {
+        {/*
             String date = "15/2/2020";
             String date1="2/2/2020";
             SimpleDateFormat simpleDate = new SimpleDateFormat("dd/MM/yyyy");
@@ -73,7 +73,7 @@ public class TransactionModel {
             } catch (ParseException e) {
                 System.out.println("greska");
             }
-
+*/
         }
 
 

@@ -26,7 +26,7 @@ public class TransactionListPresenter implements ITransactionListPresenter {
 
     @Override
     public void refreshTransactions() {
-        view.setTransactions(interactor.get());
+        view.setTransactions(interactor.getTransactions());
         view.notifyTransactionListDataSetChanged();
 
     }
@@ -72,7 +72,7 @@ public class TransactionListPresenter implements ITransactionListPresenter {
     @Override
     public void refreshSortTitleAsc() {
         ArrayList<Transaction> list = new ArrayList<>();
-        list.addAll(interactor.get());
+        list.addAll(interactor.getTransactions());
         sortByTitle(list);
         view.setTransactions(list);
         view.notifyTransactionListDataSetChanged();
@@ -83,7 +83,7 @@ public class TransactionListPresenter implements ITransactionListPresenter {
     @Override
     public void refreshSortTitleDesc() {
         ArrayList<Transaction> list = new ArrayList<>();
-        list.addAll(interactor.get());
+        list.addAll(interactor.getTransactions());
         sortByTitle(list);
         ArrayList<Transaction> reverseList = new ArrayList<>();
         for (Transaction t : list) {
@@ -97,7 +97,7 @@ public class TransactionListPresenter implements ITransactionListPresenter {
     @Override
     public void refreshSortPriceDesc() throws ParseException {
         ArrayList<Transaction> list = new ArrayList<>();
-        list.addAll(interactor.get());
+        list.addAll(interactor.getTransactions());
         sortByPrice(list);
         view.setTransactions(list);
         view.notifyTransactionListDataSetChanged();
@@ -106,7 +106,7 @@ public class TransactionListPresenter implements ITransactionListPresenter {
     @Override
     public void refreshSortPriceAsc() throws ParseException {
         ArrayList<Transaction> list = new ArrayList<>();
-        list.addAll(interactor.get());
+        list.addAll(interactor.getTransactions());
         sortByPrice(list);
         ArrayList<Transaction> reverseList = new ArrayList<>();
         for (Transaction t : list) {
@@ -120,7 +120,7 @@ public class TransactionListPresenter implements ITransactionListPresenter {
     @Override
     public void refreshSortDateDesc() {
         ArrayList<Transaction> list = new ArrayList<>();
-        list.addAll(interactor.get());
+        list.addAll(interactor.getTransactions());
         sortByDate(list);
         ArrayList<Transaction> reverseList = new ArrayList<>();
         for (Transaction t : list) {
@@ -134,7 +134,7 @@ public class TransactionListPresenter implements ITransactionListPresenter {
     @Override
     public void refreshSortDateAsc() {
         ArrayList<Transaction> list = new ArrayList<>();
-        list.addAll(interactor.get());
+        list.addAll(interactor.getTransactions());
         sortByDate(list);
         view.setTransactions(list);
         view.notifyTransactionListDataSetChanged();

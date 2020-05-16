@@ -1,16 +1,147 @@
 package com.example.rma20dzumhurpasa47.list;
 
+import android.os.AsyncTask;
+import android.view.SurfaceControl;
+
 import com.example.rma20dzumhurpasa47.data.Transaction;
 import com.example.rma20dzumhurpasa47.data.TransactionModel;
 import com.example.rma20dzumhurpasa47.list.ITransactionListInteractor;
 import com.example.rma20dzumhurpasa47.list.MainActivity;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 import static com.example.rma20dzumhurpasa47.list.MainActivity.calendar;
 
-public class TransactionListInteractor implements ITransactionListInteractor {
+public class TransactionListInteractor extends AsyncTask<String,Integer,Void> implements ITransactionListInteractor {
+
+    private String api_id="188618e2-cc65-4c5b-acbc-0579d1a2c92d";
+    ArrayList<Transaction> transactions=new ArrayList<>();
+
+    public String convertStreamToString(InputStream is) {
+        BufferedReader reader = new BufferedReader(new
+                InputStreamReader(is));
+        StringBuilder sb = new StringBuilder();
+        String line = null;
+        try {
+            while ((line = reader.readLine()) != null) {
+                sb.append(line + "\n");
+            }
+        } catch (IOException e) {
+        } finally {
+            try {
+                is.close();
+            } catch (IOException e) {
+            }
+        }
+
+        return sb.toString();
+    }
+    private static Transaction.Type getTypeFromId(int id){
+        if(id==1) return Transaction.Type.REGULARPAYMENT;
+        else if(id==2) return Transaction.Type.REGULARINCOME;
+        else if(id==3) return Transaction.Type.PURCHASE;
+        else if(id==4) return Transaction.Type.INDIVIDUALINCOME;
+        else if(id==5) return Transaction.Type.INDIVIDUALPAYMENT;
+        return null;
+    }
+
+    public TransactionListInteractor() {
+        this.execute("transactions");
+    }
+
+    @Override
+    protected Void doInBackground(String... strings) {
+        String query=null;
+        for(String pom : strings) {
+
+
+            try {
+                query = URLEncoder.encode(pom, "utf-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            String url1 = "http://rma20-app-rmaws.apps.us-west-1.starter.openshift-online.com/account/" + api_id + "/" + query;
+            try {
+                URL url = new URL(url1);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                String result = convertStreamToString(in);
+                JSONObject jo = new JSONObject(result);
+                JSONArray results = jo.getJSONArray("transactions");
+
+                SimpleDateFormat simpleDate = new SimpleDateFormat("dd-Mm-yyyy");
+
+                for (int i = 0; i < results.length(); i++) {
+                    JSONObject transaction = results.getJSONObject(i);
+                    String title = transaction.getString("title");
+                    String dateString = transaction.getString("date");
+
+                    Date  startDate =null;
+                    if(dateString!=null)  startDate = simpleDate.parse(dateString);
+                    String dateString2 = transaction.getString("endDate");
+                    Date endDate = null;
+                    if(dateString2!=null) endDate = simpleDate.parse(dateString);
+                    String itemDescription = transaction.getString("itemDescription");
+                    //Integer transactionInterval = transaction.getInt("transactionInterval");
+                    int transactionInterval=0;
+                    String intervalHelp = transaction.getString("transactionInterval");
+                    if(!intervalHelp.equals("null")) transactionInterval = Integer.parseInt(intervalHelp);
+                    Double amount = transaction.getDouble("amount");
+                    Transaction.Type type = getTypeFromId(transaction.getInt("TransactionTypeId"));
+                    transactions.add(new Transaction(startDate,amount,title,type,itemDescription,transactionInterval,endDate));
+                }
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+
+        return null;
+    }
+    @Override
+    public ArrayList<Transaction> getTransactions(){
+        return transactions;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*
     private Calendar pom=Calendar.getInstance();
     @Override
     public ArrayList<Transaction> get() {
@@ -121,7 +252,7 @@ public class TransactionListInteractor implements ITransactionListInteractor {
         }
 
         return transfilter;
-    }
+    }*/
 
 
 }

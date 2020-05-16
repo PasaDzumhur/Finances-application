@@ -88,7 +88,8 @@ public class Transaction implements Parcelable {
     };
 
     public static boolean provjeraDuzine(String title) {
-        if (title.length() > 14 || title.length() < 3) return false;
+        //System.out.println(title +" " + title.length());
+        if (title.length() > 16 || title.length() < 3) return false;
         return true;
     }
 
