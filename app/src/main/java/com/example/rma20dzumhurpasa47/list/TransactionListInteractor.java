@@ -1,12 +1,8 @@
 package com.example.rma20dzumhurpasa47.list;
 
 import android.os.AsyncTask;
-import android.view.SurfaceControl;
 
 import com.example.rma20dzumhurpasa47.data.Transaction;
-import com.example.rma20dzumhurpasa47.data.TransactionModel;
-import com.example.rma20dzumhurpasa47.list.ITransactionListInteractor;
-import com.example.rma20dzumhurpasa47.list.MainActivity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -16,21 +12,17 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-
-import static com.example.rma20dzumhurpasa47.list.MainActivity.calendar;
 
 public class TransactionListInteractor extends AsyncTask<String,Integer,Void> implements ITransactionListInteractor {
 
     private String api_id="188618e2-cc65-4c5b-acbc-0579d1a2c92d";
     ArrayList<Transaction> transactions=new ArrayList<>();
+    private TransactionSearchDone caller;
 
     public String convertStreamToString(InputStream is) {
         BufferedReader reader = new BufferedReader(new
@@ -60,22 +52,23 @@ public class TransactionListInteractor extends AsyncTask<String,Integer,Void> im
         return null;
     }
 
-    public TransactionListInteractor() {
-        this.execute("transactions");
+    public TransactionListInteractor(TransactionSearchDone caller) {
+        execute("");
+        this.caller=caller;
     }
 
     @Override
     protected Void doInBackground(String... strings) {
-        String query=null;
-        for(String pom : strings) {
+        //String query=null;
+        for(int query=0; ; query++) {
 
 
-            try {
+            /*try {
                 query = URLEncoder.encode(pom, "utf-8");
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
-            }
-            String url1 = "http://rma20-app-rmaws.apps.us-west-1.starter.openshift-online.com/account/" + api_id + "/" + query;
+            }*/
+            String url1 = "http://rma20-app-rmaws.apps.us-west-1.starter.openshift-online.com/account/" + api_id + "/transactions?page=" + query;
             try {
                 URL url = new URL(url1);
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -83,6 +76,10 @@ public class TransactionListInteractor extends AsyncTask<String,Integer,Void> im
                 String result = convertStreamToString(in);
                 JSONObject jo = new JSONObject(result);
                 JSONArray results = jo.getJSONArray("transactions");
+                if(results.length()==0) {
+                    //System.out.println("Gotovo----------------------------------------------------------------------------------------------------------");
+                    break;
+                }
 
                 SimpleDateFormat simpleDate = new SimpleDateFormat("dd-Mm-yyyy");
 
@@ -118,6 +115,16 @@ public class TransactionListInteractor extends AsyncTask<String,Integer,Void> im
     @Override
     public ArrayList<Transaction> getTransactions(){
         return transactions;
+    }
+
+    @Override
+    protected void onPostExecute(Void aVoid){
+        super.onPostExecute(aVoid);
+        caller.onDone(transactions);
+    }
+
+    public interface TransactionSearchDone {
+        public void onDone(ArrayList<Transaction> results);
     }
 
 

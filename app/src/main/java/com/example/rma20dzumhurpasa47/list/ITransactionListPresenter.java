@@ -1,6 +1,12 @@
 package com.example.rma20dzumhurpasa47.list;
 
+import androidx.fragment.app.ListFragment;
+
+import com.example.rma20dzumhurpasa47.data.Transaction;
+
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 public interface ITransactionListPresenter {
     void refreshTransactions();
@@ -10,4 +16,5 @@ public interface ITransactionListPresenter {
     void refreshSortTitleDesc();
     void refreshSortDateAsc();
     void refreshSortDateDesc();
+    ArrayList<Transaction> getTransactions();
 }

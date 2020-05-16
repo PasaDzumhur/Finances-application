@@ -281,7 +281,9 @@ public class TransactionListFragment extends Fragment implements ITransactionLis
             }
         });
 
-
+        //getPresenter().refreshTransactions();
+        //setTransactions(getPresenter().getTransactions());
+        //adapter1.notifyDataSetChanged();
         return fragmentView;
 
 

@@ -3,16 +3,11 @@ package com.example.rma20dzumhurpasa47.list;
 import android.content.Context;
 
 import com.example.rma20dzumhurpasa47.data.Transaction;
-import com.example.rma20dzumhurpasa47.list.ITransactionListInteractor;
-import com.example.rma20dzumhurpasa47.list.ITransactionListPresenter;
-import com.example.rma20dzumhurpasa47.list.ITransactionListView;
-import com.example.rma20dzumhurpasa47.list.MainActivity;
-import com.example.rma20dzumhurpasa47.list.TransactionListInteractor;
 
 import java.text.ParseException;
 import java.util.ArrayList;
 
-public class TransactionListPresenter implements ITransactionListPresenter {
+public class TransactionListPresenter implements ITransactionListPresenter, TransactionListInteractor.TransactionSearchDone {
 
     private ITransactionListView view;
     private ITransactionListInteractor interactor;
@@ -20,14 +15,15 @@ public class TransactionListPresenter implements ITransactionListPresenter {
 
     public TransactionListPresenter(ITransactionListView view, Context context) {
         this.view = view;
-        this.interactor = new TransactionListInteractor();
+        //new TransactionListInteractor((TransactionListInteractor.OnMoviesSearchDone)this).execute("");
+        this.interactor = new TransactionListInteractor((TransactionListInteractor.TransactionSearchDone)this);
         this.context = context;
     }
 
     @Override
     public void refreshTransactions() {
-        view.setTransactions(interactor.getTransactions());
-        view.notifyTransactionListDataSetChanged();
+        //view.setTransactions(interactor.getTransactions());
+        //view.notifyTransactionListDataSetChanged();
 
     }
 
@@ -132,11 +128,22 @@ public class TransactionListPresenter implements ITransactionListPresenter {
     }
 
     @Override
+    public ArrayList<Transaction> getTransactions() {
+        return interactor.getTransactions();
+    }
+
+    @Override
     public void refreshSortDateAsc() {
         ArrayList<Transaction> list = new ArrayList<>();
         list.addAll(interactor.getTransactions());
         sortByDate(list);
         view.setTransactions(list);
+        view.notifyTransactionListDataSetChanged();
+    }
+
+    @Override
+    public void onDone(ArrayList<Transaction> results) {
+        view.setTransactions(getTransactions());
         view.notifyTransactionListDataSetChanged();
     }
 }
