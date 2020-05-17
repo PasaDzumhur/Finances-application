@@ -16,7 +16,7 @@ public class TransactionListPresenter implements ITransactionListPresenter, Tran
     public TransactionListPresenter(ITransactionListView view, Context context) {
         this.view = view;
         //new TransactionListInteractor((TransactionListInteractor.OnMoviesSearchDone)this).execute("");
-        this.interactor = new TransactionListInteractor((TransactionListInteractor.TransactionSearchDone)this);
+        this.interactor = new TransactionListInteractor((TransactionListInteractor.TransactionSearchDone)this,"amount.asc");
         this.context = context;
     }
 
@@ -67,17 +67,21 @@ public class TransactionListPresenter implements ITransactionListPresenter, Tran
 
     @Override
     public void refreshSortTitleAsc() {
+        /*
         ArrayList<Transaction> list = new ArrayList<>();
         list.addAll(interactor.getTransactions());
         sortByTitle(list);
         view.setTransactions(list);
-        view.notifyTransactionListDataSetChanged();
+        view.notifyTransactionListDataSetChanged();*/
+        this.interactor = new TransactionListInteractor((TransactionListInteractor.TransactionSearchDone)this,"title.asc");
 
 
     }
 
     @Override
     public void refreshSortTitleDesc() {
+        this.interactor = new TransactionListInteractor((TransactionListInteractor.TransactionSearchDone)this,"title.desc");
+        /*
         ArrayList<Transaction> list = new ArrayList<>();
         list.addAll(interactor.getTransactions());
         sortByTitle(list);
@@ -86,21 +90,26 @@ public class TransactionListPresenter implements ITransactionListPresenter, Tran
             reverseList.add(0, t);
         }
         view.setTransactions(reverseList);
-        view.notifyTransactionListDataSetChanged();
+        view.notifyTransactionListDataSetChanged();*/
+
 
     }
 
     @Override
     public void refreshSortPriceDesc() throws ParseException {
+        this.interactor = new TransactionListInteractor((TransactionListInteractor.TransactionSearchDone)this,"amount.desc");
+        /*
         ArrayList<Transaction> list = new ArrayList<>();
         list.addAll(interactor.getTransactions());
         sortByPrice(list);
         view.setTransactions(list);
-        view.notifyTransactionListDataSetChanged();
+        view.notifyTransactionListDataSetChanged();*/
     }
 
     @Override
     public void refreshSortPriceAsc() throws ParseException {
+        this.interactor = new TransactionListInteractor((TransactionListInteractor.TransactionSearchDone)this,"amount.asc");
+        /*
         ArrayList<Transaction> list = new ArrayList<>();
         list.addAll(interactor.getTransactions());
         sortByPrice(list);
@@ -109,12 +118,14 @@ public class TransactionListPresenter implements ITransactionListPresenter, Tran
             reverseList.add(0, t);
         }
         view.setTransactions(reverseList);
-        view.notifyTransactionListDataSetChanged();
+        view.notifyTransactionListDataSetChanged();*/
 
     }
 
     @Override
     public void refreshSortDateDesc() {
+        this.interactor = new TransactionListInteractor((TransactionListInteractor.TransactionSearchDone)this,"date.desc");
+        /*
         ArrayList<Transaction> list = new ArrayList<>();
         list.addAll(interactor.getTransactions());
         sortByDate(list);
@@ -123,7 +134,7 @@ public class TransactionListPresenter implements ITransactionListPresenter, Tran
             reverseList.add(0, t);
         }
         view.setTransactions(reverseList);
-        view.notifyTransactionListDataSetChanged();
+        view.notifyTransactionListDataSetChanged();*/
 
     }
 
@@ -134,11 +145,13 @@ public class TransactionListPresenter implements ITransactionListPresenter, Tran
 
     @Override
     public void refreshSortDateAsc() {
+        /*
         ArrayList<Transaction> list = new ArrayList<>();
         list.addAll(interactor.getTransactions());
         sortByDate(list);
         view.setTransactions(list);
-        view.notifyTransactionListDataSetChanged();
+        view.notifyTransactionListDataSetChanged();*/
+        this.interactor = new TransactionListInteractor((TransactionListInteractor.TransactionSearchDone)this,"date.asc");
     }
 
     @Override

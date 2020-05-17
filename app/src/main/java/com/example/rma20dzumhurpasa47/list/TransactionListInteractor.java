@@ -52,10 +52,12 @@ public class TransactionListInteractor extends AsyncTask<String,Integer,Void> im
         return null;
     }
 
-    public TransactionListInteractor(TransactionSearchDone caller) {
-        execute("");
+    public TransactionListInteractor(TransactionSearchDone caller, String sort) {
+        execute(sort);
         this.caller=caller;
     }
+
+
 
     @Override
     protected Void doInBackground(String... strings) {
@@ -68,7 +70,7 @@ public class TransactionListInteractor extends AsyncTask<String,Integer,Void> im
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }*/
-            String url1 = "http://rma20-app-rmaws.apps.us-west-1.starter.openshift-online.com/account/" + api_id + "/transactions?page=" + query;
+            String url1 = "http://rma20-app-rmaws.apps.us-west-1.starter.openshift-online.com/account/" + api_id + "/transactions/filter?sort="+strings[0]+"&page=" + query;
             try {
                 URL url = new URL(url1);
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -102,6 +104,7 @@ public class TransactionListInteractor extends AsyncTask<String,Integer,Void> im
                     Transaction.Type type = getTypeFromId(transaction.getInt("TransactionTypeId"));
                     int id = transaction.getInt("id");
                     transactions.add(new Transaction(startDate,amount,title,type,itemDescription,transactionInterval,endDate,id));
+
                 }
 
 
