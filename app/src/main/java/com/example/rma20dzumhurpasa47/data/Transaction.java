@@ -104,7 +104,10 @@ public class Transaction implements Parcelable {
             endDate=null;
         }
         if(endDate!=null){
-            if(endDate.before(date)) throw new IllegalArgumentException("The end date can't be before de start date!");
+            if(endDate.before(date)) {
+                System.out.println("date: "+date+ " endDate: "+endDate+ " ----------");
+                throw new IllegalArgumentException("The end date can't be before de start date!");
+            }
         }
         this.date = date;
         this.amount = amount;
@@ -136,7 +139,9 @@ public class Transaction implements Parcelable {
 
     }
 
-
+    public int getId() {
+        return id;
+    }
 
     public Date getDate() {
         return date;

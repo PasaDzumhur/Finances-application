@@ -14,8 +14,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class TransactionListInteractor extends AsyncTask<String,Integer,Void> implements ITransactionListInteractor {
@@ -23,6 +25,7 @@ public class TransactionListInteractor extends AsyncTask<String,Integer,Void> im
     private String api_id="188618e2-cc65-4c5b-acbc-0579d1a2c92d";
     ArrayList<Transaction> transactions=new ArrayList<>();
     private TransactionSearchDone caller;
+    private String sort =null;
 
     public String convertStreamToString(InputStream is) {
         BufferedReader reader = new BufferedReader(new
@@ -53,6 +56,7 @@ public class TransactionListInteractor extends AsyncTask<String,Integer,Void> im
     }
 
     public TransactionListInteractor(TransactionSearchDone caller, String sort) {
+        this.sort=sort;
         execute(sort);
         this.caller=caller;
     }
@@ -112,8 +116,14 @@ public class TransactionListInteractor extends AsyncTask<String,Integer,Void> im
                 e.printStackTrace();
             }
         }
-
-
+        /*
+        SimpleDateFormat simpleDate = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            transactions.add(new Transaction(simpleDate.parse("16/3/2020"),2500,"4aa", Transaction.Type.REGULARINCOME,"4",
+                    20,simpleDate.parse("15/12/2020"),1));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }*/
         return null;
     }
     @Override
@@ -124,6 +134,58 @@ public class TransactionListInteractor extends AsyncTask<String,Integer,Void> im
     @Override
     protected void onPostExecute(Void aVoid){
         super.onPostExecute(aVoid);
+
+        ArrayList<Transaction> regularTransactions = new ArrayList<>();
+
+        for(int i=0; i<transactions.size(); i++){
+            Transaction transaction = transactions.get(i);
+            if(transaction.getType() == Transaction.Type.REGULARINCOME || transaction.getType() == Transaction.Type.REGULARPAYMENT){
+
+                Calendar calendar= Calendar.getInstance();
+                calendar.setTime(transaction.getDate());
+                calendar.add(Calendar.DAY_OF_YEAR,transaction.getTransactionInterval());
+                while(calendar.getTime().before(transaction.getEndDate())){
+                    //calendar.add(Calendar.DAY_OF_YEAR,transaction.getTransactionInterval());
+                    regularTransactions.add(new Transaction(calendar.getTime(),transaction.getAmount(),transaction.getTitle(),transaction.getType(),transaction.getItemDescription(),
+                            transaction.getTransactionInterval(),transaction.getEndDate(),transaction.getId()));
+                    calendar.add(Calendar.DAY_OF_YEAR,transaction.getTransactionInterval());
+
+                }
+
+
+
+
+            }else continue;
+        }
+        //System.out.println("------------------------------------------------------------"+regularTransactions.size());
+        for(Transaction transaction : regularTransactions){
+
+            for(int i=0; i<transactions.size(); i++){
+                //Calendar calendar = Calendar.getInstance();
+                //calendar.setTime(transaction.getDate());
+
+                if(sort.equals("date.asc")){
+                    if(transaction.getDate().before(transactions.get(i).getDate())){
+                        transactions.add(i,transaction);
+                        break;
+                    }
+                }else if(sort.equals("date.desc")){
+                    if(transaction.getDate().after(transactions.get(i).getDate())){
+                        transactions.add(i,transaction);
+                        break;
+                    }
+                }else {
+                    if(transaction.getId()==transactions.get(i).getId()){
+                        transactions.add(i,transaction);
+                        break;
+                    }
+                }
+            }
+
+
+        }
+
+
         caller.onDone(transactions);
     }
 
