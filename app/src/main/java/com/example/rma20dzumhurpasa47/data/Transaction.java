@@ -14,6 +14,7 @@ public class Transaction implements Parcelable {
     private Date date;
     private double amount;
     private String title;
+    private int id=-1;
 
 
 
@@ -56,6 +57,7 @@ public class Transaction implements Parcelable {
         endDate=new Date();
         pom=in.readLong();
         endDate.setTime(pom);
+        id=in.readInt();
     }
 
     @Override
@@ -67,6 +69,7 @@ public class Transaction implements Parcelable {
         dest.writeString(itemDescription);
         dest.writeInt(transactionInterval);
         dest.writeLong(endDate.getTime());
+        dest.writeInt(id);
 
     }
 
@@ -93,6 +96,26 @@ public class Transaction implements Parcelable {
         return true;
     }
 
+    public Transaction(Date date, double amount, String title, Type type, String itemDescription, int transactionInterval, Date endDate, int id) {
+        if(!provjeraDuzine(title)) throw new IllegalArgumentException("Ne valja title");
+        if(type.equals(Type.REGULARINCOME) || type.equals(Type.INDIVIDUALINCOME)) itemDescription=null;
+        if(!(type.equals(Type.REGULARINCOME) || type.equals(Type.REGULARPAYMENT))){
+            transactionInterval=0;
+            endDate=null;
+        }
+        if(endDate!=null){
+            if(endDate.before(date)) throw new IllegalArgumentException("The end date can't be before de start date!");
+        }
+        this.date = date;
+        this.amount = amount;
+        this.title = title;
+        this.type = type;
+        this.itemDescription = itemDescription;
+        this.transactionInterval = transactionInterval;
+        this.endDate = endDate;
+        this.id=id;
+    }
+
     public Transaction(Date date, double amount, String title, Type type, String itemDescription, int transactionInterval, Date endDate) {
         if(!provjeraDuzine(title)) throw new IllegalArgumentException("Ne valja title");
         if(type.equals(Type.REGULARINCOME) || type.equals(Type.INDIVIDUALINCOME)) itemDescription=null;
@@ -110,6 +133,7 @@ public class Transaction implements Parcelable {
         this.itemDescription = itemDescription;
         this.transactionInterval = transactionInterval;
         this.endDate = endDate;
+
     }
 
 

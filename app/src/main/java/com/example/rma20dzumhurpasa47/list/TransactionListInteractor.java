@@ -100,7 +100,8 @@ public class TransactionListInteractor extends AsyncTask<String,Integer,Void> im
                     if(!intervalHelp.equals("null")) transactionInterval = Integer.parseInt(intervalHelp);
                     Double amount = transaction.getDouble("amount");
                     Transaction.Type type = getTypeFromId(transaction.getInt("TransactionTypeId"));
-                    transactions.add(new Transaction(startDate,amount,title,type,itemDescription,transactionInterval,endDate));
+                    int id = transaction.getInt("id");
+                    transactions.add(new Transaction(startDate,amount,title,type,itemDescription,transactionInterval,endDate,id));
                 }
 
 
