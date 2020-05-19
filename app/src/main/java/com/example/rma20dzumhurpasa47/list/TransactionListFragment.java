@@ -161,7 +161,9 @@ public class TransactionListFragment extends Fragment implements ITransactionLis
         spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
                 setFilter((String) spinner1.getItemAtPosition(position));
+                /*
                 try {
                     if (spinner2.getSelectedItem().equals("Price - Ascending"))
                         getPresenter().refreshSortPriceAsc();
@@ -178,7 +180,17 @@ public class TransactionListFragment extends Fragment implements ITransactionLis
                     else getPresenter().refreshTransactions();
                 }catch (ParseException e){
                     e.printStackTrace();
-                }
+                }*/
+                String typeString = (String) spinner1.getItemAtPosition(position);
+                //if(!typeString.equals("GIMMEALL")) {
+                    Transaction.Type type = Transaction.Type.gimmeType((String) spinner1.getItemAtPosition(position));
+                    //setTransactions(getPresenter().filter(type));
+                    setTransactions(getPresenter().getTransactions());
+                    notifyTransactionListDataSetChanged();
+                //}else{
+                 //   setTransactions(getPresenter().getTransactions());
+                 //   notifyTransactionListDataSetChanged();
+                //}
 
             }
 

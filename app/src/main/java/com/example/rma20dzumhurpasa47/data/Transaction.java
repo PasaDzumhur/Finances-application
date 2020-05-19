@@ -37,7 +37,7 @@ public class Transaction implements Parcelable {
             else if(tip.equalsIgnoreCase("INDIVIDUALINCOME")) return INDIVIDUALINCOME;
             else if(tip.equalsIgnoreCase("REGULARINCOME")) return REGULARINCOME;
 
-            throw new IllegalArgumentException();
+            return null;
         }
 
     };

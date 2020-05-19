@@ -27,13 +27,17 @@ public class TransactionListPresenter implements ITransactionListPresenter, Tran
         //view.notifyTransactionListDataSetChanged();
 
     }
-    private static ArrayList<Transaction> filterMonth(ArrayList<Transaction> list){
+    private static ArrayList<Transaction> filter(ArrayList<Transaction> list){
         Calendar calendarHelp = Calendar.getInstance();
         ArrayList<Transaction> filter = new ArrayList<>();
+        Transaction.Type type = Transaction.Type.gimmeType(MainActivity.getFilter());
         for(Transaction transaction : list){
             calendarHelp.setTime(transaction.getDate());
             if(calendarHelp.get(Calendar.MONTH)==MainActivity.calendar.get(Calendar.MONTH)
-            && calendarHelp.get(Calendar.YEAR)==MainActivity.calendar.get(Calendar.YEAR)) filter.add(transaction);
+            && calendarHelp.get(Calendar.YEAR)==MainActivity.calendar.get(Calendar.YEAR)) {
+                if(type == null) filter.add(transaction);
+                else if(transaction.getType()==type) filter.add(transaction);
+            }
         }
         return filter;
     }
@@ -151,7 +155,18 @@ public class TransactionListPresenter implements ITransactionListPresenter, Tran
 
     @Override
     public ArrayList<Transaction> getTransactions() {
-        return interactor.getTransactions();
+        return filter(interactor.getTransactions());
+    }
+
+    @Override
+    public ArrayList<Transaction> getTypeFilter(Transaction.Type type) {
+
+        ArrayList<Transaction> filter = new ArrayList<>();
+        ArrayList<Transaction> unfiltered = interactor.getTransactions();
+        for(Transaction transaction : unfiltered){
+            if(transaction.getType()==type) filter.add(transaction);
+        }
+        return filter;
     }
 
     @Override
@@ -167,7 +182,7 @@ public class TransactionListPresenter implements ITransactionListPresenter, Tran
 
     @Override
     public void onDone(ArrayList<Transaction> results) {
-        view.setTransactions(filterMonth(getTransactions()));
+        view.setTransactions(filter(getTransactions()));
         view.notifyTransactionListDataSetChanged();
     }
 }

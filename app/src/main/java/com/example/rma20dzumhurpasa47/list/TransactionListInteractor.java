@@ -88,6 +88,7 @@ public class TransactionListInteractor extends AsyncTask<String,Integer,Void> im
                 }
 
                 SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd");
+                //ako bude kakvih problema ovaj koristit yyyy-MM-dd'T'HH:mm:ss.SSS
 
                 for (int i = 0; i < results.length(); i++) {
                     JSONObject transaction = results.getJSONObject(i);

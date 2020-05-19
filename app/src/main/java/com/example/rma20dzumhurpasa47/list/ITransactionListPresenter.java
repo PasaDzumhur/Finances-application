@@ -17,4 +17,5 @@ public interface ITransactionListPresenter {
     void refreshSortDateAsc();
     void refreshSortDateDesc();
     ArrayList<Transaction> getTransactions();
+    ArrayList<Transaction> getTypeFilter(Transaction.Type type);
 }
