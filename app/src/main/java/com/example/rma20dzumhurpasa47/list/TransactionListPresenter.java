@@ -3,6 +3,7 @@ package com.example.rma20dzumhurpasa47.list;
 import android.content.Context;
 
 import com.example.rma20dzumhurpasa47.data.Transaction;
+import com.example.rma20dzumhurpasa47.data.TransactionModel;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -183,6 +184,7 @@ public class TransactionListPresenter implements ITransactionListPresenter, Tran
     @Override
     public void onDone(ArrayList<Transaction> results) {
         view.setTransactions(filter(getTransactions()));
+        TransactionModel.trans.addAll(getTransactions());
         view.notifyTransactionListDataSetChanged();
     }
 }

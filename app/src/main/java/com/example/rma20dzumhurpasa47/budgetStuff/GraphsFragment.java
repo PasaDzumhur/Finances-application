@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import com.example.rma20dzumhurpasa47.R;
 import com.example.rma20dzumhurpasa47.data.Transaction;
 import com.example.rma20dzumhurpasa47.data.TransactionModel;
+import com.example.rma20dzumhurpasa47.list.TransactionListInteractor;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
@@ -75,7 +76,8 @@ public class GraphsFragment extends Fragment {
             expensesChart=view.findViewById(R.id.expensesGraph);
             incomeChart=view.findViewById(R.id.incomeGraph);
             totalChart=view.findViewById(R.id.totalGraph);
-            getPresenter().setTransactions(TransactionModel.trans);
+            //TransactionListInteractor interactor = new TransactionListInteractor()
+            getPresenter();//setTransactions(TransactionModel.trans);
             valuesExpenses=presenter.getMonthExpenses();
             valuesIncomes=presenter.getMonthIncome();
             //valuesIncomes=presenter.getMonthIncome();

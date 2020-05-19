@@ -3,19 +3,23 @@ package com.example.rma20dzumhurpasa47.budgetStuff;
 import android.content.Context;
 
 import com.example.rma20dzumhurpasa47.data.Transaction;
+import com.example.rma20dzumhurpasa47.list.ITransactionListInteractor;
 import com.example.rma20dzumhurpasa47.list.MainActivity;
+import com.example.rma20dzumhurpasa47.list.TransactionListInteractor;
 
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class GraphPresenter implements IGraphPresenter {
+public class GraphPresenter implements IGraphPresenter,TransactionListInteractor.TransactionSearchDone {
 
     private Context context;
     private ArrayList<Transaction> transactions=new ArrayList<>();
+    private  ITransactionListInteractor interactor;
     private Calendar pom=Calendar.getInstance();
 
     public GraphPresenter(Context context) {
+        this.interactor=new TransactionListInteractor((TransactionListInteractor.TransactionSearchDone)this,"date.asc");
         this.context = context;
     }
 
@@ -140,5 +144,11 @@ public class GraphPresenter implements IGraphPresenter {
     @Override
     public void setTransactions(ArrayList<Transaction> transactions) {
         this.transactions=transactions;
+    }
+
+    @Override
+    public void onDone(ArrayList<Transaction> results) {
+        this.transactions=results;
+
     }
 }
