@@ -25,7 +25,7 @@ public class TransactionListInteractor extends AsyncTask<String,Integer,Void> im
     private String api_id="188618e2-cc65-4c5b-acbc-0579d1a2c92d";
     ArrayList<Transaction> transactions=new ArrayList<>();
     private TransactionSearchDone caller;
-    private String sort =null;
+    private String sort ;
 
     public String convertStreamToString(InputStream is) {
         BufferedReader reader = new BufferedReader(new
@@ -87,7 +87,7 @@ public class TransactionListInteractor extends AsyncTask<String,Integer,Void> im
                     break;
                 }
 
-                SimpleDateFormat simpleDate = new SimpleDateFormat("dd-Mm-yyyy");
+                SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd");
 
                 for (int i = 0; i < results.length(); i++) {
                     JSONObject transaction = results.getJSONObject(i);

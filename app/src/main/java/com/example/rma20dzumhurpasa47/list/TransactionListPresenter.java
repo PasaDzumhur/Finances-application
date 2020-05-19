@@ -6,6 +6,7 @@ import com.example.rma20dzumhurpasa47.data.Transaction;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class TransactionListPresenter implements ITransactionListPresenter, TransactionListInteractor.TransactionSearchDone {
 
@@ -25,6 +26,16 @@ public class TransactionListPresenter implements ITransactionListPresenter, Tran
         //view.setTransactions(interactor.getTransactions());
         //view.notifyTransactionListDataSetChanged();
 
+    }
+    private static ArrayList<Transaction> filterMonth(ArrayList<Transaction> list){
+        Calendar calendarHelp = Calendar.getInstance();
+        ArrayList<Transaction> filter = new ArrayList<>();
+        for(Transaction transaction : list){
+            calendarHelp.setTime(transaction.getDate());
+            if(calendarHelp.get(Calendar.MONTH)==MainActivity.calendar.get(Calendar.MONTH)
+            && calendarHelp.get(Calendar.YEAR)==MainActivity.calendar.get(Calendar.YEAR)) filter.add(transaction);
+        }
+        return filter;
     }
 
 
@@ -156,7 +167,7 @@ public class TransactionListPresenter implements ITransactionListPresenter, Tran
 
     @Override
     public void onDone(ArrayList<Transaction> results) {
-        view.setTransactions(getTransactions());
+        view.setTransactions(filterMonth(getTransactions()));
         view.notifyTransactionListDataSetChanged();
     }
 }
