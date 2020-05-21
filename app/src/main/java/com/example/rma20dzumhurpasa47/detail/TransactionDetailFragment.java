@@ -237,7 +237,9 @@ public class TransactionDetailFragment extends Fragment {
                             intervalHelp = 0;
                             endDateHelp = null;
                         }
-                        Transaction newTransaction = new Transaction(dateHelp, amountHelp, titleHelp, typeHelp, descriptionHelp, intervalHelp, endDateHelp);
+                        int id=-1;
+                        if(selectedTransaction!=null) id = selectedTransaction.getId();
+                        Transaction newTransaction = new Transaction(dateHelp, amountHelp, titleHelp, typeHelp, descriptionHelp, intervalHelp, endDateHelp,id);
                         getPresenter().setTransaction(newTransaction);
                         //boolean delete = true;
                         //if(selectedTransaction==null) delete = false;
