@@ -10,4 +10,5 @@ public interface ITransactionDetailPresenter {
         void create(Date date, double amount, String title, Transaction.Type type, String itemDescription, int transactionInterval, Date endDate);
         Transaction getTransaction();
         void setTransaction(Parcelable transaction);
+        public void execute(boolean delete,boolean add, boolean save);
 }

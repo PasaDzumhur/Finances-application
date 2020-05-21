@@ -3,6 +3,7 @@ package com.example.rma20dzumhurpasa47.list;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -334,6 +335,10 @@ public class TransactionListFragment extends Fragment implements ITransactionLis
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             //list.getChildAt(position).setBackgroundColor(Color.GREEN);
             Transaction transaction = adapter1.getItem(position);
+            ArrayList<Transaction> all = getPresenter().getTransactions();
+            for(Transaction trans : all){
+                if(transaction.getId()==trans.getId() && trans.getDate().before(transaction.getDate())) transaction = trans;
+            }
             onItemClick.onItemClicked(transaction);
         }
     };

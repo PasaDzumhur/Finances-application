@@ -39,6 +39,14 @@ public class Transaction implements Parcelable {
 
             return null;
         }
+        public static int getID(Type type){
+            if(type == REGULARPAYMENT) return 1;
+            else if(type == REGULARINCOME) return 2;
+            else if (type == PURCHASE) return 3;
+            else if (type == INDIVIDUALINCOME) return 4;
+            else if (type == INDIVIDUALPAYMENT) return 5;
+            return 0;
+        }
 
     };
     private Type type;

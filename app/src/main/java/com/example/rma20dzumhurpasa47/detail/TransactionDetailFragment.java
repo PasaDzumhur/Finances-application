@@ -237,8 +237,18 @@ public class TransactionDetailFragment extends Fragment {
                             intervalHelp = 0;
                             endDateHelp = null;
                         }
-                        final Transaction newTransaction = new Transaction(dateHelp, amountHelp, titleHelp, typeHelp, descriptionHelp, intervalHelp, endDateHelp);
+                        Transaction newTransaction = new Transaction(dateHelp, amountHelp, titleHelp, typeHelp, descriptionHelp, intervalHelp, endDateHelp);
+                        getPresenter().setTransaction(newTransaction);
+                        //boolean delete = true;
+                        //if(selectedTransaction==null) delete = false;
+                        if(selectedTransaction==null){
+                            getPresenter().execute(false,true,false);
+                        }else getPresenter().execute(false,false,true);
 
+                    } catch (Exception e) {
+
+                    }
+                        /*
                         ArrayList<Transaction> helpModel = new ArrayList<>();
                         helpModel.addAll(TransactionModel.trans);
                         helpModel.add(newTransaction);
@@ -323,7 +333,9 @@ public class TransactionDetailFragment extends Fragment {
                     }
 
                 }
-            });
+
+                */
+                }});
 
             btnDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -337,8 +349,9 @@ public class TransactionDetailFragment extends Fragment {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
 
-                                            TransactionModel.trans.remove(selectedTransaction);
-
+                                            //TransactionModel.trans.remove(selectedTransaction);
+                                            getPresenter().setTransaction(selectedTransaction);
+                                            getPresenter().execute(true,false,false);
 
                                             selectedTransaction=null;
                                             edit1.setText("");

@@ -78,6 +78,7 @@ public class GraphsFragment extends Fragment {
             totalChart=view.findViewById(R.id.totalGraph);
             //TransactionListInteractor interactor = new TransactionListInteractor()
             getPresenter();//setTransactions(TransactionModel.trans);
+
             valuesExpenses=presenter.getMonthExpenses();
             valuesIncomes=presenter.getMonthIncome();
             //valuesIncomes=presenter.getMonthIncome();
@@ -272,6 +273,8 @@ public class GraphsFragment extends Fragment {
                         totalChart.invalidate();
 
 
+
+
                         //-----------------------------------------------------------------
 
 
@@ -282,6 +285,7 @@ public class GraphsFragment extends Fragment {
 
                     }
                 }
+
 
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
@@ -297,7 +301,7 @@ public class GraphsFragment extends Fragment {
         }
 
 
-
+        adapter.notifyDataSetChanged();
 
 
 

@@ -1,6 +1,7 @@
 package com.example.rma20dzumhurpasa47.list;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.example.rma20dzumhurpasa47.data.Transaction;
 
@@ -27,7 +28,7 @@ public class TransactionListInteractor extends AsyncTask<String,Integer,Void> im
     private TransactionSearchDone caller;
     private String sort ;
 
-    public String convertStreamToString(InputStream is) {
+    public static String convertStreamToString(InputStream is) {
         BufferedReader reader = new BufferedReader(new
                 InputStreamReader(is));
         StringBuilder sb = new StringBuilder();
@@ -187,10 +188,12 @@ public class TransactionListInteractor extends AsyncTask<String,Integer,Void> im
         }
 
 
+        Log.e("TransactionType", ""+Transaction.Type.INDIVIDUALINCOME);
         caller.onDone(transactions);
     }
 
     public interface TransactionSearchDone {
+
         public void onDone(ArrayList<Transaction> results);
     }
 
