@@ -100,7 +100,7 @@ public class TransactionListInteractor extends AsyncTask<String,Integer,Void> im
                     if(dateString!=null)  startDate = simpleDate.parse(dateString);
                     String dateString2 = transaction.getString("endDate");
                     Date endDate = null;
-                    if(dateString2!=null) endDate = simpleDate.parse(dateString);
+                    if(dateString2!=null) endDate = simpleDate.parse(dateString2);
                     String itemDescription = transaction.getString("itemDescription");
                     //Integer transactionInterval = transaction.getInt("transactionInterval");
                     int transactionInterval=0;
@@ -188,7 +188,7 @@ public class TransactionListInteractor extends AsyncTask<String,Integer,Void> im
         }
 
 
-        Log.e("TransactionType", ""+Transaction.Type.INDIVIDUALINCOME);
+        //Log.e("TransactionType", ""+Transaction.Type.INDIVIDUALINCOME);
         caller.onDone(transactions);
     }
 
