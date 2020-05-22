@@ -1,9 +1,7 @@
 package com.example.rma20dzumhurpasa47.list;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,23 +18,23 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import com.example.rma20dzumhurpasa47.R;
+import com.example.rma20dzumhurpasa47.budgetStuff.AccountDetailInteractor;
+import com.example.rma20dzumhurpasa47.budgetStuff.IAccountDetailInteractor;
 import com.example.rma20dzumhurpasa47.data.Account;
 import com.example.rma20dzumhurpasa47.data.Transaction;
 import com.example.rma20dzumhurpasa47.data.TransactionModel;
-import com.example.rma20dzumhurpasa47.detail.TransactionDetailFragment;
 import com.example.rma20dzumhurpasa47.util.OnSwipeTouchListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 
 import static com.example.rma20dzumhurpasa47.list.MainActivity.calendar;
 import static com.example.rma20dzumhurpasa47.list.MainActivity.setFilter;
 
-public class TransactionListFragment extends Fragment implements ITransactionListView{
+public class TransactionListFragment extends Fragment implements ITransactionListView, AccountDetailInteractor.accountUpdate{
 
     private ListView list;
     private ITransactionListPresenter transListPresenter=null;
@@ -51,6 +49,7 @@ public class TransactionListFragment extends Fragment implements ITransactionLis
     private ImageButton right;
     private Spinner spinner2;
     private Button btnAddTrans;
+    private IAccountDetailInteractor accountDetailInteractor;
     //private Button button;
     //public static Account account=new Account(100000,100000,100000);
 
@@ -81,7 +80,13 @@ public class TransactionListFragment extends Fragment implements ITransactionLis
     //private OnItemClick buttonClick;
     private OnItemClick swipe;
 
+    @Override
+    public void accountUpdated(Account account) {
+        MainActivity.account=account;
+        text1.setText("Global amount: "+account.getBudget());
+        text2.setText("Limit: "+account.getTotalLimit());
 
+    }
 
 
     public interface OnItemClick {
@@ -124,9 +129,11 @@ public class TransactionListFragment extends Fragment implements ITransactionLis
         //account.workTheTransactions(TransactionModel.getTrans());
         text1=fragmentView.findViewById(R.id.text1);
         text2=fragmentView.findViewById(R.id.text2);
-        double stanje=MainActivity.account.getBudget()-MainActivity.account.workTheTransactions(TransactionModel.trans);
-        text1.setText("Global amount: "+stanje);
-        text2.setText("Limit: "+MainActivity.account.getTotalLimit());
+        //double stanje=MainActivity.account.getBudget()-MainActivity.account.workTheTransactions(TransactionModel.trans);
+        //text1.setText("Global amount: "+stanje);
+        //text2.setText("Limit: "+MainActivity.account.getTotalLimit());
+        accountDetailInteractor=new AccountDetailInteractor((AccountDetailInteractor.accountUpdate)this);
+
         list.setOnItemClickListener(listItemClickListener);
         btnAddTrans=fragmentView.findViewById(R.id.btnAddTrans);
         //button=fragmentView.findViewById(R.id.button);

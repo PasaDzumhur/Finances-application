@@ -19,11 +19,16 @@ import com.example.rma20dzumhurpasa47.util.OnSwipeTouchListener;
 
 import static com.example.rma20dzumhurpasa47.list.MainActivity.account;
 
-public class BudgetFragment extends Fragment {
+public class BudgetFragment extends Fragment implements AccountDetailInteractor.accountUpdate {
     //private TextView budgetView,totalView,monthlyView;
     private EditText budgetText,totalText,monthlyText;
     private Button btnSaveAcc,button2;
     private SwipeToGraph swipe;
+
+    @Override
+    public void accountUpdated(Account account) {
+
+    }
 
     public interface SwipeToGraph{
         public void swipeToGraph();
@@ -56,9 +61,10 @@ public class BudgetFragment extends Fragment {
                     Double newTotal = Double.parseDouble(totalText.getText().toString());
                     Double newMonthly = Double.parseDouble(monthlyText.getText().toString());
                     Account test=new Account(newBudget,newTotal,newMonthly);
+                    IAccountDetailInteractor interactor = new AccountDetailInteractor(test);
                     account=test;
                 }catch (Exception e){
-
+                    e.printStackTrace();
                 }
             }
         });

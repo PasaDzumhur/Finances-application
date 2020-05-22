@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements TransactionListFr
     private boolean twoPaneMode;
     public static Calendar calendar=Calendar.getInstance();
     private static String filter="";
-    public static Account account=new Account(100000,100000,100000);
+    public static Account account=new Account(1000,1000,100);
 
 
 
