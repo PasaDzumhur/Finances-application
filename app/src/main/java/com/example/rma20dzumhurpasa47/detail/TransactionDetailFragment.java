@@ -17,6 +17,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.example.rma20dzumhurpasa47.R;
+import com.example.rma20dzumhurpasa47.budgetStuff.AccountDetailInteractor;
+import com.example.rma20dzumhurpasa47.budgetStuff.IAccountDetailInteractor;
 import com.example.rma20dzumhurpasa47.data.Transaction;
 import com.example.rma20dzumhurpasa47.data.TransactionModel;
 import com.example.rma20dzumhurpasa47.list.MainActivity;
@@ -243,6 +245,16 @@ public class TransactionDetailFragment extends Fragment {
                         getPresenter().setTransaction(newTransaction);
                         //boolean delete = true;
                         //if(selectedTransaction==null) delete = false;
+                        double oldAmount = 0;
+                        if(selectedTransaction!=null) oldAmount=selectedTransaction.getRealAmount();
+                        double newAmount = newTransaction.getRealAmount();
+
+                        double difference = newAmount-oldAmount;
+                        account.setBudget(account.getBudget()+difference);
+                        IAccountDetailInteractor interactor= new AccountDetailInteractor(account);
+
+
+
                         if(selectedTransaction==null){
                             getPresenter().execute(false,true,false);
                         }else getPresenter().execute(false,false,true);
@@ -352,8 +364,15 @@ public class TransactionDetailFragment extends Fragment {
                                         public void onClick(DialogInterface dialog, int which) {
 
                                             //TransactionModel.trans.remove(selectedTransaction);
+
+                                            double difference = selectedTransaction.getRealAmount();
+
+
                                             getPresenter().setTransaction(selectedTransaction);
                                             getPresenter().execute(true,false,false);
+
+                                            account.setBudget(account.getBudget()-difference);
+                                            IAccountDetailInteractor interactor = new AccountDetailInteractor(account);
 
                                             selectedTransaction=null;
                                             edit1.setText("");

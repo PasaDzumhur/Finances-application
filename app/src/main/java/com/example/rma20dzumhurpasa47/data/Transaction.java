@@ -3,6 +3,7 @@ package com.example.rma20dzumhurpasa47.data;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Pair;
 
 import java.text.ParseException;
 import java.util.Calendar;
@@ -290,6 +291,27 @@ public class Transaction implements Parcelable {
 
         }
         return sum;
+    }
+
+    public double getRealAmount(){
+        //Pair<Double,Double>
+        double sum = 0;
+        int prefiks = -1;
+        if(getType()==Type.REGULARINCOME || getType()==Type.INDIVIDUALINCOME) prefiks = 1;
+        if(!(getType().equals(Type.REGULARINCOME) || getType().equals(Type.REGULARPAYMENT))){
+            return prefiks * getAmount();
+        }else {
+            Calendar calendar= Calendar.getInstance();
+            calendar.setTime(getDate());
+
+            while(calendar.getTime().before(getEndDate())){
+                sum = sum + getAmount();
+
+                calendar.add(Calendar.DAY_OF_YEAR,getTransactionInterval());
+            }
+        }
+
+        return prefiks * sum;
     }
 
 }
