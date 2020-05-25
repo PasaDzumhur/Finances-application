@@ -17,10 +17,12 @@ public class GraphPresenter implements IGraphPresenter,TransactionListInteractor
     private ArrayList<Transaction> transactions=new ArrayList<>();
     private  ITransactionListInteractor interactor;
     private Calendar pom=Calendar.getInstance();
+    private TransactionListInteractor.TransactionSearchDone caller;
 
-    public GraphPresenter(Context context) {
+    public GraphPresenter(Context context, TransactionListInteractor.TransactionSearchDone caller) {
         this.interactor=new TransactionListInteractor((TransactionListInteractor.TransactionSearchDone)this,"date.asc");
         this.context = context;
+        this.caller = caller;
     }
 
     public ArrayList<Transaction> getTransactions() {
@@ -149,6 +151,7 @@ public class GraphPresenter implements IGraphPresenter,TransactionListInteractor
     @Override
     public void onDone(ArrayList<Transaction> results) {
         this.transactions=results;
+        caller.onDone(results);
 
     }
 }
