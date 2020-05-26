@@ -241,7 +241,7 @@ public class TransactionDetailFragment extends Fragment {
                         }
                         int id=-1;
                         if(selectedTransaction!=null) id = selectedTransaction.getId();
-                        Transaction newTransaction = new Transaction(dateHelp, amountHelp, titleHelp, typeHelp, descriptionHelp, intervalHelp, endDateHelp,id);
+                        final Transaction newTransaction = new Transaction(dateHelp, amountHelp, titleHelp, typeHelp, descriptionHelp, intervalHelp, endDateHelp,id);
                         getPresenter().setTransaction(newTransaction);
                         //boolean delete = true;
                         //if(selectedTransaction==null) delete = false;
@@ -249,15 +249,39 @@ public class TransactionDetailFragment extends Fragment {
                         if(selectedTransaction!=null) oldAmount=selectedTransaction.getRealAmount();
                         double newAmount = newTransaction.getRealAmount();
 
-                        double difference = newAmount-oldAmount;
-                        account.setBudget(account.getBudget()+difference);
-                        IAccountDetailInteractor interactor= new AccountDetailInteractor(account);
+                        final double difference = newAmount-oldAmount;
+
+                        if(-difference > account.getMonthLimit()){
+                            AlertDialog alert = new AlertDialog.Builder(getActivity()).setTitle("Warning!!!!!!!").setMessage("This will make you go over the monthly limit\nAre you sure you want to do that?")
+                                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+
+                                            account.setBudget(account.getBudget() + difference);
+                                            IAccountDetailInteractor interactor = new AccountDetailInteractor(account);
 
 
+                                            if (selectedTransaction == null) {
+                                                getPresenter().execute(false, true, false);
+                                            } else getPresenter().execute(false, false, true);
+                                        }
+                                    }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
 
-                        if(selectedTransaction==null){
-                            getPresenter().execute(false,true,false);
-                        }else getPresenter().execute(false,false,true);
+                                        }
+                                    }).show();
+
+                        }else {
+
+                            account.setBudget(account.getBudget() + difference);
+                            IAccountDetailInteractor interactor = new AccountDetailInteractor(account);
+
+
+                            if (selectedTransaction == null) {
+                                getPresenter().execute(false, true, false);
+                            } else getPresenter().execute(false, false, true);
+                        }
 
                     } catch (Exception e) {
 
