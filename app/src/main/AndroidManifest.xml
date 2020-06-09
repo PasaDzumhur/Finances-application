@@ -32,6 +32,11 @@
             android:name=".util.TransactionContentProvider">
 
         </provider>
+        <provider
+            android:authorities="rma.provider.transactionReserves"
+            android:name=".util.TransactionReservesContentProvider">
+
+        </provider>
     </application>
 
 </manifest>

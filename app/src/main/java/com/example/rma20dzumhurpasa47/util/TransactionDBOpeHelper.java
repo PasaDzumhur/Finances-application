@@ -41,7 +41,18 @@ public class TransactionDBOpeHelper extends SQLiteOpenHelper {
                     TRANSACTION_ITEM_DESCRIPTION + " TEXT, "+
                     TRANSACTION_END_DATE + " TEXT);";
     public static final String TRANSACTION_DROP = "DROP TABLE IF EXISTS " + TRANSACTION_TABLE;
-
+    public static final String TRANSACTION_RESERVES_TABLE = "transactions_reserves";
+    public static final String TRANSACTION_RESERVES_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS " + TRANSACTION_RESERVES_TABLE+" (" +
+            TRANSACTION_INTERNAL_ID+ " INTEGER PRIMARY KEY AUTOINCREMENT," +
+            TRANSACTION_ID + " INTEGER, " +
+            TRANSACTION_TITLE + " TEXT NOT NULL, " +
+            TRANSACTION_TYPE_ID + " INTEGER NOT NULL, "+
+            TRANSACTION_DATE + " TEXT NOT NULL, " +
+            TRANSACTION_AMOUNT + " INTEGER NOT NULL, "+
+            TRANSACTION_INTERVAL + " INTEGER, "+
+            TRANSACTION_ITEM_DESCRIPTION + " TEXT, "+
+            TRANSACTION_END_DATE + " TEXT);";
+    public static final String TRANSACTION_RESERVES_DROP = "DROP TABLE IF EXISTS " + TRANSACTION_RESERVES_TABLE;
 
 
 
@@ -49,11 +60,13 @@ public class TransactionDBOpeHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         //db.execSQL(TRANSACTION_DROP);
         db.execSQL(TRANSACTION_TABLE_CREATE);
+        db.execSQL(TRANSACTION_RESERVES_TABLE_CREATE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(TRANSACTION_DROP);
+        db.execSQL(TRANSACTION_RESERVES_DROP);
         onCreate(db);
 
     }
