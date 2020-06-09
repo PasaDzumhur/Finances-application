@@ -20,7 +20,7 @@ public class GraphPresenter implements IGraphPresenter,TransactionListInteractor
     private TransactionListInteractor.TransactionSearchDone caller;
 
     public GraphPresenter(Context context, TransactionListInteractor.TransactionSearchDone caller) {
-        this.interactor=new TransactionListInteractor((TransactionListInteractor.TransactionSearchDone)this,"date.asc");
+        this.interactor=new TransactionListInteractor((TransactionListInteractor.TransactionSearchDone)this,"date.asc",context);
         this.context = context;
         this.caller = caller;
     }

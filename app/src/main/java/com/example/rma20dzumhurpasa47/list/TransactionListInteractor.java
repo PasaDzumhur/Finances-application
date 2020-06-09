@@ -1,9 +1,14 @@
 package com.example.rma20dzumhurpasa47.list;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.content.Context;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.rma20dzumhurpasa47.data.Transaction;
+import com.example.rma20dzumhurpasa47.util.TransactionDBOpeHelper;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -27,6 +32,7 @@ public class TransactionListInteractor extends AsyncTask<String,Integer,Void> im
     ArrayList<Transaction> transactions=new ArrayList<>();
     private TransactionSearchDone caller;
     private String sort ;
+    private Context context;
 
     public static String convertStreamToString(InputStream is) {
         BufferedReader reader = new BufferedReader(new
@@ -56,10 +62,11 @@ public class TransactionListInteractor extends AsyncTask<String,Integer,Void> im
         return null;
     }
 
-    public TransactionListInteractor(TransactionSearchDone caller, String sort) {
+    public TransactionListInteractor(TransactionSearchDone caller, String sort, Context context) {
         this.sort=sort;
         execute(sort);
         this.caller=caller;
+        this.context = context;
     }
 
 
@@ -110,8 +117,22 @@ public class TransactionListInteractor extends AsyncTask<String,Integer,Void> im
                     Double amount = transaction.getDouble("amount");
                     Transaction.Type type = getTypeFromId(transaction.getInt("TransactionTypeId"));
                     int id = transaction.getInt("id");
-                    transactions.add(new Transaction(startDate,amount,title,type,itemDescription,transactionInterval,endDate,id));
-
+                    Transaction newTransaction = new Transaction(startDate,amount,title,type,itemDescription,transactionInterval,endDate,id);
+                    transactions.add(newTransaction);
+                    ContentResolver cr = context.getApplicationContext().getContentResolver();
+                    Uri transactionURI = Uri.parse("content://rma.provider.transactions/elements");
+                    ContentValues values = new ContentValues();
+                    values.put(TransactionDBOpeHelper.TRANSACTION_ID,newTransaction.getId());
+                    values.put(TransactionDBOpeHelper.TRANSACTION_TITLE,newTransaction.getTitle());
+                    values.put(TransactionDBOpeHelper.TRANSACTION_AMOUNT,newTransaction.getAmount());
+                    values.put(TransactionDBOpeHelper.TRANSACTION_TYPE_ID,transaction.getInt("TransactionTypeId"));
+                    values.put(TransactionDBOpeHelper.TRANSACTION_DATE,newTransaction.getDate().toString());
+                    values.put(TransactionDBOpeHelper.TRANSACTION_ITEM_DESCRIPTION,newTransaction.getItemDescription());
+                    String pom=null;
+                    if(newTransaction.getEndDate()!=null) pom = newTransaction.getEndDate().toString();
+                    values.put(TransactionDBOpeHelper.TRANSACTION_END_DATE,pom);
+                    values.put(TransactionDBOpeHelper.TRANSACTION_INTERVAL,newTransaction.getTransactionInterval());
+                    cr.insert(transactionURI,values);
                 }
 
 

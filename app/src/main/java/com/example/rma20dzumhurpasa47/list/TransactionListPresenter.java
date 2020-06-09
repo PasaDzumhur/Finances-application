@@ -18,7 +18,7 @@ public class TransactionListPresenter implements ITransactionListPresenter, Tran
     public TransactionListPresenter(ITransactionListView view, Context context) {
         this.view = view;
         //new TransactionListInteractor((TransactionListInteractor.OnMoviesSearchDone)this).execute("");
-        this.interactor = new TransactionListInteractor((TransactionListInteractor.TransactionSearchDone)this,"amount.asc");
+        this.interactor = new TransactionListInteractor((TransactionListInteractor.TransactionSearchDone)this,"amount.asc",context);
         this.context = context;
     }
 
@@ -89,14 +89,14 @@ public class TransactionListPresenter implements ITransactionListPresenter, Tran
         sortByTitle(list);
         view.setTransactions(list);
         view.notifyTransactionListDataSetChanged();*/
-        this.interactor = new TransactionListInteractor((TransactionListInteractor.TransactionSearchDone)this,"title.asc");
+        this.interactor = new TransactionListInteractor((TransactionListInteractor.TransactionSearchDone)this,"title.asc",context);
 
 
     }
 
     @Override
     public void refreshSortTitleDesc() {
-        this.interactor = new TransactionListInteractor((TransactionListInteractor.TransactionSearchDone)this,"title.desc");
+        this.interactor = new TransactionListInteractor((TransactionListInteractor.TransactionSearchDone)this,"title.desc",context);
         /*
         ArrayList<Transaction> list = new ArrayList<>();
         list.addAll(interactor.getTransactions());
@@ -113,7 +113,7 @@ public class TransactionListPresenter implements ITransactionListPresenter, Tran
 
     @Override
     public void refreshSortPriceDesc() throws ParseException {
-        this.interactor = new TransactionListInteractor((TransactionListInteractor.TransactionSearchDone)this,"amount.desc");
+        this.interactor = new TransactionListInteractor((TransactionListInteractor.TransactionSearchDone)this,"amount.desc",context);
         /*
         ArrayList<Transaction> list = new ArrayList<>();
         list.addAll(interactor.getTransactions());
@@ -124,7 +124,7 @@ public class TransactionListPresenter implements ITransactionListPresenter, Tran
 
     @Override
     public void refreshSortPriceAsc() throws ParseException {
-        this.interactor = new TransactionListInteractor((TransactionListInteractor.TransactionSearchDone)this,"amount.asc");
+        this.interactor = new TransactionListInteractor((TransactionListInteractor.TransactionSearchDone)this,"amount.asc",context);
         /*
         ArrayList<Transaction> list = new ArrayList<>();
         list.addAll(interactor.getTransactions());
@@ -140,7 +140,7 @@ public class TransactionListPresenter implements ITransactionListPresenter, Tran
 
     @Override
     public void refreshSortDateDesc() {
-        this.interactor = new TransactionListInteractor((TransactionListInteractor.TransactionSearchDone)this,"date.desc");
+        this.interactor = new TransactionListInteractor((TransactionListInteractor.TransactionSearchDone)this,"date.desc",context);
         /*
         ArrayList<Transaction> list = new ArrayList<>();
         list.addAll(interactor.getTransactions());
@@ -178,7 +178,7 @@ public class TransactionListPresenter implements ITransactionListPresenter, Tran
         sortByDate(list);
         view.setTransactions(list);
         view.notifyTransactionListDataSetChanged();*/
-        this.interactor = new TransactionListInteractor((TransactionListInteractor.TransactionSearchDone)this,"date.asc");
+        this.interactor = new TransactionListInteractor((TransactionListInteractor.TransactionSearchDone)this,"date.asc",context);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.example.rma20dzumhurpasa47.list;
 
+import android.content.Context;
+
 import com.example.rma20dzumhurpasa47.data.Transaction;
 
 import java.util.ArrayList;
@@ -14,4 +16,5 @@ public interface ITransactionListInteractor {
     ArrayList<Transaction> getRegularIncome();
     ArrayList<Transaction> getClassic();*/
     ArrayList<Transaction> getTransactions();
+
 }
