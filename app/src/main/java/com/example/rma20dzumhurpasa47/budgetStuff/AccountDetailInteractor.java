@@ -1,9 +1,13 @@
 package com.example.rma20dzumhurpasa47.budgetStuff;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.rma20dzumhurpasa47.data.Account;
+import com.example.rma20dzumhurpasa47.list.MainActivity;
 
 import org.json.JSONObject;
 
@@ -23,6 +27,7 @@ public class AccountDetailInteractor extends AsyncTask<Boolean,Integer,Account> 
     private accountUpdate caller;
     private Account newAccount = null;
 
+
     public interface accountUpdate{
         public void accountUpdated(Account account);
     }
@@ -30,11 +35,13 @@ public class AccountDetailInteractor extends AsyncTask<Boolean,Integer,Account> 
     public AccountDetailInteractor(accountUpdate caller) {
         this.caller = caller;
         execute(false);
+
     }
     public AccountDetailInteractor(Account newAccount) {
         //this.caller = caller;
         caller = null;
         this.newAccount=newAccount;
+
         execute(true);
     }
     private String accountToJson (Account account){
@@ -47,55 +54,57 @@ public class AccountDetailInteractor extends AsyncTask<Boolean,Integer,Account> 
     //String action = null;
     @Override
     protected Account doInBackground(Boolean... booleans) {
-        String url1 = "http://rma20-app-rmaws.apps.us-west-1.starter.openshift-online.com/account/" + api_id;
-        try {
-            if(!booleans[0]) {
-                URL url = new URL(url1);
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-                String result = convertStreamToString(in);
-                JSONObject jo = new JSONObject(result);
-                double budget = jo.getInt("budget");
-                double totalLimit = jo.getInt("totalLimit");
-                double monthlyLimit = jo.getInt("monthLimit");
-                Account account = new Account(budget, totalLimit, monthlyLimit);
-                return account;
-            }else if(booleans[0]){
-                URL url = new URL(url1);
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setRequestMethod("POST");
-                urlConnection.setRequestProperty("Content-Type", "application/json");
-                urlConnection.setRequestProperty("Accept","application/json");
-                urlConnection.setDoOutput(true);
-                urlConnection.setDoInput(true);
-                String json = accountToJson(newAccount);
 
-                Log.e("json: ",json);
+        if(MainActivity.connectivity) {
+            String url1 = "http://rma20-app-rmaws.apps.us-west-1.starter.openshift-online.com/account/" + api_id;
+            try {
+                if (!booleans[0]) {
+                    URL url = new URL(url1);
+                    HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                    InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                    String result = convertStreamToString(in);
+                    JSONObject jo = new JSONObject(result);
+                    double budget = jo.getInt("budget");
+                    double totalLimit = jo.getInt("totalLimit");
+                    double monthlyLimit = jo.getInt("monthLimit");
+                    Account account = new Account(budget, totalLimit, monthlyLimit);
+                    return account;
+                } else if (booleans[0]) {
+                    URL url = new URL(url1);
+                    HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                    urlConnection.setRequestMethod("POST");
+                    urlConnection.setRequestProperty("Content-Type", "application/json");
+                    urlConnection.setRequestProperty("Accept", "application/json");
+                    urlConnection.setDoOutput(true);
+                    urlConnection.setDoInput(true);
+                    String json = accountToJson(newAccount);
+
+                    Log.e("json: ", json);
 
 
-
-                try(OutputStream os = urlConnection.getOutputStream()) {
-                    byte[] input = json.getBytes("utf-8");
-                    os.write(input, 0, input.length);
-                }
-
-                try(BufferedReader br = new BufferedReader(
-                        new InputStreamReader(urlConnection.getInputStream(), "utf-8"))) {
-                    StringBuilder response = new StringBuilder();
-                    String responseLine = null;
-                    while ((responseLine = br.readLine()) != null) {
-                        response.append(responseLine.trim());
+                    try (OutputStream os = urlConnection.getOutputStream()) {
+                        byte[] input = json.getBytes("utf-8");
+                        os.write(input, 0, input.length);
                     }
-                    Log.e("RESPONSE",response.toString());
-                }catch(Exception e){
-                    throw e;
+
+                    try (BufferedReader br = new BufferedReader(
+                            new InputStreamReader(urlConnection.getInputStream(), "utf-8"))) {
+                        StringBuilder response = new StringBuilder();
+                        String responseLine = null;
+                        while ((responseLine = br.readLine()) != null) {
+                            response.append(responseLine.trim());
+                        }
+                        Log.e("RESPONSE", response.toString());
+                    } catch (Exception e) {
+                        throw e;
+                    }
+
+
                 }
-
-
+                //JSONArray results = jo.getJSONArray("account");
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            //JSONArray results = jo.getJSONArray("account");
-        }catch (Exception e){
-            e.printStackTrace();
         }
 
 

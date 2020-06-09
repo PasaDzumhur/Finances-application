@@ -82,9 +82,11 @@ public class TransactionListFragment extends Fragment implements ITransactionLis
 
     @Override
     public void accountUpdated(Account account) {
-        MainActivity.account=account;
-        text1.setText("Global amount: "+account.getBudget());
-        text2.setText("Limit: "+account.getTotalLimit());
+        if(account!=null) {
+            MainActivity.account = account;
+            text1.setText("Global amount: " + account.getBudget());
+            text2.setText("Limit: " + account.getTotalLimit());
+        }
 
     }
 

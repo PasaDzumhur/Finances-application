@@ -6,7 +6,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.ListFragment;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -27,6 +29,7 @@ import com.example.rma20dzumhurpasa47.data.TransactionModel;
 import com.example.rma20dzumhurpasa47.detail.AddTransactionActivity;
 import com.example.rma20dzumhurpasa47.detail.TransactionDetailActivity;
 import com.example.rma20dzumhurpasa47.detail.TransactionDetailFragment;
+import com.example.rma20dzumhurpasa47.util.ConnectivityBroadcastReceiver;
 
 
 import java.text.ParseException;
@@ -40,6 +43,8 @@ public class MainActivity extends AppCompatActivity implements TransactionListFr
     public static Calendar calendar=Calendar.getInstance();
     private static String filter="";
     public static Account account=new Account(1000,1000,100);
+    public static boolean connectivity;
+    private ConnectivityBroadcastReceiver receiver = new ConnectivityBroadcastReceiver();
 
 
 
@@ -97,6 +102,9 @@ public class MainActivity extends AppCompatActivity implements TransactionListFr
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        if( cm.getActiveNetworkInfo() == null) connectivity=false;
+        else connectivity=true;
         calendar.setTime(new Date(System.currentTimeMillis()));
         final FragmentManager fragmentManager = getSupportFragmentManager();
         FrameLayout details=findViewById(R.id.transactions_detail);

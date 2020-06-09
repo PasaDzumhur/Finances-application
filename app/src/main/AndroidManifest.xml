@@ -22,6 +22,11 @@
         </activity>
         <activity android:name=".detail.TransactionDetailActivity" />
         <activity android:name=".detail.AddTransactionActivity" />
+        <receiver android:name=".util.ConnectivityBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
         <provider
             android:authorities="rma.provider.transactions"
             android:name=".util.TransactionContentProvider">

@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -80,12 +81,16 @@ public class TransactionListInteractor extends AsyncTask<String,Integer,Void> im
 
     @Override
     protected Void doInBackground(String... strings) {
-        //String query=null;
-        Uri uri = Uri.parse("content://rma.provider.transactions/elements");
-        ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
-        contentResolver.delete(uri, null, null);
 
-        for(int query=0; ; query++) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if( cm.getActiveNetworkInfo() != null) {
+
+            //String query=null;
+            Uri uri = Uri.parse("content://rma.provider.transactions/elements");
+            ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
+            contentResolver.delete(uri, null, null);
+
+            for (int query = 0; ; query++) {
 
 
             /*try {
@@ -93,64 +98,67 @@ public class TransactionListInteractor extends AsyncTask<String,Integer,Void> im
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }*/
-            String url1 = "http://rma20-app-rmaws.apps.us-west-1.starter.openshift-online.com/account/" + api_id + "/transactions/filter?sort="+strings[0]+"&page=" + query;
-            try {
-                URL url = new URL(url1);
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-                String result = convertStreamToString(in);
-                JSONObject jo = new JSONObject(result);
-                JSONArray results = jo.getJSONArray("transactions");
-                if(results.length()==0) {
-                    //System.out.println("Gotovo----------------------------------------------------------------------------------------------------------");
-                    break;
+                String url1 = "http://rma20-app-rmaws.apps.us-west-1.starter.openshift-online.com/account/" + api_id + "/transactions/filter?sort=" + strings[0] + "&page=" + query;
+                try {
+                    URL url = new URL(url1);
+                    HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                    InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                    String result = convertStreamToString(in);
+                    JSONObject jo = new JSONObject(result);
+                    JSONArray results = jo.getJSONArray("transactions");
+                    if (results.length() == 0) {
+                        //System.out.println("Gotovo----------------------------------------------------------------------------------------------------------");
+                        break;
+                    }
+
+                    SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+                    //ako bude kakvih problema ovaj koristit yyyy-MM-dd'T'HH:mm:ss.SSS
+
+                    for (int i = 0; i < results.length(); i++) {
+                        JSONObject transaction = results.getJSONObject(i);
+                        String title = transaction.getString("title");
+                        String dateString = transaction.getString("date");
+
+                        Date startDate = null;
+                        if (dateString != null) startDate = simpleDate.parse(dateString);
+                        String dateString2 = transaction.getString("endDate");
+                        //System.out.println(dateString2);
+                        Date endDate = null;
+                        if (dateString2 != null && !dateString2.equals("null"))
+                            endDate = simpleDate.parse(dateString2);
+                        String itemDescription = transaction.getString("itemDescription");
+                        //Integer transactionInterval = transaction.getInt("transactionInterval");
+                        int transactionInterval = 0;
+                        String intervalHelp = transaction.getString("transactionInterval");
+                        if (!intervalHelp.equals("null"))
+                            transactionInterval = Integer.parseInt(intervalHelp);
+                        Double amount = transaction.getDouble("amount");
+                        Transaction.Type type = getTypeFromId(transaction.getInt("TransactionTypeId"));
+                        int id = transaction.getInt("id");
+                        Transaction newTransaction = new Transaction(startDate, amount, title, type, itemDescription, transactionInterval, endDate, id);
+                        transactions.add(newTransaction);
+                        ContentResolver cr = context.getApplicationContext().getContentResolver();
+                        Uri transactionURI = Uri.parse("content://rma.provider.transactions/elements");
+                        ContentValues values = new ContentValues();
+                        values.put(TransactionDBOpeHelper.TRANSACTION_ID, newTransaction.getId());
+                        values.put(TransactionDBOpeHelper.TRANSACTION_TITLE, newTransaction.getTitle());
+                        values.put(TransactionDBOpeHelper.TRANSACTION_AMOUNT, newTransaction.getAmount());
+                        values.put(TransactionDBOpeHelper.TRANSACTION_TYPE_ID, transaction.getInt("TransactionTypeId"));
+                        values.put(TransactionDBOpeHelper.TRANSACTION_DATE, newTransaction.getDate().toString());
+                        values.put(TransactionDBOpeHelper.TRANSACTION_ITEM_DESCRIPTION, newTransaction.getItemDescription());
+                        String pom = null;
+                        if (newTransaction.getEndDate() != null)
+                            pom = newTransaction.getEndDate().toString();
+                        values.put(TransactionDBOpeHelper.TRANSACTION_END_DATE, pom);
+                        values.put(TransactionDBOpeHelper.TRANSACTION_INTERVAL, newTransaction.getTransactionInterval());
+                        cr.insert(transactionURI, values);
+                    }
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-
-                SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
-                //ako bude kakvih problema ovaj koristit yyyy-MM-dd'T'HH:mm:ss.SSS
-
-                for (int i = 0; i < results.length(); i++) {
-                    JSONObject transaction = results.getJSONObject(i);
-                    String title = transaction.getString("title");
-                    String dateString = transaction.getString("date");
-
-                    Date  startDate =null;
-                    if(dateString!=null)  startDate = simpleDate.parse(dateString);
-                    String dateString2 = transaction.getString("endDate");
-                    //System.out.println(dateString2);
-                    Date endDate = null;
-                    if(dateString2!=null && !dateString2.equals("null")) endDate = simpleDate.parse(dateString2);
-                    String itemDescription = transaction.getString("itemDescription");
-                    //Integer transactionInterval = transaction.getInt("transactionInterval");
-                    int transactionInterval=0;
-                    String intervalHelp = transaction.getString("transactionInterval");
-                    if(!intervalHelp.equals("null")) transactionInterval = Integer.parseInt(intervalHelp);
-                    Double amount = transaction.getDouble("amount");
-                    Transaction.Type type = getTypeFromId(transaction.getInt("TransactionTypeId"));
-                    int id = transaction.getInt("id");
-                    Transaction newTransaction = new Transaction(startDate,amount,title,type,itemDescription,transactionInterval,endDate,id);
-                    transactions.add(newTransaction);
-                    ContentResolver cr = context.getApplicationContext().getContentResolver();
-                    Uri transactionURI = Uri.parse("content://rma.provider.transactions/elements");
-                    ContentValues values = new ContentValues();
-                    values.put(TransactionDBOpeHelper.TRANSACTION_ID,newTransaction.getId());
-                    values.put(TransactionDBOpeHelper.TRANSACTION_TITLE,newTransaction.getTitle());
-                    values.put(TransactionDBOpeHelper.TRANSACTION_AMOUNT,newTransaction.getAmount());
-                    values.put(TransactionDBOpeHelper.TRANSACTION_TYPE_ID,transaction.getInt("TransactionTypeId"));
-                    values.put(TransactionDBOpeHelper.TRANSACTION_DATE,newTransaction.getDate().toString());
-                    values.put(TransactionDBOpeHelper.TRANSACTION_ITEM_DESCRIPTION,newTransaction.getItemDescription());
-                    String pom=null;
-                    if(newTransaction.getEndDate()!=null) pom = newTransaction.getEndDate().toString();
-                    values.put(TransactionDBOpeHelper.TRANSACTION_END_DATE,pom);
-                    values.put(TransactionDBOpeHelper.TRANSACTION_INTERVAL,newTransaction.getTransactionInterval());
-                    cr.insert(transactionURI,values);
-                }
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
             }
-        }
         /*
         SimpleDateFormat simpleDate = new SimpleDateFormat("dd/MM/yyyy");
         try {
@@ -159,6 +167,9 @@ public class TransactionListInteractor extends AsyncTask<String,Integer,Void> im
         } catch (ParseException e) {
             e.printStackTrace();
         }*/
+        }else{
+
+        }
         return null;
     }
     @Override
