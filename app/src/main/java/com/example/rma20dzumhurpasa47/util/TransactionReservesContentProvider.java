@@ -19,7 +19,7 @@ public class TransactionReservesContentProvider extends ContentProvider {
     private static final UriMatcher uM;
     static {
         uM = new UriMatcher(UriMatcher.NO_MATCH);
-        uM.addURI("rma.provider.transactionsReserves","elements",ALLROWS);
+        uM.addURI("rma.provider.transactionReserves","elements",ALLROWS);
         uM.addURI("rma.provider.transactionReserves","elements/#",ONEROW);
     }
     TransactionDBOpeHelper tHelper;

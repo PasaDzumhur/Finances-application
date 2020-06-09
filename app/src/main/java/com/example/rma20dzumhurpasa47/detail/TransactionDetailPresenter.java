@@ -34,7 +34,7 @@ public class TransactionDetailPresenter implements ITransactionDetailPresenter,T
     }
 
     public void execute(boolean delete, boolean add,boolean save){
-        interactor = new TransactionDetailInteractor(transaction,(TransactionDetailInteractor.TransactionUpdateDone)this,delete,add,save);
+        interactor = new TransactionDetailInteractor(context,transaction,(TransactionDetailInteractor.TransactionUpdateDone)this,delete,add,save);
     }
 
     @Override

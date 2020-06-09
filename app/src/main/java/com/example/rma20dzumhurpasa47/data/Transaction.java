@@ -20,8 +20,8 @@ public class Transaction implements Parcelable {
 
 
     public enum Type{
-        INDIVIDUALPAYMENT, REGULARPAYMENT, PURCHASE, INDIVIDUALINCOME, REGULARINCOME;
-
+        //INDIVIDUALPAYMENT, REGULARPAYMENT, PURCHASE, INDIVIDUALINCOME, REGULARINCOME;
+        REGULARPAYMENT,REGULARINCOME,PURCHASE,INDIVIDUALINCOME,INDIVIDUALPAYMENT;
         @Override
         public String toString() {
             if(this.equals(INDIVIDUALPAYMENT)) return "INDIVIDUALPAYMENT";
@@ -48,6 +48,9 @@ public class Transaction implements Parcelable {
             else if (type == INDIVIDUALPAYMENT) return 5;
             return 0;
         }
+
+
+
 
     };
     private Type type;
@@ -146,6 +149,10 @@ public class Transaction implements Parcelable {
         this.transactionInterval = transactionInterval;
         this.endDate = endDate;
 
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getId() {
