@@ -3,12 +3,16 @@ package com.example.rma20dzumhurpasa47.list;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
 
 import com.example.rma20dzumhurpasa47.data.Transaction;
 import com.example.rma20dzumhurpasa47.util.TransactionContentProvider;
@@ -137,6 +141,7 @@ public class TransactionListInteractor extends AsyncTask<String,Integer,Void> im
                         int id = transaction.getInt("id");
                         Transaction newTransaction = new Transaction(startDate, amount, title, type, itemDescription, transactionInterval, endDate, id);
                         transactions.add(newTransaction);
+
                         ContentResolver cr = context.getApplicationContext().getContentResolver();
                         Uri transactionURI = Uri.parse("content://rma.provider.transactions/elements");
                         ContentValues values = new ContentValues();
@@ -144,11 +149,11 @@ public class TransactionListInteractor extends AsyncTask<String,Integer,Void> im
                         values.put(TransactionDBOpeHelper.TRANSACTION_TITLE, newTransaction.getTitle());
                         values.put(TransactionDBOpeHelper.TRANSACTION_AMOUNT, newTransaction.getAmount());
                         values.put(TransactionDBOpeHelper.TRANSACTION_TYPE_ID, transaction.getInt("TransactionTypeId"));
-                        values.put(TransactionDBOpeHelper.TRANSACTION_DATE, newTransaction.getDate().toString());
+                        values.put(TransactionDBOpeHelper.TRANSACTION_DATE, simpleDate.format(newTransaction.getDate()));
                         values.put(TransactionDBOpeHelper.TRANSACTION_ITEM_DESCRIPTION, newTransaction.getItemDescription());
                         String pom = null;
                         if (newTransaction.getEndDate() != null)
-                            pom = newTransaction.getEndDate().toString();
+                            pom = simpleDate.format(newTransaction.getEndDate());
                         values.put(TransactionDBOpeHelper.TRANSACTION_END_DATE, pom);
                         values.put(TransactionDBOpeHelper.TRANSACTION_INTERVAL, newTransaction.getTransactionInterval());
                         cr.insert(transactionURI, values);
@@ -177,9 +182,54 @@ public class TransactionListInteractor extends AsyncTask<String,Integer,Void> im
         return transactions;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onPostExecute(Void aVoid){
         super.onPostExecute(aVoid);
+
+        if(!MainActivity.connectivity){
+            ContentResolver cr = context.getApplicationContext().getContentResolver();
+            SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+            Uri transactionURI = Uri.parse("content://rma.provider.transactions/elements");
+            Cursor cursor = cr.query(transactionURI,null,null,null);
+            if(cursor!=null){
+                cursor.moveToFirst();
+                do{
+                    int idPos=cursor.getColumnIndexOrThrow(TransactionDBOpeHelper.TRANSACTION_ID);
+                    int titlePos=cursor.getColumnIndexOrThrow(TransactionDBOpeHelper.TRANSACTION_TITLE);
+                    int amountPos = cursor.getColumnIndexOrThrow(TransactionDBOpeHelper.TRANSACTION_AMOUNT);
+                    int datePos = cursor.getColumnIndexOrThrow(TransactionDBOpeHelper.TRANSACTION_DATE);
+                    int endDatePos = cursor.getColumnIndexOrThrow(TransactionDBOpeHelper.TRANSACTION_END_DATE);
+                    int itemDescriptionPos = cursor.getColumnIndexOrThrow(TransactionDBOpeHelper.TRANSACTION_ITEM_DESCRIPTION);
+                    int transactionIntervalPos = cursor.getColumnIndexOrThrow(TransactionDBOpeHelper.TRANSACTION_INTERVAL);
+                    int transactionTypeIdPos = cursor.getColumnIndexOrThrow(TransactionDBOpeHelper.TRANSACTION_TYPE_ID);
+
+                    int id = cursor.getInt(idPos);
+                    String title = cursor.getString(titlePos);
+                    int amount = cursor.getInt(amountPos);
+                    String dateHelp = cursor.getString(datePos);
+                    Transaction.Type type = getTypeFromId(cursor.getInt(transactionTypeIdPos));
+                    String itemDescription = cursor.getString(itemDescriptionPos);
+                    Date endDate= null;
+                    int transactionInterval = 0;
+                    try {
+                        Date date = simpleDate.parse(dateHelp);
+                        if(type == Transaction.Type.REGULARINCOME || type == Transaction.Type.REGULARPAYMENT){
+                            endDate=simpleDate.parse(cursor.getString(endDatePos));
+                            transactionInterval=cursor.getInt(transactionIntervalPos);
+                        }
+
+                        transactions.add(new Transaction(date,amount,title,type,itemDescription,transactionInterval,endDate));
+
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+
+                }while (cursor.moveToNext());
+            }
+
+        }
 
         ArrayList<Transaction> regularTransactions = new ArrayList<>();
 
