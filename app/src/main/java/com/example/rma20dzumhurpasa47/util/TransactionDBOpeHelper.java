@@ -20,6 +20,7 @@ public class TransactionDBOpeHelper extends SQLiteOpenHelper {
     }
 
     public static final String TRANSACTION_TABLE = "transactions";
+    public static final String TRANSACTION_INTERNAL_ID ="_id";
     public static final String TRANSACTION_ID = "id";
     public static final String TRANSACTION_TYPE_ID = "typeID";
     public static final String TRANSACTION_TITLE = "title";
@@ -30,7 +31,8 @@ public class TransactionDBOpeHelper extends SQLiteOpenHelper {
     public static final String TRANSACTION_ITEM_DESCRIPTION = "itemDescription";
     public static final String TRANSACTION_TABLE_CREATE=
             "CREATE TABLE IF NOT EXISTS " + TRANSACTION_TABLE+" (" +
-                    TRANSACTION_ID + " INTEGER PRIMARY KEY, " +
+                    TRANSACTION_INTERNAL_ID+ " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    TRANSACTION_ID + " INTEGER, " +
                     TRANSACTION_TITLE + " TEXT NOT NULL, " +
                     TRANSACTION_TYPE_ID + " INTEGER NOT NULL, "+
                     TRANSACTION_DATE + " TEXT NOT NULL, " +
