@@ -40,19 +40,21 @@ public class TransactionDBOpeHelper extends SQLiteOpenHelper {
                     TRANSACTION_INTERVAL + " INTEGER, "+
                     TRANSACTION_ITEM_DESCRIPTION + " TEXT, "+
                     TRANSACTION_END_DATE + " TEXT);";
-    private static final String TRANSACTION_DROP = "DROP TABLE IF EXISTS " + TRANSACTION_TABLE;
+    public static final String TRANSACTION_DROP = "DROP TABLE IF EXISTS " + TRANSACTION_TABLE;
 
 
 
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(TRANSACTION_DROP);
+        //db.execSQL(TRANSACTION_DROP);
         db.execSQL(TRANSACTION_TABLE_CREATE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL(TRANSACTION_DROP);
+        onCreate(db);
 
     }
 }

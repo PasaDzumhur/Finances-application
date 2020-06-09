@@ -3,11 +3,14 @@ package com.example.rma20dzumhurpasa47.list;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.rma20dzumhurpasa47.data.Transaction;
+import com.example.rma20dzumhurpasa47.util.TransactionContentProvider;
 import com.example.rma20dzumhurpasa47.util.TransactionDBOpeHelper;
 
 import org.json.JSONArray;
@@ -33,6 +36,8 @@ public class TransactionListInteractor extends AsyncTask<String,Integer,Void> im
     private TransactionSearchDone caller;
     private String sort ;
     private Context context;
+    private TransactionDBOpeHelper transactionDBOpeHelper;
+
 
     public static String convertStreamToString(InputStream is) {
         BufferedReader reader = new BufferedReader(new
@@ -67,6 +72,8 @@ public class TransactionListInteractor extends AsyncTask<String,Integer,Void> im
         execute(sort);
         this.caller=caller;
         this.context = context;
+        transactionDBOpeHelper = new TransactionDBOpeHelper(context);
+
     }
 
 
@@ -74,6 +81,10 @@ public class TransactionListInteractor extends AsyncTask<String,Integer,Void> im
     @Override
     protected Void doInBackground(String... strings) {
         //String query=null;
+        Uri uri = Uri.parse("content://rma.provider.transactions/elements");
+        ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
+        contentResolver.delete(uri, null, null);
+
         for(int query=0; ; query++) {
 
 
@@ -210,7 +221,7 @@ public class TransactionListInteractor extends AsyncTask<String,Integer,Void> im
         }
 
 
-        Log.e("Transakcija ima: ", ""+transactions.size());
+        //Log.e("Transakcija ima: ", ""+transactions.size());
         caller.onDone(transactions);
     }
 

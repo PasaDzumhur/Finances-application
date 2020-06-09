@@ -88,7 +88,27 @@ public class TransactionContentProvider extends ContentProvider {
 
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
+        int count =0;
+        SQLiteDatabase database;
+        try{
+            database = tHelper.getWritableDatabase();
+
+        }catch(SQLiteException e){
+            database = tHelper.getReadableDatabase();
+        }
+        SQLiteQueryBuilder squery = new SQLiteQueryBuilder();
+        switch(uM.match(uri)){
+            case ONEROW:
+                String idRow = uri.getPathSegments().get(0);
+                String where = TransactionDBOpeHelper.TRANSACTION_ID + "="+idRow;
+                count = database.delete(TransactionDBOpeHelper.TRANSACTION_TABLE,where,selectionArgs);
+                break;
+            case ALLROWS:
+                count = database.delete(TransactionDBOpeHelper.TRANSACTION_TABLE,selection,selectionArgs);
+            default: break;
+        }
+
+        return count;
     }
 
     @Override
