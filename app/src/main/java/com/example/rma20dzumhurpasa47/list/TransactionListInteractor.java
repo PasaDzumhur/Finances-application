@@ -85,7 +85,8 @@ public class TransactionListInteractor extends AsyncTask<String,Integer,Void> im
 
 
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+
+
     @Override
     protected Void doInBackground(String... strings) {
 
@@ -96,7 +97,13 @@ public class TransactionListInteractor extends AsyncTask<String,Integer,Void> im
                 ContentResolver cr = context.getApplicationContext().getContentResolver();
                 SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
                 Uri transactionURI = Uri.parse("content://rma.provider.transactionReserves/elements");
-                Cursor cursor = cr.query(transactionURI, null, null, null);
+                TransactionDBOpeHelper thelper = new TransactionDBOpeHelper(context,TransactionDBOpeHelper.DATABASE_NAME,null,TransactionDBOpeHelper.DATABASE_VERSION);
+                SQLiteDatabase database = thelper.getReadableDatabase();
+                Cursor cursor = database.rawQuery("select * from "+TransactionDBOpeHelper.TRANSACTION_TABLE,null);
+                /*if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                    cursor = cr.query(transactionURI, null, null, null);
+                }*/
+
                 if (cursor != null && cursor.moveToFirst()!=false) {
                     //cursor.moveToFirst();
                     do {
@@ -330,7 +337,7 @@ public class TransactionListInteractor extends AsyncTask<String,Integer,Void> im
         return transactions;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+
     @Override
     protected void onPostExecute(Void aVoid){
         super.onPostExecute(aVoid);
@@ -339,7 +346,10 @@ public class TransactionListInteractor extends AsyncTask<String,Integer,Void> im
             ContentResolver cr = context.getApplicationContext().getContentResolver();
             SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
             Uri transactionURI = Uri.parse("content://rma.provider.transactions/elements");
-            Cursor cursor = cr.query(transactionURI,null,null,null);
+            //Cursor cursor = cr.query(transactionURI,null,null,null);
+            TransactionDBOpeHelper thelper = new TransactionDBOpeHelper(context,TransactionDBOpeHelper.DATABASE_NAME,null,TransactionDBOpeHelper.DATABASE_VERSION);
+            SQLiteDatabase database = thelper.getReadableDatabase();
+            Cursor cursor = database.rawQuery("select * from "+TransactionDBOpeHelper.TRANSACTION_TABLE,null);
             if(cursor!=null){
                 cursor.moveToFirst();
                 do{
