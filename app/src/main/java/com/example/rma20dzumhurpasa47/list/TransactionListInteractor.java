@@ -99,7 +99,7 @@ public class TransactionListInteractor extends AsyncTask<String,Integer,Void> im
                 Uri transactionURI = Uri.parse("content://rma.provider.transactionReserves/elements");
                 TransactionDBOpeHelper thelper = new TransactionDBOpeHelper(context,TransactionDBOpeHelper.DATABASE_NAME,null,TransactionDBOpeHelper.DATABASE_VERSION);
                 SQLiteDatabase database = thelper.getReadableDatabase();
-                Cursor cursor = database.rawQuery("select * from "+TransactionDBOpeHelper.TRANSACTION_TABLE,null);
+                Cursor cursor = database.rawQuery("select * from "+TransactionDBOpeHelper.TRANSACTION_RESERVES_TABLE,null);
                 /*if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                     cursor = cr.query(transactionURI, null, null, null);
                 }*/
@@ -139,6 +139,12 @@ public class TransactionListInteractor extends AsyncTask<String,Integer,Void> im
 
 
                     } while (cursor.moveToNext());
+
+                    ArrayList<Transaction> reservesWithRegular = new ArrayList<>();
+
+                    for(Transaction reserve : reserves){
+
+                    }
 
                     for(Transaction reserve : reserves){
                         if(reserve.getId()==-1){
