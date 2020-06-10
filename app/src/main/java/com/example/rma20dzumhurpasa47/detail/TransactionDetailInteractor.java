@@ -208,7 +208,7 @@ public class TransactionDetailInteractor extends AsyncTask<Boolean,Integer,Void>
             values2.put(TransactionDBOpeHelper.TRANSACTION_DATE, simpleDate.format(selectedTransaction.getDate()));
             values2.put(TransactionDBOpeHelper.TRANSACTION_ITEM_DESCRIPTION, selectedTransaction.getItemDescription());
             if(booleans[0]){
-                cr2.delete(uri,"where "+TransactionDBOpeHelper.TRANSACTION_ID+" = "+selectedTransaction.getId(),null);
+                cr2.delete(uri,""+TransactionDBOpeHelper.TRANSACTION_ID+" = "+selectedTransaction.getId(),null);
             }else if(booleans[1]){
                 cr2.insert(uri,values2);
             }else if (booleans[2]){
