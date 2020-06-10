@@ -15,6 +15,7 @@ import android.util.Log;
 import androidx.annotation.RequiresApi;
 
 import com.example.rma20dzumhurpasa47.data.Transaction;
+import com.example.rma20dzumhurpasa47.detail.TransactionDetailInteractor;
 import com.example.rma20dzumhurpasa47.util.TransactionContentProvider;
 import com.example.rma20dzumhurpasa47.util.TransactionDBOpeHelper;
 
@@ -26,6 +27,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.ParseException;
@@ -83,11 +85,156 @@ public class TransactionListInteractor extends AsyncTask<String,Integer,Void> im
 
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected Void doInBackground(String... strings) {
 
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if( cm.getActiveNetworkInfo() != null) {
+            {
+                ArrayList<Transaction> reserves = new ArrayList<>();
+                ContentResolver cr = context.getApplicationContext().getContentResolver();
+                SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+                Uri transactionURI = Uri.parse("content://rma.provider.transactionReserves/elements");
+                Cursor cursor = cr.query(transactionURI, null, null, null);
+                if (cursor != null && cursor.moveToFirst()!=false) {
+                    //cursor.moveToFirst();
+                    do {
+                        int idPos = cursor.getColumnIndexOrThrow(TransactionDBOpeHelper.TRANSACTION_ID);
+                        int titlePos = cursor.getColumnIndexOrThrow(TransactionDBOpeHelper.TRANSACTION_TITLE);
+                        int amountPos = cursor.getColumnIndexOrThrow(TransactionDBOpeHelper.TRANSACTION_AMOUNT);
+                        int datePos = cursor.getColumnIndexOrThrow(TransactionDBOpeHelper.TRANSACTION_DATE);
+                        int endDatePos = cursor.getColumnIndexOrThrow(TransactionDBOpeHelper.TRANSACTION_END_DATE);
+                        int itemDescriptionPos = cursor.getColumnIndexOrThrow(TransactionDBOpeHelper.TRANSACTION_ITEM_DESCRIPTION);
+                        int transactionIntervalPos = cursor.getColumnIndexOrThrow(TransactionDBOpeHelper.TRANSACTION_INTERVAL);
+                        int transactionTypeIdPos = cursor.getColumnIndexOrThrow(TransactionDBOpeHelper.TRANSACTION_TYPE_ID);
+
+                        int id = cursor.getInt(idPos);
+                        String title = cursor.getString(titlePos);
+                        int amount = cursor.getInt(amountPos);
+                        String dateHelp = cursor.getString(datePos);
+                        Transaction.Type type = getTypeFromId(cursor.getInt(transactionTypeIdPos));
+                        String itemDescription = cursor.getString(itemDescriptionPos);
+                        Date endDate = null;
+                        int transactionInterval = 0;
+                        try {
+                            Date date = simpleDate.parse(dateHelp);
+                            if (type == Transaction.Type.REGULARINCOME || type == Transaction.Type.REGULARPAYMENT) {
+                                endDate = simpleDate.parse(cursor.getString(endDatePos));
+                                transactionInterval = cursor.getInt(transactionIntervalPos);
+                            }
+
+                            reserves.add(new Transaction(date, amount, title, type, itemDescription, transactionInterval, endDate));
+
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
+
+                    } while (cursor.moveToNext());
+
+                    for(Transaction reserve : reserves){
+                        if(reserve.getId()==-1){
+                            String url1 = "http://rma20-app-rmaws.apps.us-west-1.starter.openshift-online.com/account/" + api_id + "/transactions";
+                            try {
+                                URL url = new URL(url1);
+                                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                                urlConnection.setRequestMethod("POST");
+                                urlConnection.setRequestProperty("Content-Type", "application/json");
+                                urlConnection.setRequestProperty("Accept", "application/json");
+                                urlConnection.setDoOutput(true);
+                                urlConnection.setDoInput(true);
+                                String json = TransactionDetailInteractor.transactionToJSON(reserve);
+
+                                Log.e("json: ", json);
+
+
+                                try (OutputStream os = urlConnection.getOutputStream()) {
+                                    byte[] input = json.getBytes("utf-8");
+                                    os.write(input, 0, input.length);
+                                }
+
+                                try (BufferedReader br = new BufferedReader(
+                                        new InputStreamReader(urlConnection.getInputStream(), "utf-8"))) {
+                                    StringBuilder response = new StringBuilder();
+                                    String responseLine = null;
+                                    while ((responseLine = br.readLine()) != null) {
+                                        response.append(responseLine.trim());
+                                    }
+                                    Log.e("RESPONSE", response.toString());
+                                }
+
+                            } catch (Exception e) {
+
+                            }
+                        }else if(reserve.getId()<1){
+                            reserve.setId(-reserve.getId());
+                            String url1 = "http://rma20-app-rmaws.apps.us-west-1.starter.openshift-online.com/account/" + api_id + "/transactions/" + reserve.getId();
+                            try {
+                                URL url = new URL(url1);
+                                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                                urlConnection.setRequestMethod("POST");
+                                urlConnection.setRequestProperty("Content-Type", "application/json");
+                                urlConnection.setRequestProperty("Accept", "application/json");
+                                urlConnection.setDoOutput(true);
+                                urlConnection.setDoInput(true);
+                                String json = TransactionDetailInteractor.transactionToJSON(reserve);
+
+                                Log.e("json: ", json);
+
+
+                                try (OutputStream os = urlConnection.getOutputStream()) {
+                                    byte[] input = json.getBytes("utf-8");
+                                    os.write(input, 0, input.length);
+                                }
+
+                                try (BufferedReader br = new BufferedReader(
+                                        new InputStreamReader(urlConnection.getInputStream(), "utf-8"))) {
+                                    StringBuilder response = new StringBuilder();
+                                    String responseLine = null;
+                                    while ((responseLine = br.readLine()) != null) {
+                                        response.append(responseLine.trim());
+                                    }
+                                    Log.e("RESPONSE", response.toString());
+                                } catch (Exception e) {
+                                    throw e;
+                                }
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }else {
+                            String url1 = "http://rma20-app-rmaws.apps.us-west-1.starter.openshift-online.com/account/" + api_id + "/transactions/" + reserve.getId();
+                            try {
+                                URL url = new URL(url1);
+                                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                                urlConnection.setRequestMethod("DELETE");
+                                urlConnection.setDoOutput(true);
+                                urlConnection.connect();
+                                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                                String result = TransactionListInteractor.convertStreamToString(in);
+                                JSONObject jsonObject = new JSONObject(result);
+                                String res = jsonObject.getString("success");
+                                Log.e("res: ", res);
+                                in.close();
+                                urlConnection.disconnect();
+                            } catch (Exception e) {
+
+                            }
+                        }
+                    }
+                }
+                Uri uri = Uri.parse("content://rma.provider.transactionReserves/elements");
+                ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
+                contentResolver.delete(uri, null, null);
+
+            }
+
+
+
+
+
+
 
             //String query=null;
             Uri uri = Uri.parse("content://rma.provider.transactions/elements");
@@ -173,6 +320,7 @@ public class TransactionListInteractor extends AsyncTask<String,Integer,Void> im
             e.printStackTrace();
         }*/
         }else{
+
 
         }
         return null;

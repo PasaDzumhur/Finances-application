@@ -36,7 +36,7 @@ public class TransactionDetailInteractor extends AsyncTask<Boolean,Integer,Void>
 
 
 
-    private static String transactionToJSON(Transaction transaction){
+    public static String transactionToJSON(Transaction transaction){
         SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
         String json = "{";
         //String idJson = "\"id\": "+transaction.getId()+",";
@@ -178,13 +178,14 @@ public class TransactionDetailInteractor extends AsyncTask<Boolean,Integer,Void>
 
         }else{
             if(booleans[2]){
-                selectedTransaction.setId(-selectedTransaction.getId());
+                //selectedTransaction.setId(-selectedTransaction.getId());
+                //int id=-selectedTransaction.getId();
             }
             SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
             ContentResolver cr = context.getApplicationContext().getContentResolver();
             Uri transactionURI = Uri.parse("content://rma.provider.transactionReserves/elements");
             ContentValues values = new ContentValues();
-            values.put(TransactionDBOpeHelper.TRANSACTION_ID, selectedTransaction.getId());
+            values.put(TransactionDBOpeHelper.TRANSACTION_ID, -selectedTransaction.getId());
             values.put(TransactionDBOpeHelper.TRANSACTION_TITLE, selectedTransaction.getTitle());
             values.put(TransactionDBOpeHelper.TRANSACTION_AMOUNT, selectedTransaction.getAmount());
             values.put(TransactionDBOpeHelper.TRANSACTION_TYPE_ID, Transaction.Type.getID(selectedTransaction.getType()));
@@ -196,6 +197,10 @@ public class TransactionDetailInteractor extends AsyncTask<Boolean,Integer,Void>
             values.put(TransactionDBOpeHelper.TRANSACTION_END_DATE, pom);
             values.put(TransactionDBOpeHelper.TRANSACTION_INTERVAL, selectedTransaction.getTransactionInterval());
             cr.insert(transactionURI, values);
+
+            ContentResolver cr2 = context.getApplicationContext().getContentResolver();
+            Uri uri = Uri.parse("content://rma.provider.transactions/elements/#");
+
         }
 
         return null;
