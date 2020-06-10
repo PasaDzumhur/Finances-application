@@ -8,6 +8,7 @@ import androidx.fragment.app.ListFragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements TransactionListFr
     public static Account account=new Account(1000,1000,100);
     public static boolean connectivity;
     private ConnectivityBroadcastReceiver receiver = new ConnectivityBroadcastReceiver();
+    private IntentFilter intentFilter = new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE");
 
 
 
@@ -97,6 +99,20 @@ public class MainActivity extends AppCompatActivity implements TransactionListFr
                     .addToBackStack(null).commit();
         }
     }*/
+
+    @Override
+    public void onResume() {
+
+        super.onResume();
+        registerReceiver(receiver, intentFilter);
+    }
+
+    @Override
+    public void onPause() {
+
+        unregisterReceiver(receiver);
+        super.onPause();
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
