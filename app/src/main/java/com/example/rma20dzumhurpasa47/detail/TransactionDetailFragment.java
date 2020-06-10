@@ -271,6 +271,8 @@ public class TransactionDetailFragment extends Fragment {
                                             if (selectedTransaction == null) {
                                                 getPresenter().execute(false, true, false);
                                             } else getPresenter().execute(false, false, true);
+                                            Toast toast = Toast.makeText(getContext(),"Transaction saved",Toast.LENGTH_SHORT);
+                                            toast.show();
                                         }
                                     }).setNegativeButton("No", new DialogInterface.OnClickListener() {
                                         @Override
@@ -422,6 +424,8 @@ public class TransactionDetailFragment extends Fragment {
                                             edit6.setBackgroundColor(0);
                                             edit7.setText("");
                                             edit7.setBackgroundColor(0);
+                                            Toast toast = Toast.makeText(getContext(),"Transaction deleted",Toast.LENGTH_SHORT);
+                                            toast.show();
                                             //needToRefresh.refreshList();
                                             //finish();
                                         }
@@ -437,8 +441,7 @@ public class TransactionDetailFragment extends Fragment {
 
                         }
                     }
-                    Toast toast = Toast.makeText(getContext(),"Transaction deleted",Toast.LENGTH_SHORT);
-                    toast.show();
+
 
                 }
 
