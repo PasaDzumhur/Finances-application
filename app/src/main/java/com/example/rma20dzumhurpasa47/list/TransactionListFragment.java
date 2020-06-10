@@ -50,6 +50,7 @@ public class TransactionListFragment extends Fragment implements ITransactionLis
     private Spinner spinner2;
     private Button btnAddTrans;
     private IAccountDetailInteractor accountDetailInteractor;
+    private TextView offline;
     //private Button button;
     //public static Account account=new Account(100000,100000,100000);
 
@@ -149,6 +150,9 @@ public class TransactionListFragment extends Fragment implements ITransactionLis
         addTransClick=(OnItemClick)getActivity();
         //buttonClick=(OnItemClick)getActivity();
         swipe=(OnItemClick)getActivity();
+        offline=fragmentView.findViewById(R.id.offline);
+        if(MainActivity.connectivity) offline.setVisibility(View.INVISIBLE);
+        else offline.setVisibility(View.VISIBLE);
         Intent intent = getActivity().getIntent();
         String action=intent.getAction();
         String type = intent.getType();

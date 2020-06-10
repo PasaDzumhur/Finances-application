@@ -367,7 +367,7 @@ public class TransactionListInteractor extends AsyncTask<String,Integer,Void> im
                             transactionInterval=cursor.getInt(transactionIntervalPos);
                         }
 
-                        transactions.add(new Transaction(date,amount,title,type,itemDescription,transactionInterval,endDate));
+                        transactions.add(new Transaction(date,amount,title,type,itemDescription,transactionInterval,endDate,id));
 
                     } catch (ParseException e) {
                         e.printStackTrace();

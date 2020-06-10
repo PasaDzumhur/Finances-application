@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,6 +36,7 @@ import static com.example.rma20dzumhurpasa47.list.MainActivity.account;
 
 public class TransactionDetailFragment extends Fragment {
     private EditText edit1, edit2, edit3, edit4, edit5, edit6, edit7;
+    private TextView offline;
     private Button btnSave, btnDelete;
     private Transaction selectedTransaction=null;
 
@@ -62,8 +65,12 @@ public class TransactionDetailFragment extends Fragment {
             edit5 = view.findViewById(R.id.edit5);
             edit6 = view.findViewById(R.id.edit6);
             edit7 = view.findViewById(R.id.edit7);
+            offline=view.findViewById(R.id.offline);
             btnDelete = view.findViewById(R.id.btnDelete);
             btnSave = view.findViewById(R.id.btnSave);
+
+            if(MainActivity.connectivity) offline.setVisibility(View.INVISIBLE);
+            else offline.setVisibility(View.VISIBLE);
         final SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
             if (getArguments() != null && getArguments().containsKey("transaction")) {
                 getPresenter().setTransaction(getArguments().getParcelable("transaction"));
@@ -373,6 +380,8 @@ public class TransactionDetailFragment extends Fragment {
                 }
 
                 */
+                    Toast toast = Toast.makeText(getContext(),"Transaction saved",Toast.LENGTH_SHORT);
+                    toast.show();
                 }});
 
             btnDelete.setOnClickListener(new View.OnClickListener() {
@@ -428,6 +437,8 @@ public class TransactionDetailFragment extends Fragment {
 
                         }
                     }
+                    Toast toast = Toast.makeText(getContext(),"Transaction deleted",Toast.LENGTH_SHORT);
+                    toast.show();
 
                 }
 
