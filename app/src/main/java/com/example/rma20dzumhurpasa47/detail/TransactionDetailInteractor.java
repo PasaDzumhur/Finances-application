@@ -200,6 +200,20 @@ public class TransactionDetailInteractor extends AsyncTask<Boolean,Integer,Void>
 
             ContentResolver cr2 = context.getApplicationContext().getContentResolver();
             Uri uri = Uri.parse("content://rma.provider.transactions/elements/#");
+            ContentValues values2 = new ContentValues();
+            values2.put(TransactionDBOpeHelper.TRANSACTION_ID, selectedTransaction.getId());
+            values2.put(TransactionDBOpeHelper.TRANSACTION_TITLE, selectedTransaction.getTitle());
+            values2.put(TransactionDBOpeHelper.TRANSACTION_AMOUNT, selectedTransaction.getAmount());
+            values2.put(TransactionDBOpeHelper.TRANSACTION_TYPE_ID, Transaction.Type.getID(selectedTransaction.getType()));
+            values2.put(TransactionDBOpeHelper.TRANSACTION_DATE, simpleDate.format(selectedTransaction.getDate()));
+            values2.put(TransactionDBOpeHelper.TRANSACTION_ITEM_DESCRIPTION, selectedTransaction.getItemDescription());
+            if(booleans[0]){
+                cr2.delete(uri,"where "+TransactionDBOpeHelper.TRANSACTION_ID+" = "+selectedTransaction.getId(),null);
+            }else if(booleans[1]){
+                cr2.insert(uri,values2);
+            }else if (booleans[2]){
+                cr2.update(uri,values2, ""+TransactionDBOpeHelper.TRANSACTION_ID+" = "+selectedTransaction.getId(),null);
+            }
 
         }
 

@@ -124,7 +124,7 @@ public class TransactionContentProvider extends ContentProvider {
         SQLiteQueryBuilder squery = new SQLiteQueryBuilder();
         switch(uM.match(uri)){
             case ONEROW:
-                String idRow = uri.getPathSegments().get(0);
+                String idRow = uri.getLastPathSegment();
                 String where = TransactionDBOpeHelper.TRANSACTION_ID + "="+idRow;
                 count = database.update(TransactionDBOpeHelper.TRANSACTION_TABLE,values,where,selectionArgs);
                 break;
